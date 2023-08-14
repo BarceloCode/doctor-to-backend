@@ -91,7 +91,7 @@ retrieveOne: async (req, res) =>{
 delete: async (req, res) =>{
     await PatientModel.removeAllListeners({_id: req.body._id})
         .then(result =>{
-            if(!result) res.json({success: false, result: "No user was found with the ID ${req.body.id}"});
+            if(!result) res.json({success: false, result: "No patient was found with the ID ${req.body.id}"});
             res.json({ success: true, result});
         })
         .catch(err => res.json({ success: false, result: err}));
