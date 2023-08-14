@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const CosmotolpgistSchema = new mongoose.Schema({
+const CosmotologistSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -47,6 +47,6 @@ const CosmotolpgistSchema = new mongoose.Schema({
   },
 });
 //location hace referencia a la clinica en la que esta la comotologa
-const Cosmotologist = mongoose.model(Cosmotologist, CosmotolpgistSchema);
+const Cosmotologist = mongoose.model(Cosmotologist, CosmotologistSchema);
 
 module.exports = Cosmotologist;
