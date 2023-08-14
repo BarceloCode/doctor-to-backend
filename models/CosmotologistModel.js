@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
+const moment = require("moment-timezone");
+require("dotenv").config({ path: "../.env" });
+moment.tz.setDefault(process.env.TZ);
+const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
-const CosmotologistSchema = new mongoose.Schema({
+const cosmotologistSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -26,7 +30,7 @@ const CosmotologistSchema = new mongoose.Schema({
     required: true,
   },
   birthday: {
-    type: Date,
+    type: String,
     required: true,
   },
   gender: {
@@ -38,15 +42,15 @@ const CosmotologistSchema = new mongoose.Schema({
     required: true,
   },
   RegisteredAt: {
-    type: Date,
-    default: Date.now,
+    type: String,
+    default: currentTime,
   },
   isOnline: {
     type: Boolean,
     default: false,
   },
 });
-//location hace referencia a la clinica en la que esta la comotologa
-const Cosmotologist = mongoose.model(Cosmotologist, CosmotologistSchema);
+//location hace referencia a la clinica en la que esta la cosmotologa
+const Cosmotologist = mongoose.model("Cosmotologist", cosmotologistSchema);
 
 module.exports = Cosmotologist;
