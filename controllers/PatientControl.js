@@ -1,12 +1,19 @@
 const PatientModel = require("../models/PatientModel");
-const PatienModel = require("../models/PatientModel");
+const Validate = require("../")
 
 module.exports = {
     create: async (req, res) =>{
 
+        //Data validation 
+
+        let { error } = Validate.patient(req.body);
+        if(error) return res.json({ success: false, result: error.details[0].message});
+
+        //Defining patient model from data aquired over request body
+
     let body =  req.body;
     let { name, age, sex, faceImage, curp, allergies, freqD, freqS, oxygen, signedletter, aditionalInfo, roadMap } = body;
-    let patient = new PatienModel({
+    let patient = new PatientModel({
         name, 
         age, 
         sex,
@@ -37,7 +44,7 @@ module.exports = {
 update: async (req, res) =>{
     let body =  req.body;
     let { name, age, sex, faceImage, curp, allergies, freqD, freqS, oxygen, signedletter, aditionalInfo, roadMap } = body;
-    let patient = new PatienModel({
+    let patient = new PatientModel({
         name, 
         age, 
         sex,
