@@ -2,6 +2,9 @@ const CosmotologistSch = require("../models/CosmotologistModel");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "../.env" });
+const moment = require("moment-timezone");
+moment.tz.setDefault(process.env.TZ);
+const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
 async function create(req) {
   try {
@@ -95,16 +98,32 @@ async function update(req) {
   }
 }
 
-async function softDelete(){
-//SOFT DELETED HERE
+async function softDelete(req) {
+  try {
+    const finduser = await CosmotologistSch.findOne({
+      email: req.body.email,
+    }).select("email");
+    if (!finduser) {
+      return { message: "User not found", error: true };
+    }
+    const update = {
+      $set: {
+        Deleted: true,
+        DeletedAt: currentTime,
+      },
+    };
+    const result = await CosmotologistSch.updateOne(finduser, update);
+    if (result) {
+      return { message: "Deleted succesfully", error: false };
+    }
+  } catch (error) {
+    return { message: "Error", error: error.message };
+  }
 }
-
-
-
 
 module.exports = {
   create,
   retrive,
   update,
-  softDelete
+  softDelete,
 };

@@ -27,4 +27,13 @@ async function updateCosmo(req, res) {
   }
 }
 
-module.exports = { createCosmo, getAllCosmo, updateCosmo };
+async function deleteCosmo(req, res) {
+  try {
+    const cosmo = await Cosmoservice.softDelete(req, res);
+    res.status(200).json(cosmo);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+
+module.exports = { createCosmo, getAllCosmo, updateCosmo, deleteCosmo };

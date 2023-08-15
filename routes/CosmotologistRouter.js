@@ -20,4 +20,8 @@ app.put("/update/:email", validate(CosmoValidation.updateCosmotologist), async (
   controller.updateCosmo(req, res);
 });
 
+app.put("/delete", validate(CosmoValidation.deleteCosmologist), async (req, res) => {
+  controller.deleteCosmo(req, res);
+});
+
 module.exports = app;
