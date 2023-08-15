@@ -4,71 +4,50 @@ const Validate = require("../")
 module.exports = {
     create: async (req, res) =>{
 
-        //Data validation 
+        let curpExists = await PatientModel.findOne({ curp : req.body.curp });
+        if (curpExists) return res.json({ success: false, result: "User already exists"});
 
-        let { error } = Validate.patient(req.body);
-        if(error) return res.json({ success: false, result: error.details[0].message});
-
-        //Defining patient model from data aquired over request body
-
-    let body =  req.body;
-    let { name, age, sex, faceImage, curp, allergies, freqD, freqS, oxygen, signedletter, aditionalInfo, roadMap } = body;
     let patient = new PatientModel({
-        name, 
-        age, 
-        sex,
-        faceImage,
-        curp,
-        allergies, 
-        freqD,
-        freqS,
-        oxygen,
-        signedletter,
-        aditionalInfo,
-        roadMap
-    });
-    patient.save((err, patientDB) =>{
-        if(err){
-            return res.status(400).json({
-                ok: false,
-                err,
-            });
-        }
-        res.json({
-            ok: true,
-            patient: patientDB
-        })
+        name: req.body.name,
+        age: req.body.age,
+        sex: req.body.sex,
+        curp: req.body.curp,
+        allergies: req.body.allergies,
+        freqD: req.body.freqD,
+        freqS: req.body.freqS,
+        oxygen: req.body.oxygen,
+        signedletter: req.body.signedletter
     })
+    await patient.save()
+    .then(result => {
+      res.json({ success: true, result: result });
+    })
+    .catch(err => {
+      res.json({ success: false, result: err });
+    });
+
 },
 
 update: async (req, res) =>{
-    let body =  req.body;
-    let { name, age, sex, faceImage, curp, allergies, freqD, freqS, oxygen, signedletter, aditionalInfo, roadMap } = body;
-    let patient = new PatientModel({
-        name, 
-        age, 
-        sex,
-        faceImage,
-        curp,
-        allergies, 
-        freqD,
-        freqS,
-        oxygen,
-        signedletter,
-        aditionalInfo,
-        roadMap
-    });
-
-    await PatientModel.update({_id: req.body._id}, patient)
-    .then(patient =>{
-        if(!patient) res.json({ success: false, result: "Patient does not exist"});
-
-        reset.json(patient);
+    
+    let patient = await PatientModel.findByIdAndUpdate(req.params.id,{
+        name: req.body.name,
+        age: req.body.age,
+        sex: req.body.sex,
+        curp: req.body.curp,
+        allergies: req.body.allergies,
+        freqD: req.body.freqD,
+        freqS: req.body.freqS,
+        oxygen: req.body.oxygen,
+        signedletter: req.body.signedletter
+    },{
+        new: true
     })
-    .catch(err =>{
-        res.json({ succes: false, result: err});
-    })
-},
+    if(!patient){
+        return res.status(400).send("Patient does not exists")
+    }
+    res.status(200).send(patient);
+  },
 
 retrieve: async (req, res) =>{
     await PatientModel.find()
@@ -78,7 +57,7 @@ retrieve: async (req, res) =>{
 
             res.json({ succes: true, result: result});
         })
-        .carch(err => res.json({success: false, rsult: err}));
+        .catch(err => res.json({success: false, rsult: err}));
 },
 
 retrieveOne: async (req, res) =>{
@@ -88,13 +67,12 @@ retrieveOne: async (req, res) =>{
         .catch((error) => res.json({message: error}));
 },
 
-delete: async (req, res) =>{
-    await PatientModel.removeAllListeners({_id: req.body._id})
-        .then(result =>{
-            if(!result) res.json({success: false, result: "No patient was found with the ID ${req.body.id}"});
-            res.json({ success: true, result});
-        })
-        .catch(err => res.json({ success: false, result: err}));
-    }
+delete: async (req, res) => {
+    const { id } = req.params;
+    PatientModel
+      .deleteMany({ _id: id})
+      .then((data) => res.json(data))
+      .catch((error) => res.json({ message: error}));
+}
 
 }

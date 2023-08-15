@@ -2,27 +2,12 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const PatientSchema = new Schema({
-    name: {
-        type: String, 
-        required: true
-    },
-    age: {
-        type: Number,
-        required: true
-    },
-    sex: {
-        type: String, 
-        required: true
-    },
+    name: String, 
+    age: String,
+    sex: String,
     faceImage: String,
-    curp: {
-        type: String,
-        required: true
-    }, 
-    allergies: {
-        type: String,
-        require: true
-    },
+    curp: String, 
+    allergies: String,
     freqD: String,
     freqS: String, 
     oxygen: String, 
