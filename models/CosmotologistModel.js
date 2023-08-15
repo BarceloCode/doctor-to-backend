@@ -49,6 +49,14 @@ const cosmotologistSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  Deleted: {
+    type: Boolean,
+    default: false,
+  },
+  DeletedAt: {
+    type: Boolean,
+    default: false,
+  },
 });
 //location hace referencia a la clinica en la que esta la cosmotologa
 const Cosmotologist = mongoose.model("Cosmotologist", cosmotologistSchema);
