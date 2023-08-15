@@ -22,7 +22,7 @@ app.use('/usc/patient', PatientRoute);
 //Middleware a futuro para la autenticacion
 //app.use(authMiddleware);
 
-app.use("/cosmotologist", CosmoRoutes);
+app.use("/usc/cosmotologist", CosmoRoutes);
 
 app.listen(port, () => {
   console.log(`Server Runnig on ${process.env.HOSTNAME}:${port}`);

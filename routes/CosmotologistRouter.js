@@ -12,4 +12,16 @@ app.post(
   }
 );
 
+app.get("/get/:id", async (req, res) => {
+  controller.getAllCosmo(req, res);
+});
+
+app.put("/update/:email", validate(CosmoValidation.updateCosmotologist), async (req, res) => {
+  controller.updateCosmo(req, res);
+});
+
+app.put("/delete", validate(CosmoValidation.deleteCosmologist), async (req, res) => {
+  controller.deleteCosmo(req, res);
+});
+
 module.exports = app;
