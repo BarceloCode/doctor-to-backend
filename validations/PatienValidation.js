@@ -1,9 +1,21 @@
-const check = require('joi');
+const Joi = require('@hapi/joi');
 
-exports.patient = check.object({
-   name: check.string().max(255).required(),
-   age: check.integer().max(120).required(),
-   sex: check.string().max(55).required(),
-   curp: check.string().max(18).required().pattern(new RegExp('/^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/')),
-   allergies: check.string().max(255)
-});
+module.exports = {
+    // Function to validate user data
+    patient: data => {
+        let schema = Joi.object({
+            name: Joi.string(),
+            age: Joi.string(),
+            sex: Joi.string(),
+            faceImage: Joi.string(),
+            curp: Joi.string()
+                  .required(),
+            allergies: Joi.string(),
+            freqD: Joi.string(),
+            freqS: Joi.string(),
+            oxygen: Joi.string(),
+            signedletter: Joi.string()                                
+        });
+        return schema.validate(data);
+    }
+};

@@ -1,8 +1,13 @@
 const PatientModel = require("../models/PatientModel");
-const Validate = require("../")
+const Validate = require("../validations/PatienValidation")
 
 module.exports = {
     create: async (req, res) =>{
+
+        //Data validattion
+
+        let { error } = Validate.patient(req.body);
+        if (error) return res.json({ success: false, result: error.details[0].message});
 
         let curpExists = await PatientModel.findOne({ curp : req.body.curp });
         if (curpExists) return res.json({ success: false, result: "User already exists"});
