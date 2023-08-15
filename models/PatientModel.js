@@ -3,21 +3,18 @@ const Schema = mongoose.Schema;
 
 const PatientSchema = new Schema({
     name: String, 
-    age: String,
-    sex: String,
-    faceImage: String,
-    curp: String, 
-    allergies: String,
-    freqD: String,
-    freqS: String, 
-    oxygen: String, 
-    signedletter: String, 
-    aditionalInfo: [{
-        type: Schema.Types.ObjectId, ref: 'aditionalInfo'
-    }],
-    roadMap: [{
-        type: Schema.Types.ObjectId, ref: 'roadMap'
-    }]
+    sex: String, 
+    age: Number, 
+    birthdate: Date, 
+    civilstatus: String, 
+    religion: String, 
+    ocupation: String, 
+    address: String,
+    email: String, 
+    phone: Number, 
+    emergencyContact: Number,
+    bloodType: String,
+    expedient: [{ type: Schema.Types.ObjectId, ref: 'expedient' }]
 })
 
 module.exports = mongoose.model('patient', PatientSchema);

@@ -14,14 +14,17 @@ module.exports = {
 
     let patient = new PatientModel({
         name: req.body.name,
-        age: req.body.age,
         sex: req.body.sex,
-        curp: req.body.curp,
-        allergies: req.body.allergies,
-        freqD: req.body.freqD,
-        freqS: req.body.freqS,
-        oxygen: req.body.oxygen,
-        signedletter: req.body.signedletter
+        age: req.body.age,
+        birthdate: req.body.birthdate,
+        civilstatus: req.body.civilstatus,
+        religion: req.body.religion,
+        ocupation: req.body.ocupation,
+        address: req.body.address,
+        email: req.body.email,
+        phone: req.body.phone,
+        emergencyContact: req.body.emergencyContact,
+        bloodType: req.body.typeBlood        
     })
     await patient.save()
     .then(result => {
@@ -37,14 +40,17 @@ update: async (req, res) =>{
     
     let patient = await PatientModel.findByIdAndUpdate(req.params.id,{
         name: req.body.name,
-        age: req.body.age,
         sex: req.body.sex,
-        curp: req.body.curp,
-        allergies: req.body.allergies,
-        freqD: req.body.freqD,
-        freqS: req.body.freqS,
-        oxygen: req.body.oxygen,
-        signedletter: req.body.signedletter
+        age: req.body.age,
+        birthdate: req.body.birthdate,
+        civilstatus: req.body.civilstatus,
+        religion: req.body.religion,
+        ocupation: req.body.ocupation,
+        address: req.body.address,
+        email: req.body.email,
+        phone: req.body.phone,
+        emergencyContact: req.body.emergencyContact,
+        bloodType: req.body.typeBlood   
     },{
         new: true
     })
@@ -57,8 +63,7 @@ update: async (req, res) =>{
 retrieve: async (req, res) =>{
     await PatientModel.find()
         .then(result =>{
-            if(!result) res.json({success: false, result: "No results found"});
-            
+            if(!result) res.json({success: false, result: "No results found"});            
 
             res.json({ succes: true, result: result});
         })

@@ -5,16 +5,18 @@ module.exports = {
     patient: data => {
         let schema = Joi.object({
             name: Joi.string(),
-            age: Joi.string(),
             sex: Joi.string(),
-            faceImage: Joi.string(),
-            curp: Joi.string()
-                  .required(),
-            allergies: Joi.string(),
-            freqD: Joi.string(),
-            freqS: Joi.string(),
-            oxygen: Joi.string(),
-            signedletter: Joi.string()                                
+            age: Joi.number(),
+            birthdate: Joi.date(),
+            civilstatus: Joi.string(),
+            religion: Joi.string(),
+            ocupation: Joi.string(),
+            address: Joi.string(),
+            email: Joi.string()
+                .email(),
+            phone: Joi.number(),
+            emergencyContact: Joi.number(),
+            bloodType: Joi.string()
         });
         return schema.validate(data);
     }
