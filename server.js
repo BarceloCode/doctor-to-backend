@@ -2,8 +2,6 @@ const express = require('express')
 const db = require('./db.js')
 const cors = require('cors');
 // const userRoutes = require('./routes/userRoutes');
-const express = require("express");
-const db = require("./db.js");
 const CosmoRoutes = require("./routes/CosmotologistRouter");
 
 const app = express();
