@@ -42,7 +42,7 @@ const cosmotologistSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  RegisteredAt: {
+  registeredAt: {
     type: String,
     default: currentTime,
   },
@@ -50,11 +50,11 @@ const cosmotologistSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  Deleted: {
+  deleted: {
     type: Boolean,
     default: false,
   },
-  DeletedAt: {
+  deletedAt: {
     type: String,
     default: null,
   },

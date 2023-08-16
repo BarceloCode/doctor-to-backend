@@ -50,8 +50,8 @@ async function retrive(req) {
     const { id } = req.params;
     const user = await CosmotologistSch.findOne({
       _id: new mongoose.Types.ObjectId(id),
-    }).select("-password");
-    if (!user) {
+    }).select("-password deleted");
+    if (!user || finduser.deleted) {
       return {
         message: "User not found",
         error: true,
@@ -64,7 +64,7 @@ async function retrive(req) {
       user: user,
     };
   } catch (error) {
-    return { message: "Error", error: error.message };
+    return { message: "Error", error: "User not found" };
   }
 }
 
@@ -72,10 +72,10 @@ async function update(req) {
   try {
     const finduser = await CosmotologistSch.findOne({
       email: req.params.email,
-    }).select("email");
+    }).select("email deleted");
     const { name, full_lastname, phone, location, birthday, gender, role } =
       req.body;
-    if (!finduser) {
+    if (!finduser || finduser.deleted) {
       return { message: "User not found", error: true };
     }
     const update = {
@@ -102,14 +102,15 @@ async function softDelete(req) {
   try {
     const finduser = await CosmotologistSch.findOne({
       email: req.body.email,
-    }).select("email");
-    if (!finduser) {
+    }).select("email deleted");
+
+    if (!finduser || finduser.deleted) {
       return { message: "User not found", error: true };
     }
     const update = {
       $set: {
-        Deleted: true,
-        DeletedAt: currentTime,
+        deleted: true,
+        deletedAt: currentTime,
       },
     };
     const result = await CosmotologistSch.updateOne(finduser, update);
