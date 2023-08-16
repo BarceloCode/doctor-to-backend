@@ -9,7 +9,9 @@ const jwt = require("jsonwebtoken");
 
 async function login(req) {
   try {
-    const user = await CosmotologistSch.findOne({ email: req.body.email }).select("email password deleted");
+    const user = await CosmotologistSch.findOne({
+      email: req.body.email,
+    }).select("email password deleted isOnline");
     if (!user || user.deleted) {
       return { error: true, msg: [{ User: "User not found" }] };
     }
@@ -30,12 +32,16 @@ async function login(req) {
       expiresIn: process.env.EXPIRE_SECRET,
     });
 
+    //function to put online the cosmotologist
+    handleOnline(user);
+
     return {
       error: false,
       msg: "Welcome",
       user: user.username,
       id: user._id,
       token,
+      expiresIn: process.env.EXPIRE_SECRET,
     };
   } catch (err) {
     return { error: true, msg: err.message };
@@ -158,10 +164,41 @@ async function softDelete(req) {
   }
 }
 
+async function handleOnline(user) {
+  try {
+    const update = {
+      $set: {
+        isOnline: true,
+      },
+    };
+
+    await CosmotologistSch.updateOne(user, update);
+  } catch (error) {
+    return { message: "Error", error: error.message };
+  }
+}
+
+async function handleOffline(req) {
+  try {
+    const update = {
+      $set: {
+        isOnline: false,
+      },
+    };
+    const user = await CosmotologistSch.findOne({ email: req.body.email });
+    await CosmotologistSch.findOneAndUpdate(user, update);
+    return { message: "Offline"};
+  } catch (error) {
+    return { message: "Error", error: error.message };
+  }
+}
+
 module.exports = {
   login,
   create,
   retrive,
   update,
   softDelete,
+  handleOnline,
+  handleOffline,
 };

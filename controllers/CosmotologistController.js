@@ -45,4 +45,14 @@ async function deleteCosmo(req, res) {
   }
 }
 
-module.exports = { login, createCosmo, getAllCosmo, updateCosmo, deleteCosmo };
+async function offline(req, res){
+  try {
+    const cosmo = await Cosmoservice.handleOffline(req, res);
+    res.status(200).json(cosmo);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+
+}
+
+module.exports = { login, createCosmo, getAllCosmo, updateCosmo, deleteCosmo, offline};

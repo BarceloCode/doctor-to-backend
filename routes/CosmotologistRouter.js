@@ -14,6 +14,14 @@ app.post(
 );
 
 app.post(
+  "/refresh",
+  validate(CosmoValidation.logincosmotologist),
+  async (req, res) => {
+    controller.login(req, res);
+  }
+);
+
+app.post(
   "/create",
   validate(CosmoValidation.cosmotologist),
   verifyToken,
@@ -43,5 +51,9 @@ app.put(
     controller.deleteCosmo(req, res);
   }
 );
+
+app.put("/offline", async (req, res) => {
+  controller.offline(req, res);
+});
 
 module.exports = app;
