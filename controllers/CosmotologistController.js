@@ -1,5 +1,14 @@
 const Cosmoservice = require("../services/CosmotologistService");
 
+async function login(req, res) {
+  try {
+    const CosmoLogin = await Cosmoservice.login(req, res);
+    res.status(200).json(CosmoLogin);
+  } catch (error) {
+    res.status(400).json({ error: "Error al iniciar sesion" });
+  }
+}
+
 async function createCosmo(req, res) {
   try {
     const cosmo = await Cosmoservice.create(req, res);
@@ -36,4 +45,4 @@ async function deleteCosmo(req, res) {
   }
 }
 
-module.exports = { createCosmo, getAllCosmo, updateCosmo, deleteCosmo };
+module.exports = { login, createCosmo, getAllCosmo, updateCosmo, deleteCosmo };

@@ -5,6 +5,42 @@ require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
+const jwt = require("jsonwebtoken");
+
+async function login(req) {
+  try {
+    const user = await CosmotologistSch.findOne({ email: req.body.email }).select("email password deleted");
+    if (!user || user.deleted) {
+      return { error: true, msg: [{ User: "User not found" }] };
+    }
+
+    const isPasswordValid = await bcrypt.compareSync(
+      req.body.password,
+      user.password
+    );
+
+    if (!isPasswordValid) {
+      return {
+        error: true,
+        msg: "User/email or password not valid, try again",
+      };
+    }
+
+    const token = jwt.sign({ user: user }, process.env.TOKEN_SECRET, {
+      expiresIn: process.env.EXPIRE_SECRET,
+    });
+
+    return {
+      error: false,
+      msg: "Welcome",
+      user: user.username,
+      id: user._id,
+      token,
+    };
+  } catch (err) {
+    return { error: true, msg: err.message };
+  }
+}
 
 async function create(req) {
   try {
@@ -50,8 +86,8 @@ async function retrive(req) {
     const { id } = req.params;
     const user = await CosmotologistSch.findOne({
       _id: new mongoose.Types.ObjectId(id),
-    }).select("-password deleted");
-    if (!user || finduser.deleted) {
+    }).select("-password");
+    if (!user || user.deleted) {
       return {
         message: "User not found",
         error: true,
@@ -123,6 +159,7 @@ async function softDelete(req) {
 }
 
 module.exports = {
+  login,
   create,
   retrive,
   update,
