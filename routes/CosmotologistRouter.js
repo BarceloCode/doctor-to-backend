@@ -24,7 +24,6 @@ app.post(
 app.post(
   "/create",
   validate(CosmoValidation.cosmotologist),
-  verifyToken,
   async (req, res) => {
     controller.createCosmo(req, res);
   }
