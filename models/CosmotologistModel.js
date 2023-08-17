@@ -42,7 +42,7 @@ const cosmotologistSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  RegisteredAt: {
+  registeredAt: {
     type: String,
     default: currentTime,
   },
@@ -50,13 +50,27 @@ const cosmotologistSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  Deleted: {
+  deleted: {
     type: Boolean,
     default: false,
   },
-  DeletedAt: {
+  deletedAt: {
     type: String,
     default: null,
+  },
+  permissons: {
+    read: {
+      type: Boolean,
+      default: true,
+    },
+    write: {
+      type: Boolean,
+      default: true,
+    },
+    delete: {
+      type: Boolean,
+      default: false,
+    },
   },
 });
 //location hace referencia a la clinica en la que esta la cosmotologa

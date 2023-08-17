@@ -5,6 +5,48 @@ require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
+const jwt = require("jsonwebtoken");
+
+async function login(req) {
+  try {
+    const user = await CosmotologistSch.findOne({
+      email: req.body.email,
+    }).select("email password deleted isOnline");
+    if (!user || user.deleted) {
+      return { error: true, msg: [{ User: "User not found" }] };
+    }
+
+    const isPasswordValid = await bcrypt.compareSync(
+      req.body.password,
+      user.password
+    );
+
+    if (!isPasswordValid) {
+      return {
+        error: true,
+        msg: "User/email or password not valid, try again",
+      };
+    }
+
+    const token = jwt.sign({ user: user }, process.env.TOKEN_SECRET, {
+      expiresIn: process.env.EXPIRE_SECRET,
+    });
+
+    //function to put online the cosmotologist
+    handleOnline(user);
+
+    return {
+      error: false,
+      msg: "Welcome",
+      user: user.username,
+      id: user._id,
+      token,
+      expiresIn: process.env.EXPIRE_SECRET,
+    };
+  } catch (err) {
+    return { error: true, msg: err.message };
+  }
+}
 
 async function create(req) {
   try {
@@ -51,7 +93,7 @@ async function retrive(req) {
     const user = await CosmotologistSch.findOne({
       _id: new mongoose.Types.ObjectId(id),
     }).select("-password");
-    if (!user) {
+    if (!user || user.deleted) {
       return {
         message: "User not found",
         error: true,
@@ -64,7 +106,7 @@ async function retrive(req) {
       user: user,
     };
   } catch (error) {
-    return { message: "Error", error: error.message };
+    return { message: "Error", error: "User not found" };
   }
 }
 
@@ -72,10 +114,10 @@ async function update(req) {
   try {
     const finduser = await CosmotologistSch.findOne({
       email: req.params.email,
-    }).select("email");
+    }).select("email deleted");
     const { name, full_lastname, phone, location, birthday, gender, role } =
       req.body;
-    if (!finduser) {
+    if (!finduser || finduser.deleted) {
       return { message: "User not found", error: true };
     }
     const update = {
@@ -102,14 +144,15 @@ async function softDelete(req) {
   try {
     const finduser = await CosmotologistSch.findOne({
       email: req.body.email,
-    }).select("email");
-    if (!finduser) {
+    }).select("email deleted");
+
+    if (!finduser || finduser.deleted) {
       return { message: "User not found", error: true };
     }
     const update = {
       $set: {
-        Deleted: true,
-        DeletedAt: currentTime,
+        deleted: true,
+        deletedAt: currentTime,
       },
     };
     const result = await CosmotologistSch.updateOne(finduser, update);
@@ -121,9 +164,41 @@ async function softDelete(req) {
   }
 }
 
+async function handleOnline(user) {
+  try {
+    const update = {
+      $set: {
+        isOnline: true,
+      },
+    };
+
+    await CosmotologistSch.updateOne(user, update);
+  } catch (error) {
+    return { message: "Error", error: error.message };
+  }
+}
+
+async function handleOffline(req) {
+  try {
+    const update = {
+      $set: {
+        isOnline: false,
+      },
+    };
+    const user = await CosmotologistSch.findOne({ email: req.body.email });
+    await CosmotologistSch.findOneAndUpdate(user, update);
+    return { message: "Offline"};
+  } catch (error) {
+    return { message: "Error", error: error.message };
+  }
+}
+
 module.exports = {
+  login,
   create,
   retrive,
   update,
   softDelete,
+  handleOnline,
+  handleOffline,
 };

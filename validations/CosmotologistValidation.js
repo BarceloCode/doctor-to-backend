@@ -1,5 +1,15 @@
 const check = require("joi");
 
+exports.logincosmotologist = check.object({
+  email: check.string().email().max(255).required(),
+  password: check
+    .string()
+    .min(8)
+    .max(1024)
+    .pattern(new RegExp('^(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$'))
+    .required(),
+});
+
 exports.cosmotologist = check.object({
   name: check.string().max(255).required(),
   email: check.string().email().max(255).required(),
