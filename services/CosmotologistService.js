@@ -193,6 +193,26 @@ async function handleOffline(req) {
   }
 }
 
+async function handlePermissons(req){
+  try {
+    const { email } = req.body;
+    const user = await CosmotologistSch.findOne({
+      email: email,
+    }).select("permissons");
+    if (!user || user.deleted) {
+      return {
+        message: "User not found",
+        error: true,
+        error: error.message,
+      };
+    }
+    return user;
+  } catch (error) {
+    return { message: "Error", error: "User not found" };
+  }
+}
+
+
 module.exports = {
   login,
   create,
@@ -201,4 +221,5 @@ module.exports = {
   softDelete,
   handleOnline,
   handleOffline,
+  handlePermissons
 };

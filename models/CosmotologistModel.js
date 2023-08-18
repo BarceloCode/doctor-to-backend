@@ -63,7 +63,7 @@ const cosmotologistSchema = new mongoose.Schema({
       type: Boolean,
       default: true,
     },
-    write: {
+    edit: {
       type: Boolean,
       default: true,
     },
