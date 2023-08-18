@@ -3,7 +3,13 @@ const app = express.Router();
 const controller = require("../controllers/CosmotologistController");
 const CosmoValidation = require("../validations/CosmotologistValidation");
 const { validate } = require("../middlewares/validations");
-const verifyToken = require("../middlewares/validate-token");
+const validateToken = require("../middlewares/validate-token");
+// const veryfyExcloudesRoutes = require("../middlewares/excloudesRoutes");
+const permissionMiddleware = require("../middlewares/permissonsMiddleware");
+
+
+
+// app.use(veryfyExcloudesRoutes);
 
 app.post(
   "/login",
@@ -28,15 +34,19 @@ app.post(
     controller.createCosmo(req, res);
   }
 );
+//aqui primero se valida si es valido el token y despues se valida que se tenga permisos pera realizar la peticion dependiendo
+//el metodo GET, POST, PUT, PATCH, DELETE la rutas arriba de esto son rutas publicas como login, refresh, create (registrar)
+app.use(validateToken);
+app.use(permissionMiddleware);
 
-app.get("/get/:id", verifyToken, async (req, res) => {
+
+app.get("/get/:id", async (req, res) => {
   controller.getAllCosmo(req, res);
 });
 
 app.put(
   "/update/:email",
   validate(CosmoValidation.updateCosmotologist),
-  verifyToken,
   async (req, res) => {
     controller.updateCosmo(req, res);
   }
@@ -45,7 +55,6 @@ app.put(
 app.put(
   "/delete",
   validate(CosmoValidation.deleteCosmologist),
-  verifyToken,
   async (req, res) => {
     controller.deleteCosmo(req, res);
   }
