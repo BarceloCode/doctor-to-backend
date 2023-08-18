@@ -16,6 +16,7 @@ module.exports = {
         name: req.body.name,
         sex: req.body.sex,
         age: req.body.age,
+        curp: req.body.curp,
         birthdate: req.body.birthdate,
         civilstatus: req.body.civilstatus,
         religion: req.body.religion,

@@ -7,6 +7,7 @@ module.exports = {
             name: Joi.string(),
             sex: Joi.string(),
             age: Joi.number(),
+            curp: Joi.string().max(18),
             birthdate: Joi.date(),
             civilstatus: Joi.string(),
             religion: Joi.string(),

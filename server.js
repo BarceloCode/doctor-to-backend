@@ -16,10 +16,12 @@ app.use(cors());
 // Routes 
 
 const PatientRoute = require("./routes/PatientRoute.js");
-const CosmoRoutes = require("./routes/CosmotologistRouter");
+const ExpedientRoute =  require("./routes/ExpedientRoute.js");
+const CosmoRoutes = require("./routes/CosmotologistRouter.js");
 //const PathologicalRoute = require("./routes/PathologicalRoute.js")
 
 app.use('/usc/patient', PatientRoute);
+app.use('/usc/expedient', ExpedientRoute);
 //app.use('/usc/pathological', PathologicalRoute);
 app.use("/usc/cosmotologist", CosmoRoutes);
 

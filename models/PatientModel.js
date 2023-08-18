@@ -5,6 +5,7 @@ const PatientSchema = new Schema({
     name: String, 
     sex: String, 
     age: Number, 
+    curp: String,
     birthdate: Date, 
     civilstatus: String, 
     religion: String, 
@@ -13,8 +14,7 @@ const PatientSchema = new Schema({
     email: String, 
     phone: Number, 
     emergencyContact: Number,
-    bloodType: String,
-    expedient: [{ type: Schema.Types.ObjectId, ref: 'expedient' }]
+    bloodType: String
 })
 
 module.exports = mongoose.model('patient', PatientSchema);
