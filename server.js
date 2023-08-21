@@ -3,7 +3,7 @@ const db = require("./db.js");
 const cors = require("cors");
 // const userRoutes = require('./routes/userRoutes');
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 //Coneccion to Mongo
 db.connect();
 //
