@@ -53,7 +53,7 @@ const cosmotologistSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-  permissons: {
+  permissions: {
     read: {
       type: Boolean,
       default: true,

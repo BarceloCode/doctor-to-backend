@@ -3,9 +3,6 @@ const cosmetologistUser = require("../models//CosmotologistModel");
 const db = require("../db");
 const bcrypt = require("bcrypt");
 require("dotenv").config({ path: "../.env" });
-const moment = require("moment-timezone");
-moment.tz.setDefault(process.env.TZ);
-const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 // Conecta a la base de datos
 db.connect();
 // HASHING PASSWORD
@@ -14,14 +11,21 @@ const secretpassword = "SecretPassword24@";
 const hash = bcrypt.hashSync(secretpassword, salt);
 const sampleUsers = [
   {
-    name: "Carlos Ezequiel",
-    full_lastname: "Gonzalez Tiscareño",
-    email: "carlos@mail.com",
+    name: "Admin AdminSecondName",
+    full_lastname: "AdminLastname Tiscareño",
+    email: "admin@admin.com",
     password: hash,
-    phone: "3314372628",
+    phone: "9999999999",
     location: "Guadalajara",
     birthday: "1998-12-17",
-    gender: "male",
+    gender: "Male",
+    permissions:{
+      role:'administrator',
+      read: true,
+      edit: true,
+      delete: true
+
+    }
   },
 ];
 
