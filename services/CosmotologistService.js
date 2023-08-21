@@ -95,7 +95,7 @@ async function retrive(req) {
     const { id } = req.params;
     const user = await CosmotologistSch.findOne({
       _id: new mongoose.Types.ObjectId(id),
-    }).select("-password");
+    }).select("-password -permissons -__v");
     if (!user || user.deleted) {
       return {
         message: "User not found",

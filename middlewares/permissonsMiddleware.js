@@ -5,9 +5,13 @@ async function permissionMiddleware(req, res, next) {
     const user = await findUser.handlePermissons(req);
 //aqui debe de ser doble validacion por rol y por permisom tambien añadir que cuando sea
 //rol admin dejaer hacer todas las acciones
+console.log(user);
+if (user.permissons.role === 'administrator'){
+  return next();
+}
     switch (req.method) {
       case "GET":
-        if (user.permissons.read) {
+        if (user.permissons.read || user.permissons.role === 'cosmetologist') {
           return next();
         } else {
           res.status(403).send({ message: "No puedes realizar esta acción" });
@@ -17,7 +21,7 @@ async function permissionMiddleware(req, res, next) {
       case "POST":
       case "PATCH":
       case "PUT":
-        if (user.permissons.edit) {
+        if (user.permissons.edit || user.permissons.role === 'cosmetologist') {
           return next();
         } else {
           res.status(403).send({ message: "No puedes realizar esta acción" });
@@ -35,7 +39,7 @@ async function permissionMiddleware(req, res, next) {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: "Error en el servidor" });
+    res.status(500).send({ message: "Error en el servidor" , error: error.message });
   }
 }
 
