@@ -13,7 +13,10 @@ async function login(req) {
       email: req.body.email,
     }).select("email password deleted isOnline");
     if (!user || user.deleted) {
-      return { error: true, msg: [{ User: "User not found" }] };
+      return {
+        error: true,
+        msg: "User/email or password not valid, try again",
+      };
     }
 
     const isPasswordValid = await bcrypt.compareSync(
@@ -187,13 +190,13 @@ async function handleOffline(req) {
     };
     const user = await CosmotologistSch.findOne({ email: req.body.email });
     await CosmotologistSch.findOneAndUpdate(user, update);
-    return { message: "Offline"};
+    return { message: "Offline" };
   } catch (error) {
     return { message: "Error", error: error.message };
   }
 }
 
-async function handlePermissons(req){
+async function handlePermissons(req) {
   try {
     const { email } = req.body;
     const user = await CosmotologistSch.findOne({
@@ -212,7 +215,6 @@ async function handlePermissons(req){
   }
 }
 
-
 module.exports = {
   login,
   create,
@@ -221,5 +223,5 @@ module.exports = {
   softDelete,
   handleOnline,
   handleOffline,
-  handlePermissons
+  handlePermissons,
 };

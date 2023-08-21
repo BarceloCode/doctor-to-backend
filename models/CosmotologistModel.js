@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const moment = require("moment-timezone");
-const { string } = require("joi");
 require("dotenv").config({ path: "../.env" });
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -38,10 +37,6 @@ const cosmotologistSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  role: {
-    type: String,
-    required: true,
-  },
   registeredAt: {
     type: String,
     default: currentTime,
@@ -70,6 +65,10 @@ const cosmotologistSchema = new mongoose.Schema({
     delete: {
       type: Boolean,
       default: false,
+    },
+    role: {
+      type: String,
+      default: "cosmetologist",
     },
   },
 });
