@@ -19,7 +19,7 @@ const sampleUsers = [
     location: "Guadalajara",
     birthday: "1998-12-17",
     gender: "Male",
-    permissons:{
+    permissions:{
       role:'administrator',
       read: true,
       edit: true,

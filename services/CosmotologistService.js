@@ -95,7 +95,7 @@ async function retrive(req) {
     const { id } = req.params;
     const user = await CosmotologistSch.findOne({
       _id: new mongoose.Types.ObjectId(id),
-    }).select("-password -permissons -__v");
+    }).select("-password -permissions -__v");
     if (!user || user.deleted) {
       return {
         message: "User not found",
@@ -196,12 +196,12 @@ async function handleOffline(req) {
   }
 }
 
-async function handlePermissons(req) {
+async function handlePermissions(req) {
   try {
     const { email } = req.body;
     const user = await CosmotologistSch.findOne({
       email: email,
-    }).select("permissons");
+    }).select("permissions deleted");
     if (!user || user.deleted) {
       return {
         message: "User not found",
@@ -223,5 +223,5 @@ module.exports = {
   softDelete,
   handleOnline,
   handleOffline,
-  handlePermissons,
+  handlePermissions,
 };

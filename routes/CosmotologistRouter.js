@@ -5,7 +5,7 @@ const CosmoValidation = require("../validations/CosmotologistValidation");
 const { validate } = require("../middlewares/validations");
 const validateToken = require("../middlewares/validate-token");
 // const veryfyExcloudesRoutes = require("../middlewares/excloudesRoutes");
-const permissionMiddleware = require("../middlewares/permissonsMiddleware");
+const permissionMiddleware = require("../middlewares/permissionsMiddleware");
 
 
 
@@ -52,7 +52,7 @@ app.put(
   }
 );
 
-app.put(
+app.delete(
   "/delete",
   validate(CosmoValidation.deleteCosmologist),
   async (req, res) => {
