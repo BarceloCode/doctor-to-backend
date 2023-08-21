@@ -44,6 +44,14 @@ async function deleteCosmo(req, res) {
     res.status(400).json({ message: error.message });
   }
 }
+async function undoDeleteCosmo(req, res) {
+  try {
+    const cosmo = await Cosmoservice.UndosoftDelete(req, res);
+    res.status(200).json(cosmo);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 
 async function offline(req, res) {
   try {
@@ -60,5 +68,6 @@ module.exports = {
   getAllCosmo,
   updateCosmo,
   deleteCosmo,
+  undoDeleteCosmo,
   offline,
 };

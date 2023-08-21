@@ -34,13 +34,17 @@ app.post(
     controller.createCosmo(req, res);
   }
 );
+
+app.put("/offline", async (req, res) => {
+  controller.offline(req, res);
+});
 //aqui primero se valida si es valido el token y despues se valida que se tenga permisos pera realizar la peticion dependiendo
 //el metodo GET, POST, PUT, PATCH, DELETE la rutas arriba de esto son rutas publicas como login, refresh, create (registrar)
 app.use(validateToken);
 app.use(permissionMiddleware);
 
 
-app.get("/get/:id", async (req, res) => {
+app.get("/get", async (req, res) => {
   controller.getAllCosmo(req, res);
 });
 
@@ -60,8 +64,14 @@ app.delete(
   }
 );
 
-app.put("/offline", async (req, res) => {
-  controller.offline(req, res);
-});
+app.delete(
+  "/restore",
+  validate(CosmoValidation.deleteCosmologist),
+  async (req, res) => {
+    controller.undoDeleteCosmo(req, res);
+  }
+);
+
+
 
 module.exports = app;

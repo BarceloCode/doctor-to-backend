@@ -92,10 +92,10 @@ async function create(req) {
 
 async function retrive(req) {
   try {
-    const { id } = req.params;
+    const  email  = req.body.email;
     const user = await CosmotologistSch.findOne({
-      _id: new mongoose.Types.ObjectId(id),
-    }).select("-password -permissions -__v");
+      email: email,
+    }).select("-password -permissions -__v -deleted -deletedAt");
     if (!user || user.deleted) {
       return {
         message: "User not found",
@@ -120,7 +120,7 @@ async function update(req) {
     }).select("email deleted");
     const { name, full_lastname, phone, location, birthday, gender, role } =
       req.body;
-    if (!finduser || finduser.deleted) {
+    if (!finduser || finduser.deleted ) {
       return { message: "User not found", error: true };
     }
     const update = {
@@ -149,7 +149,7 @@ async function softDelete(req) {
       email: req.body.email,
     }).select("email deleted");
 
-    if (!finduser || finduser.deleted) {
+    if (!finduser || finduser.deleted || req.body.email == finduser.email) {
       return { message: "User not found", error: true };
     }
     const update = {
@@ -161,6 +161,29 @@ async function softDelete(req) {
     const result = await CosmotologistSch.updateOne(finduser, update);
     if (result) {
       return { message: "Deleted succesfully", error: false };
+    }
+  } catch (error) {
+    return { message: "Error", error: error.message };
+  }
+}
+async function UndosoftDelete(req) {
+  try {
+    const finduser = await CosmotologistSch.findOne({
+      email: req.body.email,
+    }).select("email deleted");
+
+    if (!finduser) {
+      return { message: "User not found", error: true };
+    }
+    const update = {
+      $set: {
+        deleted: false,
+        deletedAt: null,
+      },
+    };
+    const result = await CosmotologistSch.updateOne(finduser, update);
+    if (result) {
+      return { message: "Restored succesfully", error: false };
     }
   } catch (error) {
     return { message: "Error", error: error.message };
@@ -196,22 +219,18 @@ async function handleOffline(req) {
   }
 }
 
-async function handlePermissions(req) {
+async function handlePermissions(req, res) {
   try {
-    const { email } = req.body;
+    const  meID  = req.header('meID');
     const user = await CosmotologistSch.findOne({
-      email: email,
+      _id: meID,
     }).select("permissions deleted");
     if (!user || user.deleted) {
-      return {
-        message: "User not found",
-        error: true,
-        error: error.message,
-      };
+      return user;
     }
     return user;
   } catch (error) {
-    return { message: "Error", error: "User not found" };
+    return res.status(404).send({ message: "User not found" });
   }
 }
 
@@ -221,6 +240,7 @@ module.exports = {
   retrive,
   update,
   softDelete,
+  UndosoftDelete,
   handleOnline,
   handleOffline,
   handlePermissions,

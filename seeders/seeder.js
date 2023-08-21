@@ -7,7 +7,7 @@ require("dotenv").config({ path: "../.env" });
 db.connect();
 // HASHING PASSWORD
 const salt = parseInt(process.env.SALT_KEY);
-const secretpassword = "SecretPassword24@";
+const secretpassword = process.env.CANDY;
 const hash = bcrypt.hashSync(secretpassword, salt);
 const sampleUsers = [
   {

@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
         req.user = verified
         next() 
     } catch (error) {
-        res.status(400).json({error: 'Token not valid'})
+        res.status(401).json({error: 'Expired credentials or not valid token'})
     }
 }
 

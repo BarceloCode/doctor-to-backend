@@ -30,7 +30,6 @@ exports.cosmotologist = check.object({
   location: check.string().max(255).required(),
   birthday: check.date().iso({ format: "YYYY-MM-DD" }).max("now").required(),
   gender: check.string().max(255).required(),
-  role: check.string().max(100).required(),
 });
 
 exports.updateCosmotologist = check.object({
