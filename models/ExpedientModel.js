@@ -10,123 +10,125 @@ const ExpedientModel = new Schema({
             autoimmuneDiseases: String,
         }],
         pathologicalHistory: [{
-        diabetesMellitus: {
-            type: String, 
-            default: 'N/A'
-        },
-        arterialHypertension: {
-            type: String, 
-            default: 'N/A'
-        },
-        endocrinologicalDiseases: {
-            type: String, 
-            default: 'N/A'
-        },        
-        diseasesAutoimmune: {
-            type: String, 
-            default: 'N/A'
-        }, 
-        vih: {
-            type: String, 
-            default: 'N/A'
-        },
-        herpes: {
-            type: String, 
-            default: 'N/A'
-        },
-        bloodTransfusions: {
-            type: String, 
-            default: 'N/A'
-        },
-        trauma: {
-            type: String, 
-            default: 'N/A'
-        },
-        fracture: {
-            type: String, 
-            default: 'N/A'
-        },
-        hospitalizations: {
-            type: String, 
-            default: 'N/A'
-        },
-        previousSurgeries: {
-            type: String, 
-            default: 'N/A'
-        },
-        hepatitis: {
-            type: String, 
-            default: 'N/A'
-        },
-        cancer: {
-            type: String, 
-            default: 'N/A'
-        },
-        epilepsy: {
-            type: String, 
-            default: 'N/A'
-        },
-        allergies: {
-            type: String, 
-            default: 'N/A'
-        },
-        others: String,
-        doyouSmoke: String,
-        howMany: {
-            type: String, 
-            default: 'N/A'
-        },
-        smoke: String,
-        quantity: Number, 
-        adictions: String, 
-        whichOne: {
-            type: String, 
-            default: 'N/A'
-        },
-        drinkAlcohol: String, 
-        alchohol: String, 
-        bloodPhobia: String,
-        needlePhobia: String,         
-        fainting: String,
-        medicines: String,
-        mediceneName: {
-            type: String,
-            default: 'N/A'
-        },
-        bruises: String, 
-        tanningbed: String, 
-        anesthesia: String, 
-        anesthesiaProblems: {
-            type: String, 
-            default: 'N/A'
-        },
-        problem: {
-            type: String, 
-            default: 'N/A'
-        },
-        vaccine: String, 
-        vaccineName: {
-            type: String, 
-            default: 'N/A'
-        },
-        infections: String, 
-        infectionName:{
-            type: String,
-            default: 'N/A'
-        },
-        medicalTreatment: String,
-        treatment: {
-            type: String,
-            default: 'N/A'
-        },
-        exercise: String, 
-        typeof: {
-            type: String,
-            default: 'N/A'
-        },
+            diabetesMellitus: {
+                type: String, 
+                default: 'N/A'
+            },
+            arterialHypertension: {
+                type: String, 
+                default: 'N/A'
+            },
+            endocrinologicalDiseases: {
+                type: String, 
+                default: 'N/A'
+            },        
+            diseasesAutoimmune: {
+                type: String, 
+                default: 'N/A'
+            }, 
+            vih: {
+                type: String, 
+                default: 'N/A'
+            },
+            herpes: {
+                type: String, 
+                default: 'N/A'
+            },
+            bloodTransfusions: {
+                type: String, 
+                default: 'N/A'
+            },
+            trauma: {
+                type: String, 
+                default: 'N/A'
+            },
+            fracture: {
+                type: String, 
+                default: 'N/A'
+            },
+            hospitalizations: {
+                type: String, 
+                default: 'N/A'
+            },
+            previousSurgeries: {
+                type: String, 
+                default: 'N/A'
+            },
+            hepatitis: {
+                type: String, 
+                default: 'N/A'
+            },
+            cancer: {
+                type: String, 
+                default: 'N/A'
+            },
+            epilepsy: {
+                type: String, 
+                default: 'N/A'
+            },
+            allergies: {
+                type: String, 
+                default: 'N/A'
+            },
+            others: String,
+            doyouSmoke: String,
+            howMany: {
+                type: String, 
+                default: 'N/A'
+            },
+            adictions: String, 
+            whichOne: {
+                type: String, 
+                default: 'N/A'
+            },
+            drinkAlcohol: String, 
+            alchohol: String, 
+            bloodPhobia: String,
+            needlePhobia: String,         
+            fainting: String,
+            medicines: String,
+            mediceneName: {
+                type: String,
+                default: 'N/A'
+            },
+            bruises: String, 
+            tanningbed: String, 
+            anesthesia: String, 
+            anesthesiaProblems: {
+                type: String, 
+                default: 'N/A'
+            },
+            problem: {
+                type: String, 
+                default: 'N/A'
+            },
+            vaccine: String, 
+            vaccineName: {
+                type: String, 
+                default: 'N/A'
+            },
+            infections: {
+                type: String,
+                default: 'N/A'
+            }, 
+            infectionName:{
+                type: String,
+                default: 'N/A'
+            },
+            medicalTreatment: String,
+            treatment: {
+                type: String,
+                default: 'N/A'
+            },
+            exercise: String, 
+            typeof: {
+                type: String,
+                default: 'N/A'
+            },            
+        }],
         gynecologistsHistory: [{
             pregnant: String,
-            mernacaNo: Number,
+            mernacaNo: String,
             fum: String, 
             menstrualrhythm: String, 
             fup: String, 
@@ -156,8 +158,8 @@ const ExpedientModel = new Schema({
             applicationDate: String
         }],        
         physicalExam: [{
-            flitzpatrick: Number,
-            glogau: Number,
+            flitzpatrick: String,
+            glogau: String,
             typeSkin: String,
             typeFace: String,
             dermatologicallesions: {
@@ -175,28 +177,27 @@ const ExpedientModel = new Schema({
             location: {
                 type: String, 
                 default: 'N/A'
-            },
-            habitusExterior: [{
-                patientCondition: String,
-                constitution: String,
-                conformation: String, 
-                attitude: String,
-                facies: String, 
-                anormalMovements: String, 
-                gear: String,
-                consciousness: String,
-                others: String,                 
-            }],
-            vitalSigns: [{
-                fc: String,
-                ta: String,
-                temp: String,
-                weight: String, 
-                size: String,
-                imc: String
-            }]
-        }]
-    }]                
+            },            
+        }],
+        habitusExterior: [{
+            patientCondition: String,
+            constitution: String,
+            conformation: String, 
+            attitude: String,
+            facies: String, 
+            anormalMovements: String, 
+            gear: String,
+            consciousness: String,
+            others1: String,                 
+        }],
+        vitalSigns: [{
+            fc: String,
+            ta: String,
+            temp: String,
+            weight: String, 
+            size: String,
+            imc: String
+        }]            
 });
 
 module.exports = mongoose.model('expedient', ExpedientModel);

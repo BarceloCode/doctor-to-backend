@@ -25,7 +25,7 @@ module.exports = {
         email: req.body.email,
         phone: req.body.phone,
         emergencyContact: req.body.emergencyContact,
-        bloodType: req.body.typeBlood        
+        bloodType: req.body.bloodType        
     })
     await patient.save()
     .then(result => {
