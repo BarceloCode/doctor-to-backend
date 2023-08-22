@@ -76,6 +76,7 @@ module.exports = {
             consultReason: req.body.consultReason,
             other: req.body.other,
             previousTreatments:[{
+                procedure: req.body.procedure,
                 product: req.body.product,
                 applicationDate: req.body.applicationDate
             }],

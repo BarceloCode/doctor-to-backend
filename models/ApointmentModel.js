@@ -5,7 +5,6 @@ const ApointmentSchema = new Schema({
     date: Date,
     treatment: String, 
     patient: [{type: Schema.Types.ObjectId, ref: 'patient'}]
-    
 })
 
 module.exports = mongoose,model('apointment', ApointmentSchema);

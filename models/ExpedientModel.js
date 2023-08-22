@@ -154,6 +154,7 @@ const ExpedientModel = new Schema({
             default: 'N/A'
         },
         previousTreatments: [{
+            procedure: String,
             product: String, 
             applicationDate: String
         }],        
