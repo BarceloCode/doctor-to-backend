@@ -15,7 +15,7 @@ const sampleUsers = [
     full_lastname: "AdminLastname Tiscareño",
     email: "admin@admin.com",
     password: hash,
-    phone: "9999999999",
+    phone: "1999999999",
     location: "Guadalajara",
     birthday: "1998-12-17",
     gender: "Male",
