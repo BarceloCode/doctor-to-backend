@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const PatientSchema = new Schema({
     name: String, 
     sex: String, 
-    age: Number, 
+    age: String, 
     curp: String,
     birthdate: Date, 
     civilstatus: String, 
@@ -12,8 +12,8 @@ const PatientSchema = new Schema({
     ocupation: String, 
     address: String,
     email: String, 
-    phone: Number, 
-    emergencyContact: Number,
+    phone: String, 
+    emergencyContact: String,
     bloodType: String
 })
 
