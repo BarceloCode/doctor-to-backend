@@ -4,20 +4,20 @@ module.exports = {
     // Function to validate user data
     patient: data => {
         let schema = Joi.object({
-            name: Joi.string(),
-            sex: Joi.string(),
-            age: Joi.number(),
-            curp: Joi.string().max(18),
+            name: Joi.string().required().required(),
+            sex: Joi.string().required(),
+            age: Joi.string(),
+            curp: Joi.string().required().max(18),
             birthdate: Joi.date(),
-            civilstatus: Joi.string(),
-            religion: Joi.string(),
-            ocupation: Joi.string(),
-            address: Joi.string(),
-            email: Joi.string()
+            civilstatus: Joi.string().required(),
+            religion: Joi.string().required(),
+            ocupation: Joi.string().required(),
+            address: Joi.string().required(),
+            email: Joi.string().required()
                 .email(),
-            phone: Joi.number(),
-            emergencyContact: Joi.number(),
-            bloodType: Joi.string()
+            phone: Joi.string(),
+            emergencyContact: Joi.string(),
+            bloodType: Joi.string().required()
         });
         return schema.validate(data);
     }

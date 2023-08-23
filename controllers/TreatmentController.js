@@ -38,27 +38,29 @@ module.exports = {
     },
     
     update: async (req, res) =>{
-        let treatment = await TreatmentModel.findByIdAndUpdate({
+        let treatment = await TreatmentModel.update({
             treatmentName: req.body.treatmentName,  
             description: req.body.description,          
             price: req.body.price,
             product: req.body.product,
             quantity: req.body.quantity
-        },{
-            new: true
         })
-        if(!treatment){
-            return res.status(400).send('Treatment does not exists')
-        }
-        res.status(200).send(treatment)
+        await TreatmentModel.update({_id: req.body._id}, treatment)
+            .then(treatment =>{
+                if(!treatment) res.json({ success: false, result: "Treatment does not exist"})
+            })
     },
 
     delete: async (req, res) =>{
-        await TreatmentModel.findByIdAndDelete({
-            
-        })
+        await TreatmentModel.remove({_id: req.body._id})
+            .then(result =>{
+                if(!result) res.json({ success: false, result: "No treatment was found with the ID ${req.body.id}"})
+
+                res.json({ success: true, result: result})
+            })
+            .catch(err =>{
+                res.json({ success: false, result: err})
+            })
     }
-
-
     
 }
