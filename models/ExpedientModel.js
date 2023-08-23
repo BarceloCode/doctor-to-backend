@@ -87,7 +87,7 @@ const ExpedientModel = new Schema({
             needlePhobia: String,         
             fainting: String,
             medicines: String,
-            mediceneName: {
+            medicineName: {
                 type: String,
                 default: 'N/A'
             },

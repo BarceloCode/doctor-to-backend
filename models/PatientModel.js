@@ -8,51 +8,51 @@ const PatientSchema = new Schema({
     }, 
     gender: {
         type: String,
-        required: true,
+        required: true
     }, 
     age: {
         type: String,
-        required: true,
+        required: true
     }, 
     curp: {
         type: String,
-        required: true,
+        required: true
     },
     birthdate: {
-        type: Date,
-        required: true,
+        type: String,
+        required: true
     }, 
     civilstatus: {
         type: String,
-        required: true,
+        required: true
     }, 
     religion: {
         type: String,
-        required: true,
+        required: true
     }, 
     ocupation: {
         type: String,
-        required: true,
+        required: true
     }, 
     address: {
         type: String,
-        required: true,
+        required: true
     },
     email: {
         type: String,
-        required: true,
+        required: true
     }, 
     phone: {
         type: String,
-        required: true,
+        required: true
     }, 
     emergencyContact: {
         type: String,
-        required: true,
+        required: true
     },
     bloodType: {
         type: String,
-        required: true,
+        required: true
     }
 })
 

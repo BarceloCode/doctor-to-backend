@@ -8,7 +8,7 @@ module.exports = {
             gender: Joi.string().required(),
             age: Joi.string(),
             curp: Joi.string().required().max(18),
-            birthdate: Joi.date(),
+            birthdate: Joi.string(),
             civilstatus: Joi.string().required(),
             religion: Joi.string().required(),
             ocupation: Joi.string().required(),

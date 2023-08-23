@@ -43,7 +43,7 @@ module.exports = {
                 bruises: req.body.bruises,
                 tanningbed: req.body.tanningbed,
                 anesthesia: req.body.anesthesia,
-                anesthesiaProblemas: req.body.anesthesiaProblemas,
+                anesthesiaProblems: req.body.anesthesiaProblems,
                 problem: req.body.problem,
                 vaccine: req.body.vaccine,
                 vaccineName: req.body.vaccineName,
@@ -123,8 +123,8 @@ module.exports = {
     
 update: async (req, res) =>{
     
-    let expediente = await ExpedientModel.findByIdAndUpdate(req.params.id,{
-        paciente: req.body.paciente,                   
+    let expediente = await ExpedientModel.findByIdAndUpdate(req.body._id,{
+        paciente: req.body.paciente,           
         familyHistory: [{
             family: req.body.family,
             diabetes: req.body.diabetes,
@@ -162,7 +162,7 @@ update: async (req, res) =>{
             bruises: req.body.bruises,
             tanningbed: req.body.tanningbed,
             anesthesia: req.body.anesthesia,
-            anesthesiaProblemas: req.body.anesthesiaProblemas,
+            anesthesiaProblems: req.body.anesthesiaProblems,
             problem: req.body.problem,
             vaccine: req.body.vaccine,
             vaccineName: req.body.vaccineName,
@@ -195,6 +195,7 @@ update: async (req, res) =>{
         consultReason: req.body.consultReason,
         other: req.body.other,
         previousTreatments:[{
+            procedure: req.body.procedure,
             product: req.body.product,
             applicationDate: req.body.applicationDate
         }],
@@ -231,7 +232,7 @@ update: async (req, res) =>{
         new: true
     })
     if(!expediente){
-        return res.status(400).send("Patient does not exists")
+        return res.status(400).send("Expedient does not exists")
     }
     res.status(200).send(expediente);
   },
@@ -248,18 +249,16 @@ update: async (req, res) =>{
     },
 
     retrieveOne: async (req, res) =>{
-        const { id } = req.params;
-        ExpedientModel.findById({_id: id})
+        ExpedientModel.findById({_id: req.body._id})
         .populate('paciente')
             .then((data) => res.json(data))
-            .catch((error) => res.json({message: error}));
+            .catch((error) => res.json({message: error, result: "Patient does not exist"}));
     },
     
 
     delete: async (req, res) => {
-        const { id } = req.params;
         ExpedientModel
-          .deleteMany({ _id: id})
+          .deleteMany({ _id: req.body._id})
           .then((data) => res.json(data))
           .catch((error) => res.json({ message: error}));
     }

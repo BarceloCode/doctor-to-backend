@@ -39,10 +39,11 @@ module.exports = {
 
 update: async (req, res) =>{
     
-    let patient = await PatientModel.findByIdAndUpdate(req.params.id,{
+    let patient = await PatientModel.findByIdAndUpdate(req.body._id,{
         name: req.body.name,
         gender: req.body.gender,
         age: req.body.age,
+        curp: req.body.curp,
         birthdate: req.body.birthdate,
         civilstatus: req.body.civilstatus,
         religion: req.body.religion,
@@ -51,7 +52,7 @@ update: async (req, res) =>{
         email: req.body.email,
         phone: req.body.phone,
         emergencyContact: req.body.emergencyContact,
-        bloodType: req.body.typeBlood   
+        bloodType: req.body.bloodType   
     },{
         new: true
     })
@@ -59,7 +60,7 @@ update: async (req, res) =>{
         return res.status(400).send("Patient does not exists")
     }
     res.status(200).send(patient);
-  },
+  },   
 
 retrieve: async (req, res) =>{
     await PatientModel.find()
@@ -72,16 +73,14 @@ retrieve: async (req, res) =>{
 },
 
 retrieveOne: async (req, res) =>{
-    const { id } = req.params;
-    PatientModel.findById({_id: id})
+    PatientModel.findById({_id: req.body._id})
         .then((data) => res.json(data))
         .catch((error) => res.json({message: error}));
 },
 
 delete: async (req, res) => {
-    const { id } = req.params;
     PatientModel
-      .deleteMany({ _id: id})
+      .deleteMany({ _id: req.body._id})
       .then((data) => res.json(data))
       .catch((error) => res.json({ message: error}));
 }

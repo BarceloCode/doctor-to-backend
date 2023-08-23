@@ -3,9 +3,9 @@ const ExpedientController = require('../controllers/ExpedientController');
 
 router.post('/create', ExpedientController.create);
 router.get('/retrieve', ExpedientController.retrieve);
-router.get('/retrieveOne/:id', ExpedientController.retrieveOne);
-router.delete('/delete/:id', ExpedientController.delete)
-router.put('/update/:id', ExpedientController.update);
+router.get('/retrieveOne', ExpedientController.retrieveOne);
+router.delete('/delete', ExpedientController.delete)
+router.put('/update', ExpedientController.update);
 
 
 module.exports = router;
