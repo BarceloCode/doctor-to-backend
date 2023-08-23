@@ -75,7 +75,19 @@ async function create(req) {
       location: req.body.location,
       birthday: req.body.birthday,
       gender: req.body.gender,
-      role: req.body.role,
+      worktime: {
+        start: req.body.worktime.start,
+        end: req.body.worktime.end,
+      },
+      workdays: {
+        monday: req.body.workdays.monday,
+        tuesday: req.body.workdays.tuesday,
+        wednesday: req.body.workdays.wednesday,
+        thursday: req.body.workdays.thursday,
+        friday: req.body.workdays.friday,
+        saturday: req.body.workdays.saturday,
+        sunday: req.body.workdays.sunday,
+      },
     });
     if (NewCosmotologist) {
       return { message: "Created succesfully", error: false };
@@ -92,7 +104,7 @@ async function create(req) {
 
 async function retrive(req) {
   try {
-    const  email  = req.body.email;
+    const email = req.body.email;
     const user = await CosmotologistSch.findOne({
       email: email,
     }).select("-password -permissions -__v -deleted -deletedAt");
@@ -120,7 +132,7 @@ async function update(req) {
     }).select("email deleted");
     const { name, full_lastname, phone, location, birthday, gender, role } =
       req.body;
-    if (!finduser || finduser.deleted ) {
+    if (!finduser || finduser.deleted) {
       return { message: "User not found", error: true };
     }
     const update = {
@@ -131,7 +143,6 @@ async function update(req) {
         location: location,
         birthday: birthday,
         gender: gender,
-        role: role,
       },
     };
     const result = await CosmotologistSch.updateOne(finduser, update);
@@ -221,7 +232,7 @@ async function handleOffline(req) {
 
 async function handlePermissions(req, res) {
   try {
-    const  meID  = req.header('meID');
+    const meID = req.header("meID");
     const user = await CosmotologistSch.findOne({
       _id: meID,
     }).select("permissions deleted");

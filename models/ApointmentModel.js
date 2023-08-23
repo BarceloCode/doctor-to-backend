@@ -3,7 +3,11 @@ const Schema = mongoose.Schema;
 
 const ApointmentSchema = new Schema({
     date: Date,
-    treatment: String, 
+    treatment: String,
+    description: String,
+    confirmed: Boolean,
+    cosmetologist: [{type: Schema.Types.ObjectId, ref: 'Cosmotologist'}],
+    clinic: [{type: Schema.Types.ObjectId, ref: 'clinic'}],
     patient: [{type: Schema.Types.ObjectId, ref: 'patient'}]
 })
 

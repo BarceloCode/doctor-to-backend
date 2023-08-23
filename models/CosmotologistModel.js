@@ -25,10 +25,6 @@ const cosmotologistSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  location: {
-    type: String,
-    required: true,
-  },
   birthday: {
     type: String,
     required: true,
@@ -70,6 +66,51 @@ const cosmotologistSchema = new mongoose.Schema({
       type: String,
       default: "cosmetologist",
     },
+  },
+  worktime: {
+    start: {
+      type: Date,
+      required: true,
+    },
+    end: {
+      type: Date,
+      required: true,
+    },
+  },
+  workdays: {
+    monday: {
+      type: Boolean,
+      default: true,
+    },
+    tuesday: {
+      type: Boolean,
+      default: true,
+    },
+    wednesday: {
+      type: Boolean,
+      default: true,
+    },
+    thursday: {
+      type: Boolean,
+      default: true,
+    },
+    friday: {
+      type: Boolean,
+      default: true,
+    },
+    saturday: {
+      type: Boolean,
+      default: true,
+    },
+    sunday: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  location: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: null,
+    ref: "Clinic",
   },
 });
 //location hace referencia a la clinica en la que esta la cosmotologa
