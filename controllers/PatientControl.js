@@ -14,7 +14,7 @@ module.exports = {
 
     let patient = new PatientModel({
         name: req.body.name,
-        sex: req.body.sex,
+        gender: req.body.gender,
         age: req.body.age,
         curp: req.body.curp,
         birthdate: req.body.birthdate,
@@ -41,7 +41,7 @@ update: async (req, res) =>{
     
     let patient = await PatientModel.findByIdAndUpdate(req.params.id,{
         name: req.body.name,
-        sex: req.body.sex,
+        gender: req.body.gender,
         age: req.body.age,
         birthdate: req.body.birthdate,
         civilstatus: req.body.civilstatus,
