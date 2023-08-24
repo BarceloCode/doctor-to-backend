@@ -111,11 +111,13 @@ const cosmotologistSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     default: null,
     ref: "Clinic",
+    required: true,
   },
   businessUnit: {
     type: mongoose.Schema.Types.ObjectId,
     default: null,
     ref: "BusinessUnit",
+    required: true,
   },
 });
 //location hace referencia a la clinica en la que esta la cosmotologa

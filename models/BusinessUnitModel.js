@@ -1,19 +1,20 @@
 const mongoose = require("mongoose");
 
-
 const businessUnitSchema = new mongoose.Schema({
-    name:{
-        type: String,
-        required: true
-    },
-    description:{
-        type: String,
-        required: true
-    },
-    consultingRoom: {
+  name: {
+    type: String,
+    required: true,
+  },
+  consultingRoom: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "ConsultingRoom"
-}
+    ref: "ConsultingRoom",
+    required: true,
+  },
+  treatment: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "treatment",
+    required: true,
+  },
 });
 const BusinessUnit = mongoose.model("BusinessUnit", businessUnitSchema);
 

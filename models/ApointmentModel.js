@@ -5,6 +5,7 @@ const ApointmentSchema = new Schema({
   date: {
     type: Date,
     default: Date.now,
+    required: true,
   },
   description: {
     type: String,
@@ -14,11 +15,15 @@ const ApointmentSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  cosmetologist: { type: Schema.Types.ObjectId, ref: "Cosmotologist" },
-  clinic: { type: Schema.Types.ObjectId, ref: "clinic" },
-  patient: { type: Schema.Types.ObjectId, ref: "patient" },
-  treatment: { type: Schema.Types.ObjectId, ref: "treatment" },
-  consultingRoom: { type: Schema.Types.ObjectId, ref: "ConsultingRoom" },
+  cosmetologist: {
+    type: Schema.Types.ObjectId,
+    ref: "Cosmotologist",
+    required: true,
+  },
+  clinic: { type: Schema.Types.ObjectId, ref: "clinic", required: true },
+  patient: { type: Schema.Types.ObjectId, ref: "patient", required: true },
+  treatment: { type: Schema.Types.ObjectId, ref: "treatment", required: true },
+  consultingRoom: { type: Schema.Types.ObjectId, ref: "ConsultingRoom", required: true },
 });
 
 const Apointment = mongoose.model("Apointment", ApointmentSchema);
