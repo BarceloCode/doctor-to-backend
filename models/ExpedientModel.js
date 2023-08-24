@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ExpedientModel = new Schema({
-        paciente: { type: Schema.Types.ObjectId, ref: 'patient'},
+        patient: { type: Schema.Types.ObjectId, ref: 'patient'},
         familyHistory: [{
             family: String,
             diabetes: String,

@@ -5,7 +5,7 @@ module.exports = {
     create: async(req, res) =>{
 
         let expediente = new ExpedientModel({ 
-            paciente: req.body.paciente,           
+            patient: req.body.patient,           
             familyHistory: [{
                 family: req.body.family,
                 diabetes: req.body.diabetes,
@@ -124,7 +124,7 @@ module.exports = {
 update: async (req, res) =>{
     
     let expediente = await ExpedientModel.findByIdAndUpdate(req.body._id,{
-        paciente: req.body.paciente,           
+        patient: req.body.patient,           
         familyHistory: [{
             family: req.body.family,
             diabetes: req.body.diabetes,
@@ -239,7 +239,7 @@ update: async (req, res) =>{
 
     retrieve: async (req, res) =>{
         await ExpedientModel.find({})
-        .populate('paciente')
+        .populate('patient')
             .then(result =>{
                 if(!result) res.json({success: false, result: "No results found"});            
     
@@ -249,8 +249,8 @@ update: async (req, res) =>{
     },
 
     retrieveOne: async (req, res) =>{
-        ExpedientModel.findById({_id: req.body._id})
-        .populate('paciente')
+        ExpedientModel.find({patient: req.body.patient})
+        .populate('patient')
             .then((data) => res.json(data))
             .catch((error) => res.json({message: error, result: "Patient does not exist"}));
     },
@@ -261,7 +261,8 @@ update: async (req, res) =>{
           .deleteMany({ _id: req.body._id})
           .then((data) => res.json(data))
           .catch((error) => res.json({ message: error}));
-    }
+    }, 
+
     
 
 }

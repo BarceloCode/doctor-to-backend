@@ -9,6 +9,7 @@ const TreatmentModel = new Schema({
         type: Schema.Types.ObjectId, ref: 'products'
     },
     quantity: Number
-})
+});
+
 
 module.exports = mongoose.model('treatment', TreatmentModel);

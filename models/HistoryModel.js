@@ -5,9 +5,9 @@ const HistoryModel = new Schema({
     patient: {
         type: Schema.Types.ObjectId, ref: 'patient'
     },
-    treatment: {
+    treatment: [{
         type: Schema.Types.ObjectId, ref: 'treatment'
-    }
+    }]
 })
 
 module.exports = mongoose.model('history', HistoryModel);

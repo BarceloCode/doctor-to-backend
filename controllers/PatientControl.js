@@ -39,6 +39,7 @@ module.exports = {
 
 update: async (req, res) =>{
     
+    
     let patient = await PatientModel.findByIdAndUpdate(req.body._id,{
         name: req.body.name,
         gender: req.body.gender,
@@ -74,7 +75,7 @@ retrieve: async (req, res) =>{
 
 retrieveOne: async (req, res) =>{
     PatientModel.findById({_id: req.body._id})
-        .then((data) => res.json(data))
+        .then((data) => res.json(data.name))
         .catch((error) => res.json({message: error}));
 },
 

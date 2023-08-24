@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 // Routes
 
+const HistoryRouter = require("./routes/HistoryRoute.js");
 const ProductsRoute = require("./routes/ProductsRoute.js");
 const TreatmentRoute = require("./routes/TreatmentRoute.js");
 const PatientRoute = require("./routes/PatientRoute.js");
@@ -25,6 +26,7 @@ app.use("/usc/services/", TreatmentRoute);
 app.use("/usc/patient", PatientRoute);
 app.use("/usc/cosmotologist", CosmoRoutes);
 app.use('/usc/expedient', ExpedientRoute);
+app.use('/usc/history', HistoryRouter);
 
 app.listen(port, () => {
   console.log(`Server Runnig on ${process.env.HOSTNAME}:${port}`);
