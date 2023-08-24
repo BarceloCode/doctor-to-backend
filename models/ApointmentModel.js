@@ -14,9 +14,11 @@ const ApointmentSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  cosmetologist: [{ type: Schema.Types.ObjectId, ref: "Cosmotologist" }],
-  clinic: [{ type: Schema.Types.ObjectId, ref: "clinic" }],
-  patient: [{ type: Schema.Types.ObjectId, ref: "patient" }]
+  cosmetologist: { type: Schema.Types.ObjectId, ref: "Cosmotologist" },
+  clinic: { type: Schema.Types.ObjectId, ref: "clinic" },
+  patient: { type: Schema.Types.ObjectId, ref: "patient" },
+  treatment: { type: Schema.Types.ObjectId, ref: "treatment" },
+  consultingRoom: { type: Schema.Types.ObjectId, ref: "ConsultingRoom" },
 });
 
 const Apointment = mongoose.model("Apointment", ApointmentSchema);
