@@ -1,7 +1,4 @@
 const HistoryModel = require("../models/HistoryModel");
-const { json } = require("body-parser");
-var mongoose = require("mongoose");
-const PatientModel = require("../models/PatientModel");
 const TreatmentModel = require("../models/TreatmentModel");
 
 module.exports = {
@@ -10,7 +7,8 @@ module.exports = {
 
         let history = new HistoryModel({
             patient: req.body.patient,
-            treatment: req.body.treatment
+            treatment: req.body.treatment,
+            fecha: req.body.fecha
         })
 
         await history.save()
@@ -35,18 +33,15 @@ module.exports = {
     },
 
     retrieveOne: async (req, res) =>{
-        const { patient, id_treatment } = req.body;
-        const id_patient = await PatientModel.findById(patient);
-        
-        if(!patient){
-            return res.status(400).json({
-                message: "Patient does not exists"
-            })
-        }else{
-            return res.status(200).send(id_patient);
-        }
-
-
+       await HistoryModel.findOne({patient: req.body.patient})
+            .populate("patient")
+            .populate("treatment")
+                .then((data) => {
+                    TreatmentModel.findOne({_id: data.treatment._id})
+                    .populate("product")
+                        .then(result => res.json( {success: true, result: data}))
+                })
+                .catch((error) => res.json(error));
     },
     
 
