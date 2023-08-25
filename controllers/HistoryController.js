@@ -66,6 +66,25 @@ module.exports = {
     } catch (error) {
       res.json(error);
     }
+  },
+
+  delete: async(req, res) =>{
+    HistoryModel
+        .deleteMany({_id: req.body._id})
+        .then((data) => res.json(data))
+        .catch((error) => res.json(error))
+  },
+
+  update: async (req, res) =>{
+        let history = await HistoryModel.findByIdAndUpdate(req.body._id,{
+            patient: req.body.patient,
+            treatment: req.body.treatment
+        },{
+            new: true
+        })
+        if(!history){
+            return res.json({ success: false, result: "History does not exists with that ID"})
+        }res.status(200).send(history);
   }
 
 };
