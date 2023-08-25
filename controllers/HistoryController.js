@@ -42,7 +42,7 @@ module.exports = {
         return res.json({ success: false, message: "Historia no encontrada" });
       }
   
-      // Tratamiento con datos poblados
+      // Tratamiento con datos poblados sdsd
       const treatment = history.treatment;
       
       // Ahora, poblamos el campo 'product' en 'treatment'
