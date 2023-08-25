@@ -46,7 +46,7 @@ module.exports = {
       const treatment = history.treatment;
       
       // Ahora, poblamos el campo 'product' en 'treatment'
-      const populatedTreatment = await TreatmentModel.populate(treatment, { path: "product" });
+      await TreatmentModel.populate(treatment, { path: "product" });
   
       res.json({ success: true, result: { history } });
     } catch (error) {
