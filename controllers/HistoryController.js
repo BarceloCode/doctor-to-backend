@@ -30,7 +30,7 @@ module.exports = {
             
             historyExist.treatment.push(pushTreatment);
             historyExist.save();
-            res.json(historyExist);        
+            res.json(historyExist);   
     },
 
 
@@ -46,47 +46,26 @@ module.exports = {
         });
     },
 
-    retrieveOne: async (req, res) => {
-        try {
-        const history = await HistoryModel.findById({ _id: req.body._id    })
-            .populate("patient")
-            .populate("treatment");
-    
-        if (!history) {
-            return res.json({ success: false, message: "Historia no encontrada" });
-        }
-    
-        // Tratamiento con datos poblados
-        const treatment = history.treatment;
-        
-        // Ahora, poblamos el campo 'product' en 'treatment'
-        await TreatmentModel.populate(treatment, { path: "product" });
-    
-        res.json({ success: true, result: { history } });
-        } catch (error) {
-        res.json(error);
-        }
-    },    
-
-    update: async(req, res) =>{
-
-        let history = await HistoryModel.findByIdAndUpdate(req.body._id,{
-            patient: req.body.patient,
-            treatment: req.body.treatment        
-        },{
-            new: true
-        })
-        if(!history) {
-            return res.status(400).send("History does not exists")
-        }
-        res.status(200).send(history)
-    },
-
-    delete: async(req, res) =>{
-        const { id_patient } = req.body;
-            HistoryModel
-                .deleteMany({patient: id_patient})
-                .then((data) => res.json(data))
-                .catch((error) => res.json(error))
+  retrieveOne: async (req, res) => {
+    try {
+      const history = await HistoryModel.findById({ _id: req.body._id    })
+        .populate("patient")
+        .populate("treatment");
+  
+      if (!history) {
+        return res.json({ success: false, message: "Historia no encontrada" });
+      }
+  
+      // Tratamiento con datos poblados
+      const treatment = history.treatment;
+      
+      // Ahora, poblamos el campo 'product' en 'treatment'
+      await TreatmentModel.populate(treatment, { path: "product" });
+  
+      res.json({ success: true, result: { history } });
+    } catch (error) {
+      res.json(error);
     }
+  }
+
 };
