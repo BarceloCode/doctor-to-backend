@@ -22,7 +22,7 @@ const ExpedientRoute =  require("./routes/ExpedientRoute.js");
 const CosmoRoutes = require("./routes/CosmotologistRouter.js");
 
 app.use("/usc/products", ProductsRoute)
-app.use("/usc/services/", TreatmentRoute);
+app.use("/usc/services", TreatmentRoute);
 app.use("/usc/patient", PatientRoute);
 app.use("/usc/cosmotologist", CosmoRoutes);
 app.use('/usc/expedient', ExpedientRoute);

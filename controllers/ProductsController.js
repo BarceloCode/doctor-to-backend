@@ -49,7 +49,10 @@ module.exports = {
     },
 
     delete: async(req, res) =>{
-
+        ProductsModel
+        .deleteMany({ _id: req.body._id})
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error}));
     }
 
 }

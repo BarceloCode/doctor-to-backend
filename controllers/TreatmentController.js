@@ -52,15 +52,10 @@ module.exports = {
     },
 
     delete: async (req, res) =>{
-        await TreatmentModel.remove({_id: req.body._id})
-            .then(result =>{
-                if(!result) res.json({ success: false, result: "No treatment was found with the ID ${req.body.id}"})
-
-                res.json({ success: true, result: result})
-            })
-            .catch(err =>{
-                res.json({ success: false, result: err})
-            })
+        TreatmentModel.deleteMany({_id: req.body._id})
+            .deleteMany({ _id: req.body._id})
+            .then((data) => res.json(data))
+            .catch((error) => res.json({ message: error}));
     }
     
 }
