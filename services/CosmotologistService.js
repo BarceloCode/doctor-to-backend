@@ -1,6 +1,5 @@
 const CosmotologistSch = require("../models/CosmotologistModel");
 const bcrypt = require("bcrypt");
-const mongoose = require("mongoose");
 require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
 moment.tz.setDefault(process.env.TZ);
@@ -75,6 +74,7 @@ async function create(req) {
       location: req.body.location,
       birthday: req.body.birthday,
       gender: req.body.gender,
+      businessUnit: req.body.businessUnit,
       worktime: {
         start: req.body.worktime.start,
         end: req.body.worktime.end,
@@ -130,7 +130,7 @@ async function update(req) {
     const finduser = await CosmotologistSch.findOne({
       email: req.params.email,
     }).select("email deleted");
-    const { name, full_lastname, phone, location, birthday, gender, role } =
+    const { name, full_lastname, phone, location, birthday, gender, businessUnit } =
       req.body;
     if (!finduser || finduser.deleted) {
       return { message: "User not found", error: true };
@@ -141,6 +141,7 @@ async function update(req) {
         full_lastname: full_lastname,
         phone: phone,
         location: location,
+        businessUnit: businessUnit,
         birthday: birthday,
         gender: gender,
       },

@@ -43,6 +43,8 @@ exports.cosmotologist = check.object({
     saturday: check.boolean().required(),
     sunday: check.boolean().required(),
   },
+  businessUnit: check.string().max(255).required(),
+
 });
 
 exports.updateCosmotologist = check.object({
@@ -57,6 +59,7 @@ exports.updateCosmotologist = check.object({
   location: check.string().max(255).required(),
   birthday: check.date().iso({ format: "YYYY-MM-DD" }).max("now").required(),
   gender: check.string().max(255).required(),
+  businessUnit: check.string().max(255).required(),
 });
 
 exports.deleteCosmologist = check.object({
