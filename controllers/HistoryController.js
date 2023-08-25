@@ -34,7 +34,7 @@ module.exports = {
 
   retrieveOne: async (req, res) => {
     try {
-      const history = await HistoryModel.findById({ _id: req.body._id })
+      const history = await HistoryModel.findById({ _id: req.body._id    })
         .populate("patient")
         .populate("treatment");
   
@@ -44,11 +44,11 @@ module.exports = {
   
       // Tratamiento con datos poblados
       const treatment = history.treatment;
-  
+      
       // Ahora, poblamos el campo 'product' en 'treatment'
       const populatedTreatment = await TreatmentModel.populate(treatment, { path: "product" });
   
-      res.json({ success: true, result: { history, treatment: populatedTreatment } });
+      res.json({ success: true, result: { history } });
     } catch (error) {
       res.json(error);
     }
