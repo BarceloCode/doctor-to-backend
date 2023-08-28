@@ -2,7 +2,7 @@ const ApointmentService = require("../services/ApointmentService");
 
 
 
-async function getAllApointment(req, res) {
+ async function getAllApointment(req, res) {
     try {
       const Apointment = await ApointmentService.retrive(req, res);
       res.status(200).json(Apointment);
