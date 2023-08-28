@@ -2,6 +2,9 @@ const express = require("express");
 const db = require("./db.js");
 const morgan = require('morgan');
 const cors = require("cors");
+const mongoose = require('mongoose');
+
+mongoose.set('strictQuery', true);
 // const userRoutes = require('./routes/userRoutes');
 const app = express();
 const port = process.env.PORT;
