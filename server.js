@@ -3,6 +3,10 @@ const db = require("./db.js");
 const morgan = require('morgan');
 const cors = require("cors");
 const mongoose = require('mongoose');
+const validateToken = require("./middlewares/validate-token");
+// const veryfyExcloudesRoutes = require("../middlewares/excloudesRoutes");
+const permissionMiddleware = require("./middlewares/permissionsMiddleware");
+
 
 mongoose.set('strictQuery', true);
 // const userRoutes = require('./routes/userRoutes');
@@ -15,6 +19,8 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(validateToken);
+app.use(permissionMiddleware);
 // Routes
 
 const HistoryRouter = require("./routes/HistoryRoute.js");

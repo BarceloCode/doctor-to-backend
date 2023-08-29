@@ -1,10 +1,6 @@
 const router = require('express').Router();
 const PatientControl = require ("../controllers/PatientControl");
-const validateToken = require("../middlewares/validate-token");
-const permissionMiddleware = require("../middlewares/permissionsMiddleware");
 
-router.use(validateToken);
-router.use(permissionMiddleware);
 
 
 router.post('/create', PatientControl.create);

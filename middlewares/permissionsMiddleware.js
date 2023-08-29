@@ -1,7 +1,12 @@
 const findUser = require("../services/CosmotologistService");
+const { excloudedRoutes } = require("./excloudedroutes");
+
 
 async function permissionMiddleware(req, res, next) {
   try {
+    if (excloudedRoutes.includes(req.path)) {
+      return next();
+    }
     const user = await findUser.handlePermissions(req, res);
     if (!user) {
       return res.status(401).send({ message: "Unauthorized" });
