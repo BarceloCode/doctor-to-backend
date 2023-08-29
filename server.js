@@ -2,6 +2,9 @@ const express = require("express");
 const db = require("./db.js");
 const morgan = require('morgan');
 const cors = require("cors");
+const mongoose = require('mongoose');
+
+mongoose.set('strictQuery', true);
 // const userRoutes = require('./routes/userRoutes');
 const app = express();
 const port = process.env.PORT;
@@ -24,6 +27,7 @@ const BunitRoute = require("./routes/BusinessUnitRoute.js");
 const ConsultingRoomRoute = require("./routes/ConsultingRoomRoute.js");
 const MachineRoute = require("./routes/MachineRoute.js");
 const ApointmentRoute = require("./routes/ApointmentRoute.js");
+const ClinicRoute = require("./routes/ClinicRoute.js");
 
 app.use("/usc/products", ProductsRoute)
 app.use("/usc/services", TreatmentRoute);
@@ -35,6 +39,7 @@ app.use('/usc/businessunit', BunitRoute);
 app.use('/usc/consultingroom', ConsultingRoomRoute);
 app.use('/usc/machines', MachineRoute);
 app.use('/usc/apointment', ApointmentRoute);
+app.use('/usc/clinic', ClinicRoute);
 
 app.listen(port, () => {
   console.log(`Server Runnig on ${process.env.HOSTNAME}:${port}`);

@@ -1,32 +1,41 @@
 const mongoose = require("mongoose");
 
 const clinicSchema = new mongoose.Schema({
-name:{
+  name: {
     type: String,
     required: true,
-},
-adress:{
+  },
+  description: {
     type: String,
     required: true,
-},
-worktime:{
-    start:{
-        type: String,
-        required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
+  deletedAt: {
+    type: String,
+    default: null,
+  },
+
+  worktime: {
+    start: {
+      type: String,
+      required: true,
     },
-    end:{
-        type: String,
-        required: true,
+    end: {
+      type: String,
+      required: true,
     },
-    days:{
-        type: String,
-        required: true,
-    }
-},
-phone:{
-    type: String,
-    required: true,
-}
+    days: {
+      type: String,
+      required: true,
+    },
+  },
 });
 const Clinic = mongoose.model("Clinic", clinicSchema);
 
