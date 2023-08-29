@@ -1,4 +1,4 @@
-const CosmotologistSch = require("../models/CosmotologistModel");
+const CosmotologistSch = require("../models/CosmetologistModel");
 const bcrypt = require("bcrypt");
 require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");

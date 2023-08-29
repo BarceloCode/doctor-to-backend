@@ -11,10 +11,6 @@ const ApointmentSchema = new Schema({
     type: String,
     required: true,
   },
-  isConfirmed: {
-    type: Boolean,
-    default: false,
-  },
   cosmetologist: {
     type: Schema.Types.ObjectId,
     ref: "Cosmotologist",
@@ -23,7 +19,7 @@ const ApointmentSchema = new Schema({
   status: {
     confirmationPending: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     confirmedbyuser: {
       type: Boolean,
@@ -50,10 +46,6 @@ const ApointmentSchema = new Schema({
       default: false,
     },
     inprogress: {
-      type: Boolean,
-      default: false,
-    },
-    reminder: {
       type: Boolean,
       default: false,
     },

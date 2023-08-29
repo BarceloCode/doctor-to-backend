@@ -6,7 +6,9 @@ const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
 async function retrive() {
   try {
-    const Apointment = await ApointmentSchema.find();
+    const Apointment = await ApointmentSchema.find().populate({
+      path: 'Cosmotologist'
+    });
     if (!Apointment || Apointment.deleted) {
       return {
         message: "Apointment not found",
