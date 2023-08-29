@@ -20,10 +20,52 @@ const ApointmentSchema = new Schema({
     ref: "Cosmotologist",
     required: true,
   },
+  status: {
+    confirmationPending: {
+      type: Boolean,
+      default: false,
+    },
+    confirmedbyuser: {
+      type: Boolean,
+      default: false,
+    },
+    cancelledByUser: {
+      type: Boolean,
+      default: false,
+    },
+    cancelledbydoctor: {
+      type: Boolean,
+      default: false,
+    },
+    rescheduled: {
+      type: Boolean,
+      default: false,
+    },
+    notassisted: {
+      type: Boolean,
+      default: false,
+    },
+    approved: {
+      type: Boolean,
+      default: false,
+    },
+    inprogress: {
+      type: Boolean,
+      default: false,
+    },
+    reminder: {
+      type: Boolean,
+      default: false,
+    },
+  },
   clinic: { type: Schema.Types.ObjectId, ref: "clinic", required: true },
   patient: { type: Schema.Types.ObjectId, ref: "patient", required: true },
   treatment: { type: Schema.Types.ObjectId, ref: "treatment", required: true },
-  consultingRoom: { type: Schema.Types.ObjectId, ref: "ConsultingRoom", required: true },
+  consultingRoom: {
+    type: Schema.Types.ObjectId,
+    ref: "ConsultingRoom",
+    required: true,
+  },
 });
 
 const Apointment = mongoose.model("Apointment", ApointmentSchema);

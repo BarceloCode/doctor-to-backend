@@ -36,10 +36,6 @@ app.post(
 app.put("/offline", async (req, res) => {
   controller.offline(req, res);
 });
-//aqui primero se valida si es valido el token y despues se valida que se tenga permisos pera realizar la peticion dependiendo
-//el metodo GET, POST, PUT, PATCH, DELETE la rutas arriba de esto son rutas publicas como login, refresh, create (registrar)
-
-
 
 app.get("/get", async (req, res) => {
   controller.getAllCosmo(req, res);
