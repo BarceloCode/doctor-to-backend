@@ -1,10 +1,6 @@
 const router = require('express').Router();
 const ProductsController = require("../controllers/ProductsController");
-const validateToken = require("../middlewares/validate-token");
-const permissionMiddleware = require("../middlewares/permissionsMiddleware");
 
-router.use(validateToken);
-router.use(permissionMiddleware);
 
 router.post("/create", ProductsController.create);
 router.get("/retrieve", ProductsController.retrieve);

@@ -5,8 +5,8 @@ const mongoose = require("mongoose");
 module.exports = {
 
     create: async (req, res) => {
-
-        let historyExist = await HistoryModel.findOne({ patient: req.body.patient});
+      let historyExist = await HistoryModel.findOne({ patient: req.body.patient});
+      try {        
         if(!historyExist){
             let history = new HistoryModel({
                 patient: req.body.patient,
@@ -23,16 +23,18 @@ module.exports = {
                 });
             }            
             let history = HistoryModel({
-                treatment: 
-                    req.body.treatment                
+                treatment: req.body.treatment                
             });
             let pushTreatment = history.treatment;
             
             historyExist.treatment.push(pushTreatment);
             historyExist.save();
             res.json(historyExist);   
+      }catch (error){
+          res.send(error);
+      }
+        
     },
-
 
     retrieve: async (req, res) => {
         await HistoryModel.find()
@@ -48,7 +50,7 @@ module.exports = {
 
   retrieveOne: async (req, res) => {
     try {
-      const history = await HistoryModel.findById({ _id: req.body._id    })
+      const history = await HistoryModel.findById({ _id: req.body._id })
         .populate("patient")
         .populate("treatment");
   
