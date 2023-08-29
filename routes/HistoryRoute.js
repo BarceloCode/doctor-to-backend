@@ -1,5 +1,10 @@
 const router = require("express").Router();
 const HistoryController = require("../controllers/HistoryController");
+const validateToken = require("../middlewares/validate-token");
+const permissionMiddleware = require("../middlewares/permissionsMiddleware");
+
+router.use(validateToken);
+router.use(permissionMiddleware);
 
 router.post("/create", HistoryController.create);
 router.get("/retrieve", HistoryController.retrieve);
