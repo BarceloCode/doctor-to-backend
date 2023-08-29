@@ -1,5 +1,10 @@
 const router = require('express').Router();
 const ExpedientController = require('../controllers/ExpedientController');
+const validateToken = require("../middlewares/validate-token");
+const permissionMiddleware = require("../middlewares/permissionsMiddleware");
+
+router.use(validateToken);
+router.use(permissionMiddleware);
 
 router.post('/create', ExpedientController.create);
 router.get('/retrieve', ExpedientController.retrieve);
