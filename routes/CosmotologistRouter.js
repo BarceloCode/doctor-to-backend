@@ -3,9 +3,7 @@ const app = express.Router();
 const controller = require("../controllers/CosmotologistController");
 const CosmoValidation = require("../validations/CosmotologistValidation");
 const { validate } = require("../middlewares/validations");
-const validateToken = require("../middlewares/validate-token");
-// const veryfyExcloudesRoutes = require("../middlewares/excloudesRoutes");
-const permissionMiddleware = require("../middlewares/permissionsMiddleware");
+
 
 
 
@@ -40,8 +38,7 @@ app.put("/offline", async (req, res) => {
 });
 //aqui primero se valida si es valido el token y despues se valida que se tenga permisos pera realizar la peticion dependiendo
 //el metodo GET, POST, PUT, PATCH, DELETE la rutas arriba de esto son rutas publicas como login, refresh, create (registrar)
-app.use(validateToken);
-app.use(permissionMiddleware);
+
 
 
 app.get("/get", async (req, res) => {
