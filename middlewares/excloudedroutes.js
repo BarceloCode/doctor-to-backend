@@ -1,8 +1,8 @@
 
 exports.excloudedRoutes = [
-    "/usc/cosmetologist/login",
-    "/usc/cosmetologist/logout",
-    "/usc/cosmetologist/refresh",
-    "/usc/cosmetologist/create",
-    "/usc/cosmetologist/offline", 
+    "/usc/cosmotologist/login",
+    "/usc/cosmotologist/logout",
+    "/usc/cosmotologist/refresh",
+    "/usc/cosmotologist/create",
+    "/usc/cosmotologist/offline", 
   ];
