@@ -6,8 +6,14 @@ const HistoryModel = new Schema({
         type: Schema.Types.ObjectId, ref: 'patient'
     },
     treatment: [{
-        type: Schema.Types.ObjectId, ref: 'treatment'
-    }]
+        name: {
+            type: Schema.Types.ObjectId, ref: 'treatment'
+        },
+        date: String,
+        cosmetologic: { 
+            type: Schema.Types.ObjectId, ref: "Cosmotologist"
+        }
+    }],
 })
 
 module.exports = mongoose.model('history', HistoryModel);

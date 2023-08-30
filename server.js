@@ -38,7 +38,7 @@ const ClinicRoute = require("./routes/ClinicRoute.js");
 app.use("/usc/products", ProductsRoute)
 app.use("/usc/services", TreatmentRoute);
 app.use("/usc/patient", PatientRoute);
-app.use("/usc/cosmetologist", CosmeRoutes);
+app.use("/usc/cosmotologist", CosmeRoutes);
 app.use('/usc/expedient', ExpedientRoute);
 app.use('/usc/history', HistoryRouter);
 app.use('/usc/businessunit', BunitRoute);
