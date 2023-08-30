@@ -4,7 +4,7 @@ require("dotenv").config({ path: "../.env" });
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
-const cosmotologistSchema = new mongoose.Schema({
+const CosmotologistSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -109,7 +109,6 @@ const cosmotologistSchema = new mongoose.Schema({
   },
   location: {
     type: mongoose.Schema.Types.ObjectId,
-    default: null,
     ref: "Clinic",
     required: true,
   },
@@ -121,6 +120,6 @@ const cosmotologistSchema = new mongoose.Schema({
   },
 });
 //location hace referencia a la clinica en la que esta la cosmotologa
-const Cosmotologist = mongoose.model("Cosmotologist", cosmotologistSchema);
+const Cosmotologist = mongoose.model("cosmetologist", CosmotologistSchema);
 
 module.exports = Cosmotologist;

@@ -48,12 +48,7 @@ const ApointmentSchema = new Schema(
     },
     cosmetologist: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Cosmotologist",
-      required: true,
-    },
-    clinic: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "clinic",
+      ref: "cosmetologist",
       required: true,
     },
     patient: {
@@ -62,14 +57,9 @@ const ApointmentSchema = new Schema(
       required: true,
     },
     treatment: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Array,
+      required: true,
       ref: "treatment",
-      required: true,
-    },
-    consultingRoom: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "ConsultingRoom",
-      required: true,
     },
   },
   {
@@ -77,5 +67,5 @@ const ApointmentSchema = new Schema(
   }
 );
 
-const Apointment = mongoose.model("Apointment", ApointmentSchema);
+const Apointment = mongoose.model("apointment", ApointmentSchema);
 module.exports = Apointment;

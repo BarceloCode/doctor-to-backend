@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const cosmetologistUser = require("../models/CosmotologistModel");
+const cosmetologistUser = require("../models/CosmetologistModel");
 const clinicSch = require("../models/ClinicModel");
 
 const db = require("../db");
@@ -11,6 +11,7 @@ db.connect();
 const salt = parseInt(process.env.SALT_KEY);
 const secretpassword = process.env.CANDY;
 const hash = bcrypt.hashSync(secretpassword, salt);
+
 const sampleCosmotologist = [
   {
     name: "Admin AdminSecondName",
@@ -40,12 +41,14 @@ const sampleCosmotologist = [
       saturday: false,
       sunday: false,
     },
+    businessUnit:"64e5257c49921a1f95d84387"
   },
 ];
 const sampleClinic = [
   {
     name: "Clinic Arcangel de Jesus",
-    adress: "Av. Mexico 1234",
+    address: "Av. Mexico 1234",
+    description:"Example of description",
     worktime: {
       start: "08:00AM",
       end: "20:00PM",
@@ -58,8 +61,8 @@ const sampleClinic = [
 const seedDatabase = async () => {
   try {
     // Elimina todos los documentos existentes en la colección de usuarios
-    await cosmetologistUser.deleteMany();
-    await clinicSch.deleteMany();
+    await cosmetologistUser.collection.drop();
+    await clinicSch.collection.drop();
     //Inserta los datos a la base de datos
     await clinicSch.insertMany(sampleClinic);
     await cosmetologistUser.insertMany(sampleCosmotologist);

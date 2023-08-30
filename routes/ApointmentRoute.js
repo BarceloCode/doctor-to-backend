@@ -24,6 +24,10 @@ app.get("/getall", async (req, res) => {
   controller.getAllApointment(req, res);
 });
 
+app.get("/getOne", validate(validations.checkID), async (req, res) => {
+  controller.getOneByid(req, res);
+});
+
 app.put(
   "/update/:email",
   validate(validations.updateCosmotologist),

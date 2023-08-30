@@ -6,7 +6,7 @@ const TreatmentModel = new Schema({
     description:  String,
     price: Number,
     product: {
-        type: Schema.Types.ObjectId, ref: 'products'
+        type: mongoose.Schema.Types.ObjectId, ref: 'products'
     },
     quantity: Number
 });
