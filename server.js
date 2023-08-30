@@ -28,7 +28,7 @@ const ProductsRoute = require("./routes/ProductsRoute.js");
 const TreatmentRoute = require("./routes/TreatmentRoute.js");
 const PatientRoute = require("./routes/PatientRoute.js");
 const ExpedientRoute =  require("./routes/ExpedientRoute.js");
-const CosmoRoutes = require("./routes/CosmotologistRouter.js");
+const CosmeRoutes = require("./routes/CosmetologistRouter.js");
 const BunitRoute = require("./routes/BusinessUnitRoute.js");
 const ConsultingRoomRoute = require("./routes/ConsultingRoomRoute.js");
 const MachineRoute = require("./routes/MachineRoute.js");
@@ -38,7 +38,7 @@ const ClinicRoute = require("./routes/ClinicRoute.js");
 app.use("/usc/products", ProductsRoute)
 app.use("/usc/services", TreatmentRoute);
 app.use("/usc/patient", PatientRoute);
-app.use("/usc/cosmotologist", CosmoRoutes);
+app.use("/usc/cosmetologist", CosmeRoutes);
 app.use('/usc/expedient', ExpedientRoute);
 app.use('/usc/history', HistoryRouter);
 app.use('/usc/businessunit', BunitRoute);
