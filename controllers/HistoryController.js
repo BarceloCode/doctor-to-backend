@@ -5,14 +5,17 @@ const mongoose = require("mongoose");
 module.exports = {
 
     create: async (req, res) => {
-      let historyExist = await HistoryModel.findOne({ patient: req.body.patient});
-      try {        
+      try {
+      const historyExist = await HistoryModel.findOne({ patient: req.body.patient});              
         if(!historyExist){
             let history = new HistoryModel({
                 patient: req.body.patient,
-                treatment: req.body.treatment
-                });
-        
+                treatment: [{
+                  name: req.body.name,
+                  date: req.body.date
+                }],
+                cosmetologic: req.body.cosmetologic
+              });
                 await history
                 .save()
                 .then((result) => {
@@ -21,15 +24,21 @@ module.exports = {
                 .catch((err) => {
                     res.json({ success: false, result: err });
                 });
-            }            
-            let history = HistoryModel({
-                treatment: req.body.treatment                
-            });
-            let pushTreatment = history.treatment;
-            
-            historyExist.treatment.push(pushTreatment);
-            historyExist.save();
-            res.json(historyExist);   
+            }
+            const treatmentExists = historyExist.treatment;
+            let history = await HistoryModel.findOne({patient: req.body.patient},{
+              treatment:[{
+                name: req.body.name,
+                date: req.body.fecha,
+                cosmetologic: req.body.cosmetologic
+              }]                
+          });
+          return res.status(200).send(history);
+            /*const treatmentExists = historyExist.treatment;          
+            let history = await HistoryModel.findOneAndUpdate({patient: req.body.patient},{
+                treatment: req.body.treatment.concat(treatmentExists)                
+            });            
+            return res.status(200).send(history);*/
       }catch (error){
           res.send(error);
       }
