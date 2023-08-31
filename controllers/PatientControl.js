@@ -75,7 +75,7 @@ retrieve: async (req, res) =>{
 
 retrieveOne: async (req, res) =>{
     PatientModel.findById({_id: req.body._id})
-        .then((data) => res.json(data.name))
+        .then((data) => res.json(data))
         .catch((error) => res.json({message: error}));
 },
 

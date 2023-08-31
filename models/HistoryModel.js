@@ -8,11 +8,11 @@ const HistoryModel = new Schema({
     treatment: [{
         name: {
             type: Schema.Types.ObjectId, ref: 'treatment'
+        },        
+        cosmetologist: { 
+            type: Schema.Types.ObjectId, ref: "cosmetologist"
         },
         date: String,
-        cosmetologic: { 
-            type: Schema.Types.ObjectId, ref: "Cosmotologist"
-        }
     }],
 })
 
