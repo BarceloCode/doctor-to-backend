@@ -90,15 +90,20 @@ module.exports = {
   },
 
   update: async (req, res) =>{
-        let history = await HistoryModel.findByIdAndUpdate(req.body._id,{
-            patient: req.body.patient,
-            treatment: req.body.treatment
-        },{
-            new: true
-        })
-        if(!history){
-            return res.json({ success: false, result: "History does not exists with that ID"})
-        }res.status(200).send(history);
+    try{
+      let history = await HistoryModel.findByIdAndUpdate(req.body._id,{
+        patient: req.body.patient,
+        treatment: req.body.treatment
+    },{
+        new: true
+    })
+    if(!history){
+        return res.json({ success: false, result: "History does not exists with that ID"})
+    }res.status(200).send(history);
+    }catch (error){
+        return res.status(400).send(error);
+    }
+        
   }
 
 };

@@ -3,9 +3,7 @@ const Validate = require("../validations/PatienValidation")
 
 module.exports = {
     create: async (req, res) =>{
-
-        //Data validattion
-
+    try{
         let { error } = Validate.patient(req.body);
         if (error) return res.json({ success: false, result: error.details[0].message});
 
@@ -27,63 +25,81 @@ module.exports = {
         emergencyContact: req.body.emergencyContact,
         bloodType: req.body.bloodType        
     })
-    await patient.save()
-    .then(result => {
-      res.json({ success: true, result: result });
-    })
-    .catch(err => {
-      res.json({ success: false, result: err });
-    });
+        await patient.save()
+        .then(result => {
+        res.json({ success: true, result: result });
+        })
+        .catch(err => {
+        res.json({ success: false, result: err });
+        });
+    }catch (error){
+        return res.status(400).send(error);
+    }                
 
 },
 
 update: async (req, res) =>{
-    
-    
-    let patient = await PatientModel.findByIdAndUpdate(req.body._id,{
-        name: req.body.name,
-        gender: req.body.gender,
-        age: req.body.age,
-        curp: req.body.curp,
-        birthdate: req.body.birthdate,
-        civilstatus: req.body.civilstatus,
-        religion: req.body.religion,
-        ocupation: req.body.ocupation,
-        address: req.body.address,
-        email: req.body.email,
-        phone: req.body.phone,
-        emergencyContact: req.body.emergencyContact,
-        bloodType: req.body.bloodType   
-    },{
-        new: true
-    })
-    if(!patient){
-        return res.status(400).send("Patient does not exists")
-    }
-    res.status(200).send(patient);
+    try{
+        let patient = await PatientModel.findByIdAndUpdate(req.body._id,{
+            name: req.body.name,
+            gender: req.body.gender,
+            age: req.body.age,
+            curp: req.body.curp,
+            birthdate: req.body.birthdate,
+            civilstatus: req.body.civilstatus,
+            religion: req.body.religion,
+            ocupation: req.body.ocupation,
+            address: req.body.address,
+            email: req.body.email,
+            phone: req.body.phone,
+            emergencyContact: req.body.emergencyContact,
+            bloodType: req.body.bloodType   
+        },{
+            new: true
+        })
+        if(!patient){
+            return res.status(400).send("Patient does not exists")
+        }
+        res.status(200).send(patient);
+    }catch (error){
+        return res.status(400).send(error)
+    }        
   },   
 
 retrieve: async (req, res) =>{
-    await PatientModel.find()
+    try{
+        await PatientModel.find()
         .then(result =>{
             if(!result) res.json({success: false, result: "No results found"});            
 
             res.json({ succes: true, result: result});
         })
         .catch(err => res.json({success: false, rsult: err}));
+    }catch (error){
+        return res.status(400).send(error)
+    }
+    
 },
 
 retrieveOne: async (req, res) =>{
-    PatientModel.findById({_id: req.body._id})
+    try{
+        PatientModel.findById({_id: req.body._id})
         .then((data) => res.json(data))
         .catch((error) => res.json({message: error}));
+    }catch (error){
+        return res.status(400).send(error)
+    }
 },
 
 delete: async (req, res) => {
-    PatientModel
+    try{
+        PatientModel
       .deleteMany({ _id: req.body._id})
       .then((data) => res.json(data))
       .catch((error) => res.json({ message: error}));
+    }catch (error){
+        return res.status(400).send(error)
+    }
 }
 
 }
