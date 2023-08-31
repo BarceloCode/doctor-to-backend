@@ -45,6 +45,10 @@ const ApointmentSchema = new Schema(
         type: Boolean,
         default: false,
       },
+      finished: {
+        type: Boolean,
+        default: false,
+      },
     },
     cosmetologist: {
       type: mongoose.Schema.Types.ObjectId,

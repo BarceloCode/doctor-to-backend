@@ -29,10 +29,10 @@ app.get("/getOne", validate(validations.checkID), async (req, res) => {
 });
 
 app.put(
-  "/update/:email",
-  validate(validations.updateCosmotologist),
+  "/update",
+  validate(validations.checkforUpte),
   async (req, res) => {
-    controller.updateCosmo(req, res);
+    controller.updateApointment(req, res);
   }
 );
 

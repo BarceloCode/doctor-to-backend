@@ -16,7 +16,7 @@ const CosmetologistApointmenSchema = new Schema({
 
 },
 {
-    strictPopulate: true,
+    strictPopulate: false,
   });
 
 const CosmetologistApointmen = mongoose.model('cosmetologistApointment', CosmetologistApointmenSchema);

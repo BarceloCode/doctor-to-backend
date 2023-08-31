@@ -40,7 +40,9 @@ async function retrive() {
 }
 async function retriveOne(req) {
   try {
-    const Apointment = await CosmetologistApointmentSchema.findOne({_id:req.body._id})
+    const Apointment = await CosmetologistApointmentSchema.findOne({
+      _id: req.body._id,
+    })
       .populate({
         path: "apointment",
         select: { cosmetologist: 0 },
@@ -100,33 +102,21 @@ async function create(req) {
 
 async function update(req) {
   try {
-    const finduser = await ApointmentSchema.findOne({
-      email: req.params.email,
-    }).select("email deleted");
-    const {
-      name,
-      full_lastname,
-      phone,
-      location,
-      birthday,
-      gender,
-      businessUnit,
-    } = req.body;
-    if (!finduser || finduser.deleted) {
-      return { message: "User not found", error: true };
+    const findApointment = await ApointmentSchema.findById({
+      _id: req.body._id,
+    }).select("_id deleted");
+    const { description, cosmetologist, treatment } = req.body;
+    if (!findApointment || findApointment.deleted) {
+      return { message: "Apointment not found", error: true };
     }
     const update = {
       set: {
-        name: name,
-        full_lastname: full_lastname,
-        phone: phone,
-        location: location,
-        businessUnit: businessUnit,
-        birthday: birthday,
-        gender: gender,
+        description: description,
+        cosmetologist: cosmetologist,
+        treatment: treatment,
       },
     };
-    const result = await ApointmentSchema.updateOne(finduser, update);
+    const result = await ApointmentSchema.updateOne(findApointment, update);
     if (result) {
       return { message: "Updated succesfully", error: false };
     }
