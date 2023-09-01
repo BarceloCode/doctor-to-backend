@@ -3,16 +3,22 @@ const Schema = mongoose.Schema;
 
 const HistoryModel = new Schema({
     patient: {
-        type: Schema.Types.ObjectId, ref: 'patient'
+        type: Schema.Types.ObjectId, ref: 'patient',
+        required: true
     },
     treatment: [{
         name: {
-            type: Schema.Types.ObjectId, ref: 'treatment'
+            type: Schema.Types.ObjectId, ref: 'treatment',
+            required: true,
         },        
         cosmetologist: { 
-            type: Schema.Types.ObjectId, ref: "cosmetologist"
+            type: Schema.Types.ObjectId, ref: "cosmetologist",
+            required: true
         },
-        date: String,
+        date: {
+            type: String,
+            required: true
+        },
     }],
 })
 

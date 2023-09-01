@@ -4,71 +4,98 @@ const Schema = mongoose.Schema;
 const ExpedientModel = new Schema({
         patient: { type: Schema.Types.ObjectId, ref: 'patient'},
         familyHistory: [{
-            family: String,
-            diabetes: String,
-            hypertension: String, 
-            autoimmuneDiseases: String,
+            family: {
+                type: String,
+                required: true,
+            },
+            diabetes: {
+                type: String,
+                required: true,
+            },
+            hypertension: {
+                type: String,
+                required: true,
+            }, 
+            autoimmuneDiseases: {
+                type: String,
+                required: true,
+            },
         }],
         pathologicalHistory: [{
             diabetesMellitus: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             arterialHypertension: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             endocrinologicalDiseases: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },        
             diseasesAutoimmune: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             }, 
             vih: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             herpes: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             bloodTransfusions: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             trauma: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             fracture: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             hospitalizations: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             previousSurgeries: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             hepatitis: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             cancer: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             epilepsy: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             allergies: {
                 type: String, 
-                default: 'N/A'
+                default: 'N/A',
+                required: true
             },
             others: String,
             doyouSmoke: String,

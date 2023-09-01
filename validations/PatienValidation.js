@@ -4,7 +4,7 @@ module.exports = {
     // Function to validate user data
     patient: data => {
         let schema = Joi.object({
-            name: Joi.string().required().required(),
+            name: Joi.string().required(),
             gender: Joi.string().required(),
             age: Joi.string(),
             curp: Joi.string().required().max(18),
