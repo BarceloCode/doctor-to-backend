@@ -4,9 +4,23 @@ const moment = require("moment-timezone");
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
-async function retrive() {
+async function retrive(req) {
   try {
-    const Bunit = await BusinessUnitSch.find();
+    const options = {
+      page: req.body.page,
+      limit: 5,
+      collation: {
+        locale: "en",
+      },
+
+      populate: {
+        path: "treatment",
+      },
+      populate: {
+        path: "clinic",
+      },
+    };
+    const Bunit = await BusinessUnitSch.paginate({}, options);
     if (!Bunit || Bunit.deleted) {
       return {
         message: "Business Unit not found",
@@ -20,7 +34,10 @@ async function retrive() {
       Bunit: Bunit,
     };
   } catch (error) {
-    return { message: "Error", error: "Business Unit not found" };
+    return {
+      message: "Error",
+      error: error.message,
+    };
   }
 }
 
@@ -28,7 +45,7 @@ async function create(req) {
   try {
     const Bunit = await BusinessUnitSch.create({
       name: req.body.name,
-      consultingRoom: req.body.consultingRoom,
+      clinic: req.body.clinic,
       treatment: req.body.treatment,
     });
 
@@ -46,33 +63,19 @@ async function create(req) {
 
 async function update(req) {
   try {
-    const finduser = await BusinessUnitSch.findOne({
-      email: req.params.email,
-    }).select("email deleted");
-    const {
-      name,
-      full_lastname,
-      phone,
-      location,
-      birthday,
-      gender,
-      businessUnit,
-    } = req.body;
-    if (!finduser || finduser.deleted) {
+    const findClinic = await BusinessUnitSch.findOne({
+      _id: req.body._id,
+    }).select("_id deleted");
+    const { name, clinic, treatment } = req.body;
+    if (!findClinic || findClinic.deleted) {
       return { message: "User not found", error: true };
     }
     const update = {
-      set: {
-        name: name,
-        full_lastname: full_lastname,
-        phone: phone,
-        location: location,
-        businessUnit: businessUnit,
-        birthday: birthday,
-        gender: gender,
-      },
+      name: name,
+      clinic: clinic,
+      treatment: treatment,
     };
-    const result = await BusinessUnitSch.updateOne(finduser, update);
+    const result = await BusinessUnitSch.updateOne(findClinic, update);
     if (result) {
       return { message: "Updated succesfully", error: false };
     }

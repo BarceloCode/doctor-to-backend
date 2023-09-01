@@ -76,7 +76,6 @@ const ApointmentSchema = new Schema(
 );
 
 ApointmentSchema.plugin(mongoosePaginate);
-
 const Apointment = mongoose.model("apointment", ApointmentSchema);
 Apointment.paginate().then({});
 module.exports = Apointment;
