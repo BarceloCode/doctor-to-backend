@@ -20,7 +20,7 @@ app.post(
   }
 );
 
-app.get("/getall", async (req, res) => {
+app.get("/getall", validate(validations.currentPage), async (req, res) => {
   controller.getAllApointment(req, res);
 });
 

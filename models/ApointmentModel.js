@@ -1,11 +1,16 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongoosePaginate = require("mongoose-paginate-v2");
+require("dotenv").config({ path: "../.env" });
+const moment = require("moment-timezone");
+moment.tz.setDefault(process.env.TZ);
+const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
 const ApointmentSchema = new Schema(
   {
     date: {
       type: Date,
-      default: Date.now(),
+      default: currentTime,
       required: true,
     },
     description: {
@@ -71,5 +76,8 @@ const ApointmentSchema = new Schema(
   }
 );
 
+ApointmentSchema.plugin(mongoosePaginate);
+
 const Apointment = mongoose.model("apointment", ApointmentSchema);
+Apointment.paginate().then({});
 module.exports = Apointment;

@@ -18,3 +18,7 @@ exports.checkforUpte = check.object({
 exports.checkID = check.object({
     _id: check.string().min(20).max(100).required(),
     });
+
+    exports.currentPage = check.object({
+        page: check.number().min(1).required(),
+        });

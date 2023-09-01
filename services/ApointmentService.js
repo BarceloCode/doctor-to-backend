@@ -5,22 +5,34 @@ const moment = require("moment-timezone");
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
-async function retrive() {
+
+
+async function retrive(req) {
   try {
-    const Apointment = await CosmetologistApointmentSchema.find({})
-      .populate({
+    const options = {
+      page: req.body.page,
+      limit: 1,
+      collation: {
+        locale: "en",
+      },
+      populate: {
         path: "apointment",
         select: { cosmetologist: 0 },
         populate: {
           path: "treatment",
           populate: { path: "product" },
         },
-      })
-      .populate({
+      },
+      populate: {
         path: "cosmetologist",
         select: { name: 1, full_lastname: 1, email: 1, phone: 1, location: 1 },
         populate: { path: "location", select: { name: 1, address: 1 } },
-      });
+      },
+    };
+    const Apointment = await CosmetologistApointmentSchema.paginate(
+      {},
+      options
+    );
 
     if (!Apointment || Apointment.deleted || Apointment.length === 0) {
       return {
