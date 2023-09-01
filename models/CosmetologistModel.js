@@ -125,7 +125,6 @@ CosmotologistSchema.virtual('formatDate').get(function (){
   return { start: start, end: end };
 });
 
-//location hace referencia a la clinica en la que esta la cosmotologa
 const Cosmotologist = mongoose.model("cosmetologist", CosmotologistSchema);
 
 module.exports = Cosmotologist;

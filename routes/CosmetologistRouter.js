@@ -49,6 +49,14 @@ app.put(
   }
 );
 
+app.put(
+  "/updateworkdays/:email",
+  validate(CosmoValidation.checkWorkdays),
+  async (req, res) => {
+    controller.updateWorktimeAndDays(req, res);
+  }
+);
+
 app.delete(
   "/delete",
   validate(CosmoValidation.deleteCosmologist),

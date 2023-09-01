@@ -154,6 +154,42 @@ async function update(req) {
   }
 }
 
+async function updateWorktimeAndDays(req) {
+  try {
+    const finduser = await CosmotologistSch.findOne({
+      email: req.params.email,
+    }).select("email deleted");
+    const data = req.body;
+
+    if (!finduser || finduser.deleted) {
+      return { message: "User not found", error: true };
+    }
+    const update = {
+      $set: {
+        worktime: {
+          start: data.start,
+          end: data.end,
+        },
+        workdays: {
+          monday: data.monday,
+          tuesday: data.tuesday,
+          wednesday: data.wednesday,
+          thursday: data.thursday,
+          friday: data.friday,
+          saturday: data.saturday,
+          sunday: data.sunday,
+        },
+      },
+    };
+    const result = await CosmotologistSch.updateOne(finduser, update);
+    if (result) {
+      return { message: "Updated succesfully", error: false };
+    }
+  } catch (error) {
+    return { message: "Error", error: error.message };
+  }
+}
+
 async function softDelete(req) {
   try {
     const finduser = await CosmotologistSch.findOne({
@@ -250,6 +286,7 @@ module.exports = {
   create,
   retrive,
   update,
+  updateWorktimeAndDays,
   softDelete,
   UndosoftDelete,
   handleOnline,
