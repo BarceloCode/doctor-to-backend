@@ -24,7 +24,7 @@ module.exports = {
 
     update: async(req, res) =>{
         try{
-            let product = await ProductsModel.findByIdAndUpdate(req.body._id,{
+            let product = await ProductsModel.findByIdAndUpdate({_id: req.body._id},{
                 productName: req.body.productName,
                 productPrice: req.body.productPrice,
                 stock: req.body.stock
@@ -34,7 +34,7 @@ module.exports = {
             if(!product){
                 return res.status(400).send("Product does not exists");
             }
-            res.status(200).send("product");
+            res.status(200).send(product);
         }catch(error){
             return res.status(400).send(error)
         }

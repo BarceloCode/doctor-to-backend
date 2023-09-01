@@ -52,19 +52,16 @@ module.exports = {
     
     update: async (req, res) =>{
         try{
-            let treatment = await TreatmentModel.update({
+            let treatment = await TreatmentModel.findByIdAndUpdate({_id: req.body._id},{
                 treatmentName: req.body.treatmentName,  
                 description: req.body.description,          
                 price: req.body.price,
                 product: req.body.product,
                 quantity: req.body.quantity
             })
-            await TreatmentModel.update({_id: req.body._id}, treatment)
-                .then(result =>{
-                    if(!result) res.json({ success: false, result: "Treatment does not exist"})
+            if(!treatment) return res.status(400).send("No treatment was found with the ID")
 
-                    res.json({ success: true, result: result})
-                })
+            return res.status(200).send(treatment)
         }catch(error){
             return res.status(400).send(error)
         }

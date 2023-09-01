@@ -127,7 +127,7 @@ module.exports = {
 update: async (req, res) =>{
     
     try{
-        let expediente = await ExpedientModel.findByIdAndUpdate(req.body._id,{
+        let expediente = await ExpedientModel.findOneAndUpdate({patient: req.body.patient},{
             patient: req.body.patient,           
             familyHistory: [{
                 family: req.body.family,

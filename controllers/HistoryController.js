@@ -93,7 +93,11 @@ module.exports = {
     try{
       let history = await HistoryModel.findByIdAndUpdate(req.body._id,{
         patient: req.body.patient,
-        treatment: req.body.treatment
+        treatment: [{
+          name: req.body.name,
+          cosmetologist: req.body.cosmetologist,
+          date: req.body.date
+        }]
     },{
         new: true
     })
