@@ -5,7 +5,6 @@ require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
-
 const ApointmentSchema = new Schema(
   {
     date: {

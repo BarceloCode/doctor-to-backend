@@ -71,10 +71,12 @@ const CosmotologistSchema = new mongoose.Schema({
     start: {
       type: Date,
       required: true,
+      default: new Date('2000-01-01T00:00:00Z')
     },
     end: {
       type: Date,
       required: true,
+      default: new Date('2000-01-01T00:00:00Z')
     },
   },
   workdays: {
@@ -107,11 +109,6 @@ const CosmotologistSchema = new mongoose.Schema({
       default: true,
     },
   },
-  location: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Clinic",
-    required: true,
-  },
   businessUnit: {
     type: mongoose.Schema.Types.ObjectId,
     default: null,
@@ -119,7 +116,15 @@ const CosmotologistSchema = new mongoose.Schema({
     required: true,
   },
 });
-//location hace referencia a la clinica en la que esta la cosmotologa
+
+CosmotologistSchema.virtual('formatDate').get(function (){
+
+  const start = moment(this.worktime.start).tz(process.env.TZ).format('HH:mm:ss');
+  const end = moment(this.worktime.end).tz(process.env.TZ).format('HH:mm:ss');
+
+  return { start: start, end: end };
+});
+
 const Cosmotologist = mongoose.model("cosmetologist", CosmotologistSchema);
 
 module.exports = Cosmotologist;
