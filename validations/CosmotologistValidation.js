@@ -27,7 +27,6 @@ exports.cosmotologist = check.object({
     .max(10)
     .pattern(new RegExp("^[0-9]{10}$"))
     .required(),
-  location: check.string().max(255).required(),
   birthday: check.date().iso({ format: "YYYY-MM-DD" }).max("now").required(),
   gender: check.string().max(255).required(),
   worktime: {
@@ -56,7 +55,6 @@ exports.updateCosmotologist = check.object({
     .max(10)
     .pattern(new RegExp("^[0-9]{10}$"))
     .required(),
-  location: check.string().max(255).required(),
   birthday: check.date().iso({ format: "YYYY-MM-DD" }).max("now").required(),
   gender: check.string().max(255).required(),
   businessUnit: check.string().max(255).required(),

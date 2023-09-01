@@ -71,7 +71,6 @@ async function create(req) {
       password: hash,
       passwordconfirmation: req.body.passwordconfirmation,
       phone: req.body.phone,
-      location: req.body.location,
       birthday: req.body.birthday,
       gender: req.body.gender,
       businessUnit: req.body.businessUnit,
@@ -119,6 +118,7 @@ async function retrive(req) {
       message: "User found",
       error: false,
       user: user,
+      worktime: user.formatDate,
     };
   } catch (error) {
     return { message: "Error", error: "User not found" };
@@ -130,7 +130,7 @@ async function update(req) {
     const finduser = await CosmotologistSch.findOne({
       email: req.params.email,
     }).select("email deleted");
-    const { name, full_lastname, phone, location, birthday, gender, businessUnit } =
+    const { name, full_lastname, phone, birthday, gender, businessUnit } =
       req.body;
     if (!finduser || finduser.deleted) {
       return { message: "User not found", error: true };
@@ -140,7 +140,6 @@ async function update(req) {
         name: name,
         full_lastname: full_lastname,
         phone: phone,
-        location: location,
         businessUnit: businessUnit,
         birthday: birthday,
         gender: gender,
