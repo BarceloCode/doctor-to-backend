@@ -37,6 +37,6 @@ const clinicSchema = new mongoose.Schema({
     },
   },
 });
-const Clinic = mongoose.model("Clinic", clinicSchema);
+const clinic = mongoose.model("clinic", clinicSchema);
 
-module.exports = Clinic;
+module.exports = clinic;

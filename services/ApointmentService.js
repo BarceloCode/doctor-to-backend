@@ -11,7 +11,7 @@ async function retrive(req) {
   try {
     const options = {
       page: req.body.page,
-      limit: 1,
+      limit: 5,
       collation: {
         locale: "en",
       },

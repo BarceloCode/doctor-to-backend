@@ -1,7 +1,18 @@
 const check = require('joi');
 
-exports.createBusinessUnit = check.object({
+exports.BusinessUnit = check.object({
 name: check.string().max(255).required(),
-consultingRoom: check.string().max(255).required(),
-treatment: check.string().max(255).required(),
+clinic: check.string().min(20).max(100).required(),
+treatment: check.string().min(20).max(255).required(),
 });
+
+exports.UpdateBusinessUnit = check.object({
+    _id: check.string().min(20).max(100).required(),
+    name: check.string().max(255).required(),
+    clinic: check.string().min(20).max(100).required(),
+    treatment: check.string().min(20).max(255).required(),
+    });
+
+    exports.checkPage = check.object({
+        page: check.number().min(1).required(),
+        });
