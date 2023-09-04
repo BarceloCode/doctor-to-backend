@@ -262,7 +262,7 @@ update: async (req, res) =>{
 
     retrieveOne: async (req, res) =>{
         try{
-            ExpedientModel.find({patient: req.body.patient})
+            ExpedientModel.findOne({patient: req.body.patient})
             .populate('patient')
             .then((data) => res.json(data))
             .catch((error) => res.json({message: error, result: "Patient does not exist"}));

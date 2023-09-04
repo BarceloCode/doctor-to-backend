@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ExpedientModel = new Schema({
-        patient: { type: Schema.Types.ObjectId, ref: 'patient'},
+        patient: { 
+            type: Schema.Types.ObjectId, ref: 'patient',
+            required: true,
+        },
         familyHistory: [{
             family: {
                 type: String,
@@ -97,7 +100,9 @@ const ExpedientModel = new Schema({
                 default: 'N/A',
                 required: true
             },
-            others: String,
+            others: {
+                type: String
+            },
             doyouSmoke: String,
             howMany: {
                 type: String, 
@@ -108,7 +113,9 @@ const ExpedientModel = new Schema({
                 type: String, 
                 default: 'N/A'
             },
-            drinkAlcohol: String, 
+            drinkAlcohol: {
+                type: String                
+            }, 
             alchohol: String, 
             bloodPhobia: String,
             needlePhobia: String,         
