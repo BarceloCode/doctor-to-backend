@@ -4,7 +4,7 @@ const PatientControl = require ("../controllers/PatientControl");
 
 
 router.post('/create', PatientControl.create);
-router.put('/update', PatientControl.update);
+router.put('/update/:id', PatientControl.update);
 router.get('/retrieve', PatientControl.retrieve);
 router.get('/retrieveOne', PatientControl.retrieveOne);
 router.delete('/delete/:id', PatientControl.delete);

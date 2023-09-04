@@ -40,7 +40,13 @@ module.exports = {
 
 update: async (req, res) =>{
     try{
-        let patient = await PatientModel.findByIdAndUpdate(req.body._id,{
+
+        let { error } = Validate.patient(req.body);
+        if (error) return res.json({ success: false, result: error.details[0].message});
+
+        const { id } = req.params;
+
+        let patient = await PatientModel.findByIdAndUpdate({_id: id},{
             name: req.body.name,
             gender: req.body.gender,
             age: req.body.age,
