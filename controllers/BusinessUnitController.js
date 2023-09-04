@@ -30,7 +30,6 @@ async function updateBunit(req, res) {
     res.status(400).json({ message: error.message });
   }
 }
-
 async function deleteBunit(req, res) {
   try {
     const Bunit = await BusinessUnitService.softDelete(req, res);
@@ -39,6 +38,7 @@ async function deleteBunit(req, res) {
     res.status(400).json({ message: error.message });
   }
 }
+
 async function undoDeleteBunit(req, res) {
   try {
     const Bunit = await BusinessUnitService.UndosoftDelete(req, res);
