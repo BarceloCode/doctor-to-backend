@@ -93,8 +93,9 @@ retrieveOne: async (req, res) =>{
 
 delete: async (req, res) => {
     try{
+        const { id } = req.params;
         PatientModel
-      .deleteMany({ _id: req.params._id})
+      .deleteMany({ _id: id})
       .then((data) => res.json(data))
       .catch((error) => res.json({ message: error}));
     }catch (error){
