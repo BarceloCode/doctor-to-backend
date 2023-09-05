@@ -2,237 +2,245 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ExpedientModel = new Schema({
-        patient: { 
+    patient: { 
             type: Schema.Types.ObjectId, ref: 'patient',
             required: true,
         },
-        familyHistory: [{
-            family: {
-                type: String,
-                required: true,
+    familyHistory: [{
+            familyMember: {
+                type: String,                 
+                default: 'N/A'
             },
             diabetes: {
                 type: String,
-                required: true,
+                default: 'N/A'                 
             },
             hypertension: {
-                type: String,
-                required: true,
-            }, 
-            autoimmuneDiseases: {
-                type: String,
-                required: true,
-            },
-        }],
-        pathologicalHistory: [{
-            diabetesMellitus: {
                 type: String, 
-                default: 'N/A',
-                required: true
-            },
-            arterialHypertension: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },
-            endocrinologicalDiseases: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },        
-            diseasesAutoimmune: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            }, 
-            vih: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },
-            herpes: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },
-            bloodTransfusions: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },
-            trauma: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },
-            fracture: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },
-            hospitalizations: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },
-            previousSurgeries: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },
-            hepatitis: {
-                type: String, 
-                default: 'N/A',
-                required: true
+                default: 'N/A'
             },
             cancer: {
                 type: String, 
-                default: 'N/A',
-                required: true
-            },
-            epilepsy: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },
-            allergies: {
-                type: String, 
-                default: 'N/A',
-                required: true
-            },
-            others: {
-                type: String
-            },
-            doyouSmoke: String,
-            howMany: {
-                type: String, 
                 default: 'N/A'
             },
-            adictions: String, 
-            whichOne: {
+            othersDiseases: {
                 type: String, 
                 default: 'N/A'
-            },
-            drinkAlcohol: {
-                type: String                
-            }, 
-            alchohol: String, 
-            bloodPhobia: String,
-            needlePhobia: String,         
-            fainting: String,
-            medicines: String,
-            medicineName: {
+            }
+        }],
+    pathologicalHistory: [{
+            mellitusDiabetes: {
                 type: String,
                 default: 'N/A'
             },
-            bruises: String, 
-            tanningbed: String, 
-            anesthesia: String, 
+            arterialHypertension: {
+                type: String,
+                default: 'N/A'
+            },
+            endocrinolgicalDiseases: {
+                type: String, 
+                default: 'N/A'
+            },
+            psychiatricDiseases: {
+                type: String, 
+                default: 'N/A'
+            },
+            autoimmuneDiseases: {
+                type: String, 
+                default: 'N/A'
+            },
+            vih: {
+                type: String, 
+                default: 'N/A'
+            },
+            herpesLabialis: {
+                type: String, 
+                default: 'N/A'
+            },
+            herpesZoster: {
+                type: String, 
+                default: 'N/A'
+            },
+            bloodTransfusions: {
+                type: String,
+                default: 'N/A'
+            },
+            trauma: {
+                type: String,
+                default: 'N/A'
+            },
+            fractures: {
+                type: String, 
+                default: 'N/A'
+            },
+            hospitalizations: {
+                type: String, 
+                default: 'N/A'
+            },
+            previousSurgeries: {
+                type: String, 
+                default: 'N/A'
+            },
+            hepatitis: {
+                type: String, 
+                default: 'N/A'
+            },
+            cancer: {
+                type: String, 
+                default: 'N/A'
+            },
+            epilepsy: {
+                type: String, 
+                default: 'N/A'
+            },
+            allergies: [{
+                type: String,
+                default: 'N/A'
+            }],
+            evolution: {
+                type: String, 
+                default: 'N/A'
+            },
+            medicalTreatment: {
+                type: String, 
+                default: 'N/A'
+            },
+            others: {
+                type: String, 
+                default: 'N/A'
+            },
+            bloodPhobia: {
+                type: String, 
+                default: 'N/A'
+            },
+            needlePhobia: {
+                type: String, 
+                default: 'N/A'
+            },
+            fainting: {
+                type: String, 
+                default: 'N/A'
+            },
+            takingMedication: {
+                type: String, 
+                default: 'N/A'
+            },
+            bruises: {
+                type: String, 
+                default: 'N/A'
+            },
+            tanningBed: {
+                type: String, 
+                default: 'N/A'
+            },
+            localAnesthesia: {
+                type: String, 
+                default: 'N/A'
+            },
             anesthesiaProblems: {
                 type: String, 
                 default: 'N/A'
             },
-            problem: {
-                type: String, 
-                default: 'N/A'
-            },
-            vaccine: String, 
-            vaccineName: {
+            vaccinationsReceived: {
                 type: String, 
                 default: 'N/A'
             },
             infections: {
-                type: String,
+                type: String, 
                 default: 'N/A'
-            }, 
-            infectionName:{
+            },
+            medicaltreatmentReceived: {
+                type: String, 
+                default: 'N/A'
+            },
+            doExcerice: {
+                type: String, 
+                default: 'N/A'
+            },
+            doExercise: {
                 type: String,
                 default: 'N/A'
             },
-            medicalTreatment: String,
-            treatment: {
-                type: String,
+            followDiet: {
+                type: String, 
+                default: 'N/A'
+            }
+        }],
+    adictions: [{
+            doyouSmoke: {
+                type: String, 
                 default: 'N/A'
             },
-            exercise: String, 
-            typeof: {
-                type: String,
+            haveAddictions:{
+                type: String, 
                 default: 'N/A'
-            },            
+            },
+            drinksAlcohol:{
+                type: String, 
+                default: 'N/A'
+            }
         }],
-        gynecologistsHistory: [{
-            pregnant: String,
-            mernacaNo: String,
-            fum: String, 
-            menstrualrhythm: String, 
-            fup: String, 
-            g: String, 
-            p: String, 
-            a: String, 
-            c: String, 
-            contraceptivemethod: String
-        }],
-        solarProtection: [{
-            solarExposition: String,
-            time: String, 
-            usesolarProtection: String,
-            brand: String, 
-            fps: String
-        }],
-        consultReason: {
+    gynecobstetricHistory: [{
+        pregnant: {
             type: String, 
             default: 'N/A'
         },
-        other: {
+        menarcaNo: {
             type: String, 
             default: 'N/A'
         },
-        previousTreatments: [{
-            procedure: String,
-            product: String, 
-            applicationDate: String
-        }],        
-        physicalExam: [{
-            flitzpatrick: String,
-            glogau: String,
-            typeSkin: String,
-            typeFace: String,
-            dermatologicallesions: {
-                type: String, 
-                default: 'N/A'
-            },
-            lesion: {
-                type: String, 
-                default: 'N/A'
-            }, 
-            lesionType: {
-                type: String,
-                default: 'N/A'
-            },
-            location: {
-                type: String, 
-                default: 'N/A'
-            },            
-        }],
-        habitusExterior: [{
-            patientCondition: String,
-            constitution: String,
-            conformation: String, 
-            attitude: String,
-            facies: String, 
-            anormalMovements: String, 
-            gear: String,
-            consciousness: String,
-            others1: String,                 
-        }],
-        vitalSigns: [{
-            fc: String,
-            ta: String,
-            temp: String,
-            weight: String, 
-            size: String,
-            imc: String
-        }]            
+        fum: {
+            type: String, 
+            default: 'N/A'
+        },
+        mentrualRythim: {
+            type: String,
+            default: 'N/A'
+        },
+        fup: {
+            type: String, 
+            default: 'N/A'
+        },
+        g: {
+            type: String, 
+            default: 'N/A'
+        },
+        a: {
+            type: String, 
+            default: 'N/A'
+        },
+        a: {
+            type: String,
+            default: 'N/A'
+        },
+        anticonceptiveMethod: {
+            type: String, 
+            default: 'N/A'
+        }        
+    }],
+    solarProtection: [{
+        solarExposition: {
+            type: String, 
+            default: 'N/A'
+        },
+        expositionTime: {
+            type: String, 
+            default: 'N/A'
+        },
+        usersolarProtection: {
+            type: String, 
+            default: 'N/A'
+        },
+        brand: {
+            type: String, 
+            default: 'N/A'
+        },
+        fps: {
+            type: String, 
+            default: 'N/A'
+        }
+    }]
+        
 });
 
 module.exports = mongoose.model('expedient', ExpedientModel);
