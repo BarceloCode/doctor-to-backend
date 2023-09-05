@@ -103,10 +103,32 @@ async function create(req) {
 
 async function retrive(req) {
   try {
-    const email = req.body.email;
-    const user = await CosmotologistSch.findOne({
-      email: email,
-    }).select("-password -permissions -__v -deleted -deletedAt");
+    const options = {
+      page: req.body.page,
+      limit: 1,
+      collation: {
+        locale: "en",
+      },
+      select: {
+        password: 0,
+        permissions: 0,
+        __v: 0,
+        deleted: 0,
+        deletedAt: 0,
+      },
+      populate: {
+        path: "businessUnit",
+        populate: {
+          path: "clinic",
+          select: {
+            // deleted: 0,
+            // deletedAt: 0,
+            name:1
+          },
+        },
+      },
+    };
+    const user = await CosmotologistSch.paginate({}, options);
     if (!user || user.deleted) {
       return {
         message: "User not found",
