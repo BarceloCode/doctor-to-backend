@@ -121,7 +121,7 @@ async function retrive(req) {
       worktime: user.formatDate,
     };
   } catch (error) {
-    return { message: "Error", error: "User not found" };
+    return { message: error.message, error: "User not found" };
   }
 }
 

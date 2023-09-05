@@ -119,8 +119,9 @@ const CosmotologistSchema = new mongoose.Schema({
 
 CosmotologistSchema.virtual('formatDate').get(function (){
 
-  const start = moment(this.worktime.start).tz(process.env.TZ).format('HH:mm:ss');
-  const end = moment(this.worktime.end).tz(process.env.TZ).format('HH:mm:ss');
+  const start = moment(this.worktime.start).tz(process.env.TZ).format(process.env.FORMAT);
+  const end = moment(this.worktime.end).tz(process.env.TZ).format(process.env.FORMAT);
+  console.log(currentTime);
 
   return { start: start, end: end };
 });
