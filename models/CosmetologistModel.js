@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 const moment = require("moment-timezone");
 require("dotenv").config({ path: "../.env" });
 moment.tz.setDefault(process.env.TZ);
@@ -126,6 +127,7 @@ CosmotologistSchema.virtual('formatDate').get(function (){
   return { start: start, end: end };
 });
 
+CosmotologistSchema.plugin(mongoosePaginate);
 const Cosmotologist = mongoose.model("cosmetologist", CosmotologistSchema);
-
+Cosmotologist.paginate().then({});
 module.exports = Cosmotologist;

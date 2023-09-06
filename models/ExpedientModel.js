@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ExpedientModel = new Schema({
@@ -358,4 +358,5 @@ const ExpedientModel = new Schema({
         
 });
 
-module.exports = mongoose.model('expedient', ExpedientModel);
+const Expedient = mongoose.model("expedient", ExpedientModel);
+module.exports = Expedient;

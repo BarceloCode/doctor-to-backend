@@ -35,6 +35,11 @@ const clinicSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    consultingRoom:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ConsultingRoom',
+      required: true,
+    }
   },
 });
 const clinic = mongoose.model("clinic", clinicSchema);

@@ -21,5 +21,5 @@ const TreatmentModel = new Schema({
     quantity: Number
 });
 
-
-module.exports = mongoose.model('treatment', TreatmentModel);
+const Treatment = mongoose.model('treatment', TreatmentModel);
+module.exports = Treatment;
