@@ -19,7 +19,11 @@ const ExpedientModel = new Schema({
                 type: String, 
                 default: 'N/A'
             },
-            cancer: {
+            autoimmuneDiseasesF: {
+                type: String,
+                default: 'N/A'
+            },
+            cancerF: {
                 type: String, 
                 default: 'N/A'
             },
@@ -105,10 +109,6 @@ const ExpedientModel = new Schema({
                 type: String, 
                 default: 'N/A'
             },
-            others: {
-                type: String, 
-                default: 'N/A'
-            },
             bloodPhobia: {
                 type: String, 
                 default: 'N/A'
@@ -156,15 +156,15 @@ const ExpedientModel = new Schema({
             doExcerice: {
                 type: String, 
                 default: 'N/A'
-            },
-            doExercise: {
-                type: String,
-                default: 'N/A'
-            },
+            },          
             followDiet: {
                 type: String, 
                 default: 'N/A'
-            }
+            },
+            others: {
+                type: String, 
+                default: 'N/A'
+            },
         }],
     adictions: [{
             doyouSmoke: {
@@ -193,7 +193,7 @@ const ExpedientModel = new Schema({
             type: String, 
             default: 'N/A'
         },
-        mentrualRythim: {
+        menstrualRythim: {
             type: String,
             default: 'N/A'
         },
@@ -239,7 +239,122 @@ const ExpedientModel = new Schema({
             type: String, 
             default: 'N/A'
         }
+    }],
+    consultReason:[{
+        motive: {
+            type: String,
+            default: 'N/A'
+        },
+        other:{
+            type: String,
+            default: 'N/A'
+        }
+    }],
+    previousTreatments: [{
+        procedure: {
+            type: String,
+            default: 'N/A'
+        },
+        product: {
+            type: String, 
+            default: 'N/A'
+        },
+        date: {
+            type: String, 
+            default: 'N/A'
+        }
+    }],
+    physicalExam: [{
+        fitzpatrick: {
+            type: String, 
+            default: 'N/A'
+        },
+        glogau: {
+            type: String, 
+            default: 'N/A'
+        },
+        skinType: {
+            type: String,
+            default: 'N/A'
+        },
+        faceType: {
+            type: String,
+            default: 'N/A'
+        },
+        dermatologicalLesions: {
+            type: String,
+            deafult: 'N/A'
+        }
+    }],
+    habitusExterior: [{
+        patientCondition: {
+            type: String, 
+            default: 'N/A'
+        },
+        constitution: {
+            type: String,
+            default: 'N/A'
+        },
+        conformation: {
+            type: String,
+            default: 'N/A'
+        },
+        attitude: {
+            type: String,
+            default: 'N/A'
+        },
+        facies: {
+            type: String,
+            default: 'N/A'
+        },
+        anormalMovements: {
+            type: String,
+            default: 'N/A'
+        },
+        gear: {
+            type: String,
+            default: 'N/A'
+        },
+        stateofConsciousness: {
+            type: String,
+            default: 'N/A'
+        },
+        notes: {
+            type: String,
+            default: 'N/A'
+        }
+    }],
+    vitalSigns: [{
+        fc: {
+            type: String,
+            default: 'N/A'
+        },
+        fr: {
+            type: String,
+            default: 'N/A'
+        },
+        ta: {
+            type: String,
+            default: 'N/A'
+        },
+        temperature: {
+            type: String,
+            default: 'N/A'
+        },
+        weight: {
+            type: String,
+            default: 'N/A'
+        },
+        size: {
+            type: String,
+            default: 'N/A'
+        },
+        imc: {
+            type: String,
+            default: 'N/A'
+        }
     }]
+
         
 });
 
