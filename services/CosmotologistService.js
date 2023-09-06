@@ -120,13 +120,15 @@ async function retrive(req) {
         path: "businessUnit",
         populate: {
           path: "clinic",
-          select: {
-            // deleted: 0,
-            // deletedAt: 0,
-            name:1
-          },
+          populate:{
+            path:"consultingRoom",
+          }
         },
+        populate: {
+          path:"treatment"
+        }
       },
+
     };
     const user = await CosmotologistSch.paginate({}, options);
     if (!user || user.deleted) {

@@ -56,8 +56,8 @@ const clinic = [
       start: "08:00:00 am",
       end: "20:00:00 pm",
       days: "Lunes a Viernes",
-      consultingRoom: "64f7aa9a71b725ba01ed51e3",
     },
+    consultingRoom: "64f7aa9a71b725ba01ed51e3",
     phone: "3344566598",
   },
 ];

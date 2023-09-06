@@ -9,6 +9,7 @@ exports.createClinic = check.object({
     end: check.string().max(255).required(),
     days: check.string().max(255).required(),
   },
+  consultingRoom: check.string().min(20).max(255).required()
 });
 
 exports.getClinic = check.object({
