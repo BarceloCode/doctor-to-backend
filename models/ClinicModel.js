@@ -42,8 +42,7 @@ const clinicSchema = new mongoose.Schema({
     required: true,
   }
 });
-const modelNames = mongoose.modelNames();
-console.log(modelNames);
+
 const clinic = mongoose.model("clinic", clinicSchema);
 
 module.exports = clinic;
