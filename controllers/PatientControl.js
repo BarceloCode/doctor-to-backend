@@ -121,11 +121,28 @@ delete: async (req, res) => {
 
  softDeleted: async (req, res) =>{
     try{
-        const {id } = req.params;
-        PatientModel.findOneAndUpdate({_id :id})
-    }catch (error){
+        const { id } = req.params;
+        const findPatient = await PatientModel.findOne({
+            _id: id
+        })        
+        if(!patient) return 
+        const update = {
+            $set: {
+                deleted: true
+            }
+        }
+        const patient = await PatientModel.updateOne(findPatient, update);
+        if(!patient) return res.status(400).send("Can't delete the patient")
 
+        return res.status(200).send("Deleted");
+    }catch (error){
+        return { message: "Error", error: error}
     }
+    
+ },
+
+ undoDeleted: async (req, res) =>{
+
  }
 
 }
