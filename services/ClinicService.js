@@ -75,6 +75,7 @@ async function create(req) {
         end: req.body.worktime.end,
         days: req.body.worktime.days,
       },
+      consultingRoom: req.body.consultingRoom
     });
 
     if (Clinic) {
