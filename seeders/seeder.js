@@ -139,7 +139,8 @@ const cosmetologist = [
 const patient = [
   {
     _id: "64f7aa9a71b725ba01ed51eb",
-    name: "Juan Pérez Gomez",
+    name: "Juan Jose",
+    surname: "Perez Gomez",
     gender: "Male",
     age: "35",
     curp: "PERJ830101HDFXXX01",
@@ -148,6 +149,10 @@ const patient = [
     religion: "Católico",
     ocupation: "Ingeniero",
     address: "Calle Principal #123, Ciudad XYZ",
+    city: "Guadalajara",
+    state: "Jalisco",
+    zipcode: "49600",
+    country: "Mexico",
     email: "juan.perez@example.com",
     phone: "5555555555",
     emergencyContact: "María Pérez",
@@ -163,13 +168,15 @@ const expedient = [
         familyMember: "Padre",
         diabetes: "Sí",
         hypertension: "No",
-        cancer: "No",
-        othersDiseases: "N/A",
+        autoimmuneDiseasesF: "No",
+        cancerF: "No",
+        othersDiseasesF: "N/A",
       },
       {
         familyMember: "Madre",
         diabetes: "No",
         hypertension: "Sí",
+        autoimmuneDiseases: "No",
         cancer: "No",
         othersDiseases: "N/A",
       },
@@ -194,8 +201,7 @@ const expedient = [
         epilepsy: "No",
         allergies: ["Polen", "Penicilina"],
         evolution: "N/A",
-        medicalTreatment: "Sí",
-        others: "N/A",
+        medicalTreatment: "Sí",        
         bloodPhobia: "No",
         needlePhobia: "Sí",
         fainting: "No",
@@ -209,6 +215,7 @@ const expedient = [
         medicaltreatmentReceived: "No",
         doExcerice: "Sí",
         followDiet: "No",
+        others: "N/A",
       },
     ],
     adictions: [
@@ -226,8 +233,9 @@ const expedient = [
         mentrualRythim: "Regular",
         fup: "No",
         g: "2",
-        a: "0",
+        p: "0",
         a: "1",
+        c: "0",
         anticonceptiveMethod: "Pastillas anticonceptivas",
       },
     ],
@@ -240,6 +248,52 @@ const expedient = [
         fps: "SPF 50",
       },
     ],
+    consulReason: [
+      {
+        motive: "Consulta de piel",
+        other: "N/A"
+      }
+  ],
+    previousTreatments: [
+      {
+        procedure: "Peeling",
+        product: "Crema",
+        date: "22 de Enero de 2023"
+      }
+  ],
+  physicalExam: [
+    {
+      fitzpatrick: "0",
+      glogau: "0",
+      skinType: "Lisa",
+      faceType: "Redondo",
+      dermatologicalLesions: "No"
+    }
+  ],
+  habitusExterior: [
+    {
+      patientCondition: "Saludable",
+      constitution: "N/A",
+      conformation: "N/A",
+      attitude: "Serio",
+      facies: "N/A",
+      anormalMovements: "No",
+      gear: "5",
+      stateofConsciousness: "Conciente",
+      notes: "N/A"
+    }
+  ],
+  vitalSigns: [
+    {
+      fc: "0",
+      fr: "0",
+      ta: "1",
+      temperature: "29°",
+      weight: "100kg",
+      size: "Grande",
+      imc: "22.0"
+    }
+  ]
   },
 ];
 const apointment = [

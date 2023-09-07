@@ -27,7 +27,7 @@ const ExpedientModel = new Schema({
                 type: String, 
                 default: "N/A"
             },
-            othersDiseases: {
+            othersDiseasesF: {
                 type: String, 
                 default: "N/A"
             }

@@ -5,6 +5,7 @@ module.exports = {
     patient: data => {
         let schema = Joi.object({
             name: Joi.string().required(),
+            surname: Joi.string().required(),
             gender: Joi.string().required(),
             age: Joi.string(),
             curp: Joi.string().required().max(18),
@@ -13,6 +14,10 @@ module.exports = {
             religion: Joi.string().required(),
             ocupation: Joi.string().required(),
             address: Joi.string().required(),
+            city: Joi.string().required(),
+            state: Joi.string().required(),
+            zipcode: Joi.string().required(),
+            country: Joi.string().required(),
             email: Joi.string().required()
                 .email(),
             phone: Joi.string(),

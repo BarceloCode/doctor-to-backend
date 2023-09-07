@@ -11,19 +11,24 @@ module.exports = {
         if (curpExists) return res.json({ success: false, result: "User already exists"});
 
     let patient = new PatientModel({
-        name: req.body.name,
-        gender: req.body.gender,
-        age: req.body.age,
-        curp: req.body.curp,
-        birthdate: req.body.birthdate,
-        civilstatus: req.body.civilstatus,
-        religion: req.body.religion,
-        ocupation: req.body.ocupation,
-        address: req.body.address,
-        email: req.body.email,
-        phone: req.body.phone,
-        emergencyContact: req.body.emergencyContact,
-        bloodType: req.body.bloodType        
+            name: req.body.name,
+            surname: req.body.surname,
+            gender: req.body.gender,
+            age: req.body.age,
+            curp: req.body.curp,
+            birthdate: req.body.birthdate,
+            civilstatus: req.body.civilstatus,
+            religion: req.body.religion,
+            ocupation: req.body.ocupation,
+            address: req.body.address,
+            city: req.body.city,
+            state: req.body.state,
+            zipcode: req.body.zip,
+            country: req.body.country,
+            email: req.body.email,
+            phone: req.body.phone,
+            emergencyContact: req.body.emergencyContact,
+            bloodType: req.body.bloodType         
     })
         await patient.save()
         .then(result => {
@@ -48,6 +53,7 @@ update: async (req, res) =>{
 
         let patient = await PatientModel.findByIdAndUpdate({_id: id},{
             name: req.body.name,
+            surname: req.body.surname,
             gender: req.body.gender,
             age: req.body.age,
             curp: req.body.curp,
@@ -56,6 +62,10 @@ update: async (req, res) =>{
             religion: req.body.religion,
             ocupation: req.body.ocupation,
             address: req.body.address,
+            city: req.body.city,
+            state: req.body.state,
+            zipcode: req.body.zip,
+            country: req.body.country,
             email: req.body.email,
             phone: req.body.phone,
             emergencyContact: req.body.emergencyContact,
@@ -107,6 +117,15 @@ delete: async (req, res) => {
     }catch (error){
         return res.status(400).send(error)
     }
-}
+},
+
+ softDeleted: async (req, res) =>{
+    try{
+        const {id } = req.params;
+        PatientModel.findOneAndUpdate({_id :id})
+    }catch (error){
+
+    }
+ }
 
 }

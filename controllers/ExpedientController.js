@@ -12,7 +12,7 @@ module.exports = {
                 hypertension: req.body.hypertension,
                 autoimmuneDiseasesF: req.body.autoimmuneDiseasesF,
                 cancerF: req.body.cancerF,
-                othersDiseases: req.body.othersDiseases
+                othersDiseasesF: req.body.othersDiseasesF
             }],
             pathologicalHistory: [{
                 mellitusDiabetes: req.body.mellitusDiabetes,
@@ -136,7 +136,7 @@ update: async (req, res) =>{
                 hypertension: req.body.hypertension,
                 autoimmuneDiseasesF: req.body.autoimmuneDiseasesF,
                 cancerF: req.body.cancerF,
-                othersDiseases: req.body.othersDiseases
+                othersDiseasesF: req.body.othersDiseasesF
             }],
             pathologicalHistory: [{
                 mellitusDiabetes: req.body.mellitusDiabetes,
