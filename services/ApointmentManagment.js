@@ -32,11 +32,14 @@ async function findCosmetologistByTreatment(req) {
         .find({
           businessUnit: { $in: ids },
         })
-        .select("_id worktime workdays name full_lastname businessUnit")
+        .select("name worktime workdays businessUnit")
         .populate({
           path: "businessUnit",
-          select: { name: 1, clinic: 1 },
-          populate: { path: "clinic" },
+          select: { name: 1, clinic: 1, treatment: 1 },
+          populate: {
+            path: "clinic treatment",
+            select: { name: 1, treatmentName: 1, worktime:1, workdays:1, address:1 },
+          },
         });
       lenght = Cosmetologist.length;
       if (lenght === 0) {
