@@ -12,12 +12,8 @@ async function retrive(req) {
       collation: {
         locale: "en",
       },
-
       populate: {
-        path: "treatment",
-      },
-      populate: {
-        path: "clinic",
+        path: "clinic treatment",
       },
     };
     const Bunit = await BusinessUnitSch.paginate({}, options);
@@ -43,8 +39,9 @@ async function retrive(req) {
 
 async function create(req) {
   try {
+    const n = req.body.name;
     const Bunit = await BusinessUnitSch.create({
-      name: req.body.name,
+      name: n.toUpperCase(),
       clinic: req.body.clinic,
       treatment: req.body.treatment,
     });
@@ -63,11 +60,11 @@ async function create(req) {
 
 async function update(req) {
   try {
-    const findClinic = await BusinessUnitSch.findOne({
+    const findBuisnessUnit = await BusinessUnitSch.findOne({
       _id: req.body._id,
     }).select("_id deleted");
     const { name, clinic, treatment } = req.body;
-    if (!findClinic || findClinic.deleted) {
+    if (!findBuisnessUnit || findBuisnessUnit.deleted) {
       return { message: "User not found", error: true };
     }
     const update = {
@@ -75,7 +72,7 @@ async function update(req) {
       clinic: clinic,
       treatment: treatment,
     };
-    const result = await BusinessUnitSch.updateOne(findClinic, update);
+    const result = await BusinessUnitSch.updateOne(findBuisnessUnit, update);
     if (result) {
       return { message: "Updated succesfully", error: false };
     }
@@ -130,11 +127,34 @@ async function UndosoftDelete(req) {
     return { message: "Error", error: error.message };
   }
 }
+async function AddTreatmentAndClinic(req) {
+  try {
+    const { _id, clinic, treatment } = req.body;
+
+    const findBusinessUnit = await BusinessUnitSch.findOneAndUpdate(
+      { _id, deleted: false },
+      {
+        $addToSet: { treatment, clinic },
+      },
+      { new: true }
+    );
+
+    if (!findBusinessUnit) {
+      return { message: "BusinessUnit not found", error: true, status: 404 };
+    }
+
+    return { message: "Added successfully", error: false, status: 201 };
+  } catch (error) {
+    return { message: "Error", error: error.message, status: 403 };
+  }
+}
+
 
 module.exports = {
   create,
   retrive,
   update,
+  AddTreatmentAndClinic,
   softDelete,
   UndosoftDelete,
 };

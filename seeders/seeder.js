@@ -98,10 +98,7 @@ const businessunit = [
     _id: "64f7aa9a71b725ba01ed51e9",
     name: "Solo piel y cuidado",
     clinic: "64f7aa9a71b725ba01ed51e4",
-    treatment: {
-      _id: "64f7aa9a71b725ba01ed51e5",
-      _id: "64f7aa9a71b725ba01ed51e8",
-    },
+    treatment: ["64f7aa9a71b725ba01ed51e5", "64f7aa9a71b725ba01ed51e8"],
   },
 ];
 const cosmetologist = [
@@ -201,7 +198,7 @@ const expedient = [
         epilepsy: "No",
         allergies: ["Polen", "Penicilina"],
         evolution: "N/A",
-        medicalTreatment: "Sí",        
+        medicalTreatment: "Sí",
         bloodPhobia: "No",
         needlePhobia: "Sí",
         fainting: "No",
@@ -251,49 +248,49 @@ const expedient = [
     consulReason: [
       {
         motive: "Consulta de piel",
-        other: "N/A"
-      }
-  ],
+        other: "N/A",
+      },
+    ],
     previousTreatments: [
       {
         procedure: "Peeling",
         product: "Crema",
-        date: "22 de Enero de 2023"
-      }
-  ],
-  physicalExam: [
-    {
-      fitzpatrick: "0",
-      glogau: "0",
-      skinType: "Lisa",
-      faceType: "Redondo",
-      dermatologicalLesions: "No"
-    }
-  ],
-  habitusExterior: [
-    {
-      patientCondition: "Saludable",
-      constitution: "N/A",
-      conformation: "N/A",
-      attitude: "Serio",
-      facies: "N/A",
-      anormalMovements: "No",
-      gear: "5",
-      stateofConsciousness: "Conciente",
-      notes: "N/A"
-    }
-  ],
-  vitalSigns: [
-    {
-      fc: "0",
-      fr: "0",
-      ta: "1",
-      temperature: "29°",
-      weight: "100kg",
-      size: "Grande",
-      imc: "22.0"
-    }
-  ]
+        date: "22 de Enero de 2023",
+      },
+    ],
+    physicalExam: [
+      {
+        fitzpatrick: "0",
+        glogau: "0",
+        skinType: "Lisa",
+        faceType: "Redondo",
+        dermatologicalLesions: "No",
+      },
+    ],
+    habitusExterior: [
+      {
+        patientCondition: "Saludable",
+        constitution: "N/A",
+        conformation: "N/A",
+        attitude: "Serio",
+        facies: "N/A",
+        anormalMovements: "No",
+        gear: "5",
+        stateofConsciousness: "Conciente",
+        notes: "N/A",
+      },
+    ],
+    vitalSigns: [
+      {
+        fc: "0",
+        fr: "0",
+        ta: "1",
+        temperature: "29°",
+        weight: "100kg",
+        size: "Grande",
+        imc: "22.0",
+      },
+    ],
   },
 ];
 const apointment = [
