@@ -5,10 +5,6 @@ const consultingRoomSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: {
-    type: String,
-    required: true,
-  },
   isOccupied: {
     type: Boolean,
     required: true,

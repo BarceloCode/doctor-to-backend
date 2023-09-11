@@ -1,5 +1,6 @@
-const HistoryModel = require("../models/HistoryModel");
 const TreatmentModel = require("../models/TreatmentModel");
+const HistoryModel = require('../models/HistoryModel');
+
 const mongoose = require("mongoose");
 
 module.exports = {
@@ -7,15 +8,10 @@ module.exports = {
     create: async (req, res) => {
       try {
       const historyExist = await HistoryModel.findOne({ patient: req.body.patient});              
-        if(!historyExist){
-            let history = new HistoryModel({
-                patient: req.body.patient,
-                treatment: [{
-                  name: req.body.name,
-                  date: req.body.date
-                }],
-                cosmetologic: req.body.cosmetologic
-              });
+        if(!historyExist){     
+          
+          const dataToSave = req.body;          
+            const history = new HistoryModel(dataToSave);               
                 await history
                 .save()
                 .then((result) => {
@@ -23,17 +19,15 @@ module.exports = {
                 })
                 .catch((err) => {
                     res.json({ success: false, result: err });
-                });
-            }
-            const treatmentExists = historyExist.treatment;
-            let history = await HistoryModel.findOne({patient: req.body.patient},{
-              treatment:[{
-                name: req.body.name,
-                date: req.body.fecha,
-                cosmetologic: req.body.cosmetologic
-              }]                
-          });
-          return res.status(200).send(history);
+                });              
+            }else{             
+                const treatmentExists = historyExist.treatment;                              
+                const { treatment } = req.body;                                 
+                let updateHistory = await HistoryModel.findOneAndUpdate({patient: req.body.patient},{                          
+                  treatment: treatmentExists.concat(treatment)  
+                })
+                return res.status(200).send(updateHistory);                      
+            }   
             /*const treatmentExists = historyExist.treatment;          
             let history = await HistoryModel.findOneAndUpdate({patient: req.body.patient},{
                 treatment: req.body.treatment.concat(treatmentExists)                
@@ -46,15 +40,19 @@ module.exports = {
     },
 
     retrieve: async (req, res) => {
+      try{
         await HistoryModel.find()
-        .populate("patient")
-        .populate("treatment")
+        .populate("patient")                    
         .then((result) => {
             res.json({ success: true, result: result });
         })
         .catch((err) => {
             res.json({ success: false, result: err });
         });
+      }catch (error){
+        return res.status(400).send(error);
+      }
+       
     },
 
   retrieveOne: async (req, res) => {
@@ -80,22 +78,16 @@ module.exports = {
   },
 
   delete: async(req, res) =>{
-    HistoryModel
+    try{
+      HistoryModel
         .deleteMany({_id: req.body._id})
         .then((data) => res.json(data))
         .catch((error) => res.json(error))
-  },
-
-  update: async (req, res) =>{
-        let history = await HistoryModel.findByIdAndUpdate(req.body._id,{
-            patient: req.body.patient,
-            treatment: req.body.treatment
-        },{
-            new: true
-        })
-        if(!history){
-            return res.json({ success: false, result: "History does not exists with that ID"})
-        }res.status(200).send(history);
+      }
+      catch (error){
+         return res.status(400).send(error);
+      }
   }
 
+  
 };

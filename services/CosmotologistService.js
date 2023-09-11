@@ -71,7 +71,6 @@ async function create(req) {
       password: hash,
       passwordconfirmation: req.body.passwordconfirmation,
       phone: req.body.phone,
-      location: req.body.location,
       birthday: req.body.birthday,
       gender: req.body.gender,
       businessUnit: req.body.businessUnit,
@@ -104,10 +103,34 @@ async function create(req) {
 
 async function retrive(req) {
   try {
-    const email = req.body.email;
-    const user = await CosmotologistSch.findOne({
-      email: email,
-    }).select("-password -permissions -__v -deleted -deletedAt");
+    const options = {
+      page: req.body.page,
+      limit: 1,
+      collation: {
+        locale: "en",
+      },
+      select: {
+        password: 0,
+        permissions: 0,
+        __v: 0,
+        deleted: 0,
+        deletedAt: 0,
+      },
+      populate: {
+        path: "businessUnit",
+        populate: {
+          path: "clinic",
+          populate:{
+            path:"consultingRoom",
+          }
+        },
+        populate: {
+          path:"treatment"
+        }
+      },
+
+    };
+    const user = await CosmotologistSch.paginate({}, options);
     if (!user || user.deleted) {
       return {
         message: "User not found",
@@ -119,9 +142,10 @@ async function retrive(req) {
       message: "User found",
       error: false,
       user: user,
+      worktime: user.formatDate,
     };
   } catch (error) {
-    return { message: "Error", error: "User not found" };
+    return { message: error.message, error: "User not found" };
   }
 }
 
@@ -130,7 +154,7 @@ async function update(req) {
     const finduser = await CosmotologistSch.findOne({
       email: req.params.email,
     }).select("email deleted");
-    const { name, full_lastname, phone, location, birthday, gender, businessUnit } =
+    const { name, full_lastname, phone, birthday, gender, businessUnit } =
       req.body;
     if (!finduser || finduser.deleted) {
       return { message: "User not found", error: true };
@@ -140,10 +164,45 @@ async function update(req) {
         name: name,
         full_lastname: full_lastname,
         phone: phone,
-        location: location,
         businessUnit: businessUnit,
         birthday: birthday,
         gender: gender,
+      },
+    };
+    const result = await CosmotologistSch.updateOne(finduser, update);
+    if (result) {
+      return { message: "Updated succesfully", error: false };
+    }
+  } catch (error) {
+    return { message: "Error", error: error.message };
+  }
+}
+
+async function updateWorktimeAndDays(req) {
+  try {
+    const finduser = await CosmotologistSch.findOne({
+      email: req.params.email,
+    }).select("email deleted");
+    const data = req.body;
+
+    if (!finduser || finduser.deleted) {
+      return { message: "User not found", error: true };
+    }
+    const update = {
+      $set: {
+        worktime: {
+          start: data.start,
+          end: data.end,
+        },
+        workdays: {
+          monday: data.monday,
+          tuesday: data.tuesday,
+          wednesday: data.wednesday,
+          thursday: data.thursday,
+          friday: data.friday,
+          saturday: data.saturday,
+          sunday: data.sunday,
+        },
       },
     };
     const result = await CosmotologistSch.updateOne(finduser, update);
@@ -251,6 +310,7 @@ module.exports = {
   create,
   retrive,
   update,
+  updateWorktimeAndDays,
   softDelete,
   UndosoftDelete,
   handleOnline,

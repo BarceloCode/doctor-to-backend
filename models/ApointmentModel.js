@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const mongoosePaginate = require("mongoose-paginate-v2");
+require("dotenv").config({ path: "../.env" });
+const moment = require("moment-timezone");
+moment.tz.setDefault(process.env.TZ);
+const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 const ApointmentSchema = new Schema(
   {
     date: {
       type: Date,
-      default: Date.now(),
+      default: currentTime,
       required: true,
     },
     description: {
@@ -45,15 +49,14 @@ const ApointmentSchema = new Schema(
         type: Boolean,
         default: false,
       },
+      finished: {
+        type: Boolean,
+        default: false,
+      },
     },
     cosmetologist: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Cosmotologist",
-      required: true,
-    },
-    clinic: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "clinic",
+      ref: "cosmetologist",
       required: true,
     },
     patient: {
@@ -62,14 +65,9 @@ const ApointmentSchema = new Schema(
       required: true,
     },
     treatment: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Array,
+      required: true,
       ref: "treatment",
-      required: true,
-    },
-    consultingRoom: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "ConsultingRoom",
-      required: true,
     },
   },
   {
@@ -77,5 +75,7 @@ const ApointmentSchema = new Schema(
   }
 );
 
-const Apointment = mongoose.model("Apointment", ApointmentSchema);
+ApointmentSchema.plugin(mongoosePaginate);
+const Apointment = mongoose.model("apointment", ApointmentSchema);
+Apointment.paginate().then({});
 module.exports = Apointment;

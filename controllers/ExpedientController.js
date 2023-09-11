@@ -3,108 +3,108 @@ const ExpedientModel = require("../models/ExpedientModel");
 module.exports = {
 
     create: async(req, res) =>{
-
+    try{
         let expediente = new ExpedientModel({ 
             patient: req.body.patient,           
             familyHistory: [{
-                family: req.body.family,
+                familyMember: req.body.familyMember,
                 diabetes: req.body.diabetes,
                 hypertension: req.body.hypertension,
-                autoimmuneDiseases: req.body.autoimmuneDiseases,
+                autoimmuneDiseasesF: req.body.autoimmuneDiseasesF,
+                cancerF: req.body.cancerF,
+                othersDiseasesF: req.body.othersDiseasesF
             }],
             pathologicalHistory: [{
-                diabetesMellitus: req.body.diabetesMellitus,
+                mellitusDiabetes: req.body.mellitusDiabetes,
                 arterialHypertension: req.body.arterialHypertension,
-                endocrinologicalDiseases: req.body.endocrinologicalDiseases,
-                diseasesAutoimmune: req.body.diseasesAutoimmune,
+                endocrinolgicalDiseases: req.body.endocrinolgicalDiseases,
+                psychiatricDiseases: req.body.psychiatricDiseases,
+                autoimmuneDiseases: req.body.autoimmuneDiseases,
                 vih: req.body.vih,
-                herpes: req.body.herpes ,
+                herpesLabialis: req.body.herpesLabialis,
+                herpesZoster: req.body.herpesZoster,
                 bloodTransfusions: req.body.bloodTransfusions,
                 trauma: req.body.trauma,
-                fracture: req.body.fracture,
+                fractures: req.body.fractures,
                 hospitalizations: req.body.hospitalizations,
                 previousSurgeries: req.body.previousSurgeries,
                 hepatitis: req.body.hepatitis,
                 cancer: req.body.cancer,
                 epilepsy: req.body.epilepsy,
                 allergies: req.body.allergies,
-                others: req.body.others,
-                doyouSmoke: req.body.doyouSmoke,
-                howMany : req.body.howMany,        
-                adictions: req.body.adictions,
-                whichOne: req.body.whichOne,
-                drinkAlcohol: req.body.drinkAlcohol,
-                alchohol: req.body.alchohol,
-                bloodPhobia: req.body.bloodPhobia,
-                needlePhobia: req.body.needlePhobia,            
-                fainting: req.body.fainting,
-                medicines: req.body.medicines,
-                medicineName: req.body.medicineName,
-                bruises: req.body.bruises,
-                tanningbed: req.body.tanningbed,
-                anesthesia: req.body.anesthesia,
-                anesthesiaProblems: req.body.anesthesiaProblems,
-                problem: req.body.problem,
-                vaccine: req.body.vaccine,
-                vaccineName: req.body.vaccineName,
-                infections: req.body.infections,
-                infectionName: req.body.infectionName,
+                evolution: req.body.evolution,
                 medicalTreatment: req.body.medicalTreatment,
-                treatment: req.body.treatment,
-                excercise: req.body.excercise,
-                typeof: req.body.typeof,                
+                bloodPhobia: req.body.bloodPhobia,
+                needlePhobia: req.body.needlePhobia,
+                fainting: req.body.fainting,
+                takingMedication: req.body.takingMedication,
+                bruises: req.body.bruises,
+                tanningBed: req.body.tanningBed,
+                localAnesthesia: req.body.localAnesthesia,
+                anesthesiaProblems: req.body.anesthesiaProblems,
+                vaccinationsReceived: req.body.vaccinationsReceived,
+                infections: req.body.infections,
+                medicaltreatmentReceived: req.body.medicaltreatmentReceived,
+                doExcerice: req.body.doExcerice,
+                followDiet: req.body.followDiet,
+                others: req.body.others
             }],
-            gynecologistsHistory: [{
+            adictions: [{
+                doyouSmoke: req.body.doyouSmoke,
+                haveAddictions: req.body.haveAddictions,
+                drinksAlcohol: req.body.drinksAlcohol
+            }],
+            gynecobstetricHistory: [{
                 pregnant: req.body.pregnant,
                 mernacoNo: req.body.mernacoNo,
                 fum: req.body.fum,
-                menstrualrhythm: req.body.menstrualrhythm,
+                menstrualRythim: req.body.mentrualRythim,
                 fup: req.body.fup,
                 g: req.body.g,
                 p: req.body.p,
                 a: req.body.a,
                 c: req.body.c,
-                contraceptivemethod: req.body.contraceptivemethod,
+                anticonceptiveMethod: req.body.anticonceptiveMethod,
             }],
             solarProtection: [{
                 solarExposition: req.body.solarExposition,
-                time: req.body.time,
-                usesolarProtection: req.body.usesolarProtection,
+                expositionTime: req.body.expositionTime,
+                usersolarProtection: req.body.usersolarProtection,
                 brand: req.body.brand,
                 fps: req.body.fps
             }],
-            consultReason: req.body.consultReason,
-            other: req.body.other,
+            consultReason:[{
+                motive: req.body.motive,
+                other: req.body.other
+            }], 
             previousTreatments:[{
                 procedure: req.body.procedure,
                 product: req.body.product,
-                applicationDate: req.body.applicationDate
+                date: req.body.date
             }],
             physicalExam:  [{
-                flitzpatrick: req.body.flitzpatrick,
+                fitzpatrick: req.body.fitzpatrick,
                 glogau: req.body.glogau,
-                typeSkin: req.body.typeSkin,
-                typeFace: req.body.typeFace,
-                dermatologicallesions: req.body.dermatologicallesions,
-                lesion: req.body.lesion,
-                lesionType: req.body.lesionType,
-                location: req.body.location,                    
+                skinType: req.body.skinType,
+                faceType: req.body.faceType,
+                dermatologicalLesions: req.body.dermatologicalLesions                 
             }],
             habitusExterior: [{
                 patientCondition: req.body.patientCondition,
-                constituion: req.body.constituion,
-                confirmation: req.body.confirmation,
+                constitution: req.body.constitution,
+                conformation: req.body.conformation,
                 attitude: req.body.attitude,
                 facies: req.body.facies,
                 anormalMovements: req.body.anormalMovements,
                 gear: req.body.gear,
-                consciousness: req.body.consciousness,
-                others1: req.body.others1
+                stateofConsciousness: req.body.stateofConsciousness,
+                notes: req.body.notes
             }],
             vitalSigns:[{
                 fc: req.body.fc,
+                fr: req.body.fr,
                 ta: req.body.ta,
-                temp: req.body.temp,
+                temperature: req.body.temperature,
                 weight: req.body.weight,
                 size: req.body.size,
                 imc: req.body.imc
@@ -118,151 +118,179 @@ module.exports = {
           .catch(err => {
             res.json({ success: false, result: err });
           });
+    }catch(error){
+        return res.status(400).send(error)
+    }
     },
 
     
 update: async (req, res) =>{
     
-    let expediente = await ExpedientModel.findByIdAndUpdate(req.body._id,{
-        patient: req.body.patient,           
-        familyHistory: [{
-            family: req.body.family,
-            diabetes: req.body.diabetes,
-            hypertension: req.body.hypertension,
-            autoimmuneDiseases: req.body.autoimmuneDiseases,
-        }],
-        pathologicalHistory: [{
-            diabetesMellitus: req.body.diabetesMellitus,
-            arterialHypertension: req.body.arterialHypertension,
-            endocrinologicalDiseases: req.body.endocrinologicalDiseases,
-            diseasesAutoimmune: req.body.diseasesAutoimmune,
-            vih: req.body.vih,
-            herpes: req.body.herpes ,
-            bloodTransfusions: req.body.bloodTransfusions,
-            trauma: req.body.trauma,
-            fracture: req.body.fracture,
-            hospitalizations: req.body.hospitalizations,
-            previousSurgeries: req.body.previousSurgeries,
-            hepatitis: req.body.hepatitis,
-            cancer: req.body.cancer,
-            epilepsy: req.body.epilepsy,
-            allergies: req.body.allergies,
-            others: req.body.others,
-            doyouSmoke: req.body.doyouSmoke,
-            howMany : req.body.howMany,        
-            adictions: req.body.adictions,
-            whichOne: req.body.whichOne,
-            drinkAlcohol: req.body.drinkAlcohol,
-            alchohol: req.body.alchohol,
-            bloodPhobia: req.body.bloodPhobia,
-            needlePhobia: req.body.needlePhobia,            
-            fainting: req.body.fainting,
-            medicines: req.body.medicines,
-            medicineName: req.body.medicineName,
-            bruises: req.body.bruises,
-            tanningbed: req.body.tanningbed,
-            anesthesia: req.body.anesthesia,
-            anesthesiaProblems: req.body.anesthesiaProblems,
-            problem: req.body.problem,
-            vaccine: req.body.vaccine,
-            vaccineName: req.body.vaccineName,
-            infections: req.body.infections,
-            infectionName: req.body.infectionName,
-            medicalTreatment: req.body.medicalTreatment,
-            treatment: req.body.treatment,
-            excercise: req.body.excercise,
-            typeof: req.body.typeof,                
-        }],
-        gynecologistsHistory: [{
-            pregnant: req.body.pregnant,
-            mernacoNo: req.body.mernacoNo,
-            fum: req.body.fum,
-            menstrualrhythm: req.body.menstrualrhythm,
-            fup: req.body.fup,
-            g: req.body.g,
-            p: req.body.p,
-            a: req.body.a,
-            c: req.body.c,
-            contraceptivemethod: req.body.contraceptivemethod,
-        }],
-        solarProtection: [{
-            solarExposition: req.body.solarExposition,
-            time: req.body.time,
-            usesolarProtection: req.body.usesolarProtection,
-            brand: req.body.brand,
-            fps: req.body.fps
-        }],
-        consultReason: req.body.consultReason,
-        other: req.body.other,
-        previousTreatments:[{
-            procedure: req.body.procedure,
-            product: req.body.product,
-            applicationDate: req.body.applicationDate
-        }],
-        physicalExam:  [{
-            flitzpatrick: req.body.flitzpatrick,
-            glogau: req.body.glogau,
-            typeSkin: req.body.typeSkin,
-            typeFace: req.body.typeFace,
-            dermatologicallesions: req.body.dermatologicallesions,
-            lesion: req.body.lesion,
-            lesionType: req.body.lesionType,
-            location: req.body.location,                    
-        }],
-        habitusExterior: [{
-            patientCondition: req.body.patientCondition,
-            constituion: req.body.constituion,
-            confirmation: req.body.confirmation,
-            attitude: req.body.attitude,
-            facies: req.body.facies,
-            anormalMovements: req.body.anormalMovements,
-            gear: req.body.gear,
-            consciousness: req.body.consciousness,
-            others1: req.body.others1
-        }],
-        vitalSigns:[{
-            fc: req.body.fc,
-            ta: req.body.ta,
-            temp: req.body.temp,
-            weight: req.body.weight,
-            size: req.body.size,
-            imc: req.body.imc
-        }]
-    },{
-        new: true
-    })
-    if(!expediente){
-        return res.status(400).send("Expedient does not exists")
+    try{
+        const { id } = req.params;
+        let expediente = await ExpedientModel.findByIdAndUpdate(req.params.id,{ 
+            patient: req.body.patient,           
+            familyHistory: [{
+                familyMember: req.body.familyMember,
+                diabetes: req.body.diabetes,
+                hypertension: req.body.hypertension,
+                autoimmuneDiseasesF: req.body.autoimmuneDiseasesF,
+                cancerF: req.body.cancerF,
+                othersDiseasesF: req.body.othersDiseasesF
+            }],
+            pathologicalHistory: [{
+                mellitusDiabetes: req.body.mellitusDiabetes,
+                arterialHypertension: req.body.arterialHypertension,
+                endocrinolgicalDiseases: req.body.endocrinolgicalDiseases,
+                psychiatricDiseases: req.body.psychiatricDiseases,
+                autoimmuneDiseases: req.body.autoimmuneDiseases,
+                vih: req.body.vih,
+                herpesLabialis: req.body.herpesLabialis,
+                herpesZoster: req.body.herpesZoster,
+                bloodTransfusions: req.body.bloodTransfusions,
+                trauma: req.body.trauma,
+                fractures: req.body.fractures,
+                hospitalizations: req.body.hospitalizations,
+                previousSurgeries: req.body.previousSurgeries,
+                hepatitis: req.body.hepatitis,
+                cancer: req.body.cancer,
+                epilepsy: req.body.epilepsy,
+                allergies: req.body.allergies,
+                evolution: req.body.evolution,
+                medicalTreatment: req.body.medicalTreatment,
+                bloodPhobia: req.body.bloodPhobia,
+                needlePhobia: req.body.needlePhobia,
+                fainting: req.body.fainting,
+                takingMedication: req.body.takingMedication,
+                bruises: req.body.bruises,
+                tanningBed: req.body.tanningBed,
+                localAnesthesia: req.body.localAnesthesia,
+                anesthesiaProblems: req.body.anesthesiaProblems,
+                vaccinationsReceived: req.body.vaccinationsReceived,
+                infections: req.body.infections,
+                medicaltreatmentReceived: req.body.medicaltreatmentReceived,
+                doExcerice: req.body.doExcerice,
+                followDiet: req.body.followDiet,
+                others: req.body.others
+            }],
+            adictions: [{
+                doyouSmoke: req.body.doyouSmoke,
+                haveAddictions: req.body.haveAddictions,
+                drinksAlcohol: req.body.drinksAlcohol
+            }],
+            gynecobstetricHistory: [{
+                pregnant: req.body.pregnant,
+                mernacoNo: req.body.mernacoNo,
+                fum: req.body.fum,
+                menstrualRythim: req.body.mentrualRythim,
+                fup: req.body.fup,
+                g: req.body.g,
+                p: req.body.p,
+                a: req.body.a,
+                c: req.body.c,
+                anticonceptiveMethod: req.body.anticonceptiveMethod,
+            }],
+            solarProtection: [{
+                solarExposition: req.body.solarExposition,
+                expositionTime: req.body.expositionTime,
+                usersolarProtection: req.body.usersolarProtection,
+                brand: req.body.brand,
+                fps: req.body.fps
+            }],
+            consultReason:[{
+                motive: req.body.motive,
+                other: req.body.other
+            }], 
+            previousTreatments:[{
+                procedure: req.body.procedure,
+                product: req.body.product,
+                date: req.body.date
+            }],
+            physicalExam:  [{
+                fitzpatrick: req.body.fitzpatrick,
+                glogau: req.body.glogau,
+                skinType: req.body.skinType,
+                faceType: req.body.faceType,
+                dermatologicalLesions: req.body.dermatologicalLesions                 
+            }],
+            habitusExterior: [{
+                patientCondition: req.body.patientCondition,
+                constitution: req.body.constitution,
+                conformation: req.body.conformation,
+                attitude: req.body.attitude,
+                facies: req.body.facies,
+                anormalMovements: req.body.anormalMovements,
+                gear: req.body.gear,
+                stateofConsciousness: req.body.stateofConsciousness,
+                notes: req.body.notes
+            }],
+            vitalSigns:[{
+                fc: req.body.fc,
+                fr: req.body.fr,
+                ta: req.body.ta,
+                temperature: req.body.temperature,
+                weight: req.body.weight,
+                size: req.body.size,
+                imc: req.body.imc
+            }]
+        },{
+            new: true
+        })
+        if(!expediente){
+            return res.status(400).send("Expedient does not exists")
+        }
+        return res.status(200).send(expediente)
+        /*},{
+            new: true
+        })
+        if(!expediente){
+            return res.status(400).send("Expedient does not exists")
+        }*/
+    }catch(error){
+        return res.status(400).send(error)
     }
-    res.status(200).send(expediente);
+    
   },
 
     retrieve: async (req, res) =>{
-        await ExpedientModel.find({})
-        .populate('patient')
+        try{
+            await ExpedientModel.find({})
+            .populate('patient')
             .then(result =>{
                 if(!result) res.json({success: false, result: "No results found"});            
     
                 res.json({ succes: true, result: result});
             })
             .catch(err => res.json({success: false, rsult: err}));
+        }catch(error){
+            return res.status(400).send(error)
+        }
     },
 
     retrieveOne: async (req, res) =>{
-        ExpedientModel.find({patient: req.body.patient})
-        .populate('patient')
-            .then((data) => res.json(data))
-            .catch((error) => res.json({message: error, result: "Patient does not exist"}));
+        try{                        
+            const findPatient = await ExpedientModel.findOne({ 
+                patient: req.body.patient
+            });
+            if(!findPatient) return res.status(400).send("Expedient does not exists")
+            
+            return res.status(200).send(findPatient);            
+        }catch(error){
+            return res.status(400).send(error)
+        }
     },
     
 
     delete: async (req, res) => {
-        ExpedientModel
-          .deleteMany({ _id: req.body._id})
-          .then((data) => res.json(data))
-          .catch((error) => res.json({ message: error}));
-    }, 
-
-    
+        try{
+            const { id } = req.params;
+            ExpedientModel
+            .deleteMany({ _id: id})
+            .then((data) => res.json(data))
+            .catch((error) => res.json({ message: error}));
+        }catch(error){
+            return res.status(400).send(error)
+        }
+    },     
 
 }

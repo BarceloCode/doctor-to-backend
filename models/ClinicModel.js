@@ -34,9 +34,15 @@ const clinicSchema = new mongoose.Schema({
     days: {
       type: String,
       required: true,
-    },
+    }
   },
+  consultingRoom:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ConsultingRoom',
+    required: true,
+  }
 });
-const Clinic = mongoose.model("Clinic", clinicSchema);
 
-module.exports = Clinic;
+const clinic = mongoose.model("clinic", clinicSchema);
+
+module.exports = clinic;

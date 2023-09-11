@@ -3,9 +3,18 @@ const Schema = mongoose.Schema;
 
 
 const ProductsModel = new Schema({
-    productName: String,
-    productPrice: String, 
-    stock: Number
+    productName: {
+        type: String, 
+        required: true,
+    },
+    productPrice: {
+        type: Number, 
+        required: true,
+    }, 
+    stock: {
+        type: Number, 
+        required: true,
+    }
 })
-
-module.exports = mongoose.model('products', ProductsModel);
+const Product = mongoose.model('products', ProductsModel);
+module.exports = Product;

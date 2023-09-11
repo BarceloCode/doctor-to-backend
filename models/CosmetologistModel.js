@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 const moment = require("moment-timezone");
 require("dotenv").config({ path: "../.env" });
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
-const cosmotologistSchema = new mongoose.Schema({
+const CosmotologistSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -71,10 +72,12 @@ const cosmotologistSchema = new mongoose.Schema({
     start: {
       type: Date,
       required: true,
+      default: new Date('2000-01-01T00:00:00Z')
     },
     end: {
       type: Date,
       required: true,
+      default: new Date('2000-01-01T00:00:00Z')
     },
   },
   workdays: {
@@ -107,12 +110,6 @@ const cosmotologistSchema = new mongoose.Schema({
       default: true,
     },
   },
-  location: {
-    type: mongoose.Schema.Types.ObjectId,
-    default: null,
-    ref: "Clinic",
-    required: true,
-  },
   businessUnit: {
     type: mongoose.Schema.Types.ObjectId,
     default: null,
@@ -120,7 +117,17 @@ const cosmotologistSchema = new mongoose.Schema({
     required: true,
   },
 });
-//location hace referencia a la clinica en la que esta la cosmotologa
-const Cosmotologist = mongoose.model("Cosmotologist", cosmotologistSchema);
 
+CosmotologistSchema.virtual('formatDate').get(function (){
+
+  const start = moment(this.worktime.start).tz(process.env.TZ).format(process.env.FORMAT);
+  const end = moment(this.worktime.end).tz(process.env.TZ).format(process.env.FORMAT);
+  console.log(currentTime);
+
+  return { start: start, end: end };
+});
+
+CosmotologistSchema.plugin(mongoosePaginate);
+const Cosmotologist = mongoose.model("cosmetologist", CosmotologistSchema);
+Cosmotologist.paginate().then({});
 module.exports = Cosmotologist;

@@ -2,14 +2,24 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const TreatmentModel = new Schema({
-    treatmentName: String,
-    description:  String,
-    price: Number,
+    treatmentName: {
+        type: String,
+        required: true
+    },
+    description:  {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
     product: {
-        type: Schema.Types.ObjectId, ref: 'products'
+        type: mongoose.Schema.Types.ObjectId, ref: 'products',
+        required: true
     },
     quantity: Number
 });
 
-
-module.exports = mongoose.model('treatment', TreatmentModel);
+const Treatment = mongoose.model('treatment', TreatmentModel);
+module.exports = Treatment;

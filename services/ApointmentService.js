@@ -1,19 +1,75 @@
 const ApointmentSchema = require("../models/ApointmentModel");
+const CosmetologistApointmentSchema = require("../models/CosmetologistApointments");
 require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
-async function retrive() {
+
+
+async function retrive(req) {
   try {
-    const Apointment = await ApointmentSchema.find({})
-    .populate({ path: 'Cosmotologist'})
-    .populate({ path: 'Clinic'})
-    .populate({ path: 'patient'})
-    .populate({ path: 'treatment'})
-    .populate({ path: 'ConsultingRoom'})
-    
-    if (!Apointment || Apointment.deleted) {
+    const options = {
+      page: req.body.page,
+      limit: 5,
+      collation: {
+        locale: "en",
+      },
+      populate: {
+        path: "apointment",
+        select: { cosmetologist: 0 },
+        populate: {
+          path: "treatment",
+          populate: { path: "product" },
+        },
+      },
+      populate: {
+        path: "cosmetologist",
+        select: { name: 1, full_lastname: 1, email: 1, phone: 1, location: 1 },
+        populate: { path: "location", select: { name: 1, address: 1 } },
+      },
+    };
+    const Apointment = await CosmetologistApointmentSchema.paginate(
+      {},
+      options
+    );
+
+    if (!Apointment || Apointment.deleted || Apointment.length === 0) {
+      return {
+        message: "Apointment not found",
+        error: true,
+        error: error.message,
+      };
+    }
+    return {
+      message: "Apointment found!",
+      error: false,
+      Apointments: Apointment,
+    };
+  } catch (error) {
+    return { message: error.message, error: "Apointment not found" };
+  }
+}
+async function retriveOne(req) {
+  try {
+    const Apointment = await CosmetologistApointmentSchema.findOne({
+      _id: req.body._id,
+    })
+      .populate({
+        path: "apointment",
+        select: { cosmetologist: 0 },
+        populate: {
+          path: "treatment",
+          populate: { path: "product" },
+        },
+      })
+      .populate({
+        path: "cosmetologist",
+        select: { name: 1, full_lastname: 1, email: 1, phone: 1, location: 1 },
+        populate: { path: "location", select: { name: 1, address: 1 } },
+      });
+
+    if (!Apointment || Apointment.deleted || Apointment.length === 0) {
       return {
         message: "Apointment not found",
         error: true,
@@ -36,14 +92,16 @@ async function create(req) {
       date: req.body.date,
       description: req.body.description,
       cosmetologist: req.body.cosmetologist,
-      clinic: req.body.clinic,
       patient: req.body.patient,
       treatment: req.body.treatment,
-      consultingRoom: req.body.consultingRoom
     });
+    const CosmeApoint = HandleCosmetologistApointments(
+      Apointment.cosmetologist,
+      Apointment._id
+    );
 
-    if (Apointment) {
-      return { message: "Created succesfully", error: false };
+    if (Apointment && CosmeApoint) {
+      return { message: "Apointment Created succesfully", error: false };
     }
   } catch (error) {
     return {
@@ -56,33 +114,21 @@ async function create(req) {
 
 async function update(req) {
   try {
-    const finduser = await ApointmentSchema.findOne({
-      email: req.params.email,
-    }).select("email deleted");
-    const {
-      name,
-      full_lastname,
-      phone,
-      location,
-      birthday,
-      gender,
-      businessUnit,
-    } = req.body;
-    if (!finduser || finduser.deleted) {
-      return { message: "User not found", error: true };
+    const findApointment = await ApointmentSchema.findById({
+      _id: req.body._id,
+    }).select("_id deleted");
+    const { description, cosmetologist, treatment } = req.body;
+    if (!findApointment || findApointment.deleted) {
+      return { message: "Apointment not found", error: true };
     }
     const update = {
       set: {
-        name: name,
-        full_lastname: full_lastname,
-        phone: phone,
-        location: location,
-        businessUnit: businessUnit,
-        birthday: birthday,
-        gender: gender,
+        description: description,
+        cosmetologist: cosmetologist,
+        treatment: treatment,
       },
     };
-    const result = await ApointmentSchema.updateOne(finduser, update);
+    const result = await ApointmentSchema.updateOne(findApointment, update);
     if (result) {
       return { message: "Updated succesfully", error: false };
     }
@@ -138,10 +184,27 @@ async function UndosoftDelete(req) {
   }
 }
 
+async function HandleCosmetologistApointments(cosmetologist_id, apointment_id) {
+  try {
+    const CosmeApoint = await CosmetologistApointmentSchema.create({
+      cosmetologist: cosmetologist_id,
+      apointment: apointment_id,
+    });
+    if (CosmeApoint) {
+      console.log("HOLSA");
+      return true;
+    }
+  } catch (error) {
+    return { message: error.message, error: true };
+  }
+}
+
 module.exports = {
   create,
   retrive,
+  retriveOne,
   update,
   softDelete,
   UndosoftDelete,
+  HandleCosmetologistApointments,
 };

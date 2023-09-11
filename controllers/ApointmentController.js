@@ -11,6 +11,15 @@ const ApointmentService = require("../services/ApointmentService");
     }
   }
 
+ async function getOneByid(req, res){
+  try {
+    const Apointment = await ApointmentService.retriveOne(req, res);
+    res.status(200).json(Apointment);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+ } 
+
 async function createApointment(req, res) {
   try {
     const Apointment = await ApointmentService.create(req, res);
@@ -52,6 +61,7 @@ async function undoDeleteApointment(req, res) {
 module.exports = {
   createApointment,
   getAllApointment,
+  getOneByid,
   updateApointment,
   deleteApointment,
   undoDeleteApointment,

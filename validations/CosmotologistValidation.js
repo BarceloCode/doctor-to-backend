@@ -27,7 +27,6 @@ exports.cosmotologist = check.object({
     .max(10)
     .pattern(new RegExp("^[0-9]{10}$"))
     .required(),
-  location: check.string().max(255).required(),
   birthday: check.date().iso({ format: "YYYY-MM-DD" }).max("now").required(),
   gender: check.string().max(255).required(),
   worktime: {
@@ -44,7 +43,6 @@ exports.cosmotologist = check.object({
     sunday: check.boolean().required(),
   },
   businessUnit: check.string().max(255).required(),
-
 });
 
 exports.updateCosmotologist = check.object({
@@ -56,10 +54,21 @@ exports.updateCosmotologist = check.object({
     .max(10)
     .pattern(new RegExp("^[0-9]{10}$"))
     .required(),
-  location: check.string().max(255).required(),
   birthday: check.date().iso({ format: "YYYY-MM-DD" }).max("now").required(),
   gender: check.string().max(255).required(),
   businessUnit: check.string().max(255).required(),
+});
+
+exports.checkWorkdays = check.object({
+  start: check.date().required(),
+  end: check.date().required(),
+  monday: check.boolean().required(),
+  tuesday: check.boolean().required(),
+  wednesday: check.boolean().required(),
+  thursday: check.boolean().required(),
+  friday: check.boolean().required(),
+  saturday: check.boolean().required(),
+  sunday: check.boolean().required(),
 });
 
 exports.deleteCosmologist = check.object({
