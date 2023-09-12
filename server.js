@@ -36,6 +36,8 @@ const ApointmentRoute = require("./routes/ApointmentRoute.js");
 const ClinicRoute = require("./routes/ClinicRoute.js");
 const ApointmentManagment = require("./routes/ApointmentManagmentRoute");
 
+
+
 app.use("/usc/products", ProductsRoute)
 app.use("/usc/services", TreatmentRoute);
 app.use("/usc/patient", PatientRoute);

@@ -185,7 +185,7 @@ update: async (req, res) =>{
                 pregnant: req.body.pregnant,
                 mernacoNo: req.body.mernacoNo,
                 fum: req.body.fum,
-                menstrualRythim: req.body.mentrualRythim,
+                menstrualRythim: req.body.menstrualRythim,
                 fup: req.body.fup,
                 g: req.body.g,
                 p: req.body.p,
@@ -258,7 +258,10 @@ update: async (req, res) =>{
     retrieve: async (req, res) =>{
         try{
             await ExpedientModel.find({})
-            .populate('patient')
+            .populate({
+                path: "patient",
+                select: { _id: 0, name: 1, birthdate: 1}                
+            })
             .then(result =>{
                 if(!result) res.json({success: false, result: "No results found"});            
     
@@ -274,11 +277,13 @@ update: async (req, res) =>{
         try{      
             const findPatient = await ExpedientModel.findOne({ 
                 patient: req.body.patient
-            }).
-            populate("patient");            
-            if(!findPatient) return res.status(400).send("Expedient does not exists")
+            }).populate({
+                path: "patient",
+                select: { _id: 0, name: 1, birthdate: 1}                
+            })        
+            if(!findPatient) return res.status(400).send("Expedient does not exists")            
             
-            return res.status(200).send(findPatient);            
+            res.json({ success: true, result: findPatient});
         }catch(error){
             return res.status(400).send(error)
         }

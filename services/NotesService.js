@@ -1,4 +1,5 @@
 const NotesSchema = require("../models/NotesModel");
+require("dotenv").config({ path: "../.env" });
 
 async function create (req){
     try{
@@ -17,3 +18,5 @@ async function create (req){
         };
     }
 }
+
+module.exports = { create }
