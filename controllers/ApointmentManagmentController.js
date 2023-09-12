@@ -1,16 +1,24 @@
 const ApointmentMgnmtService = require("../services/ApointmentManagment");
 
-
-
- async function findCosmetologistByTreatment(req, res) {
-    try {
-      const Apointment = await ApointmentMgnmtService.findCosmetologistByTreatment(req, res);
-      res.status(Apointment.status).json(Apointment);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
+async function findCosmetologistByTreatment(req, res) {
+  try {
+    const Apointment =
+      await ApointmentMgnmtService.findCosmetologistByTreatment(req, res);
+    res.status(Apointment.status).json(Apointment);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
+}
 
+async function getAvaibleApointmentDates(req, res) {
+  try {
+    const AvaibleApointmentDates =
+      await ApointmentMgnmtService.getAvailableDates(req);
+    res.status(AvaibleApointmentDates.status).json(AvaibleApointmentDates);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 //  async function getOneByid(req, res){
 //   try {
 //     const Apointment = await ApointmentService.retriveOne(req, res);
@@ -18,7 +26,7 @@ const ApointmentMgnmtService = require("../services/ApointmentManagment");
 //   } catch (error) {
 //     res.status(400).json({ message: error.message });
 //   }
-//  } 
+//  }
 
 // async function createApointment(req, res) {
 //   try {
@@ -55,12 +63,12 @@ const ApointmentMgnmtService = require("../services/ApointmentManagment");
 //   }
 // }
 
-
 module.exports = {
-//   createApointment,
+  //   createApointment,
   findCosmetologistByTreatment,
-//   getOneByid,
-//   updateApointment,
-//   deleteApointment,
-//   undoDeleteApointment,
+  getAvaibleApointmentDates,
+  //   getOneByid,
+  //   updateApointment,
+  //   deleteApointment,
+  //   undoDeleteApointment,
 };

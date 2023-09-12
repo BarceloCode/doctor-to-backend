@@ -5,7 +5,7 @@ exports.createApointment = check.object({
   description: check.string().max(255).required(),
   cosmetologist: check.string().min(20).max(100).required(),
   patient: check.string().min(20).max(100).required(),
-  treatment: check.array().min(20).max(100).required(),
+  treatment: check.array().min(1).max(10).required(),
 });
 
 exports.checkforUpte = check.object({
