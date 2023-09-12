@@ -72,12 +72,11 @@ const CosmotologistSchema = new mongoose.Schema({
     start: {
       type: Date,
       required: true,
-      default: new Date('2000-01-01T00:00:00Z')
+      
     },
     end: {
       type: Date,
       required: true,
-      default: new Date('2000-01-01T00:00:00Z')
     },
   },
   workdays: {
@@ -120,8 +119,8 @@ const CosmotologistSchema = new mongoose.Schema({
 
 CosmotologistSchema.virtual('formatDate').get(function (){
 
-  const start = moment(this.worktime.start).tz(process.env.TZ).format(process.env.FORMAT);
-  const end = moment(this.worktime.end).tz(process.env.TZ).format(process.env.FORMAT);
+  const start = moment(this.worktime.start).tz(process.env.TZ).format(process.env.FORMAT_APOINTMENT);
+  const end = moment(this.worktime.end).tz(process.env.TZ).format(process.env.FORMAT_APOINTMENT);
   console.log(currentTime);
 
   return { start: start, end: end };
