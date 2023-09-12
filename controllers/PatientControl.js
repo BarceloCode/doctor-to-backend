@@ -23,7 +23,7 @@ module.exports = {
             address: req.body.address,
             city: req.body.city,
             state: req.body.state,
-            zipcode: req.body.zip,
+            zipcode: req.body.zipcode,
             country: req.body.country,
             email: req.body.email,
             phone: req.body.phone,
@@ -32,7 +32,7 @@ module.exports = {
     })
         await patient.save()
         .then(result => {
-        res.json({ success: true, result: result });
+        res.json({ message: "Patient Created", result: result });
         })
         .catch(err => {
         res.json({ success: false, result: err });

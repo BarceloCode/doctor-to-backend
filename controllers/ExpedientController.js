@@ -4,6 +4,9 @@ module.exports = {
 
     create: async(req, res) =>{
     try{
+        let expedientExists = await ExpedientModel.findOne({patient: req.body.patient});
+        if (expedientExists) return res.json({ success: false, result: "Expedient already exists"});        
+
         let expediente = new ExpedientModel({ 
             patient: req.body.patient,           
             familyHistory: [{
@@ -58,7 +61,7 @@ module.exports = {
                 pregnant: req.body.pregnant,
                 mernacoNo: req.body.mernacoNo,
                 fum: req.body.fum,
-                menstrualRythim: req.body.mentrualRythim,
+                menstrualRythim: req.body.menstrualRythim,
                 fup: req.body.fup,
                 g: req.body.g,
                 p: req.body.p,
@@ -268,10 +271,10 @@ update: async (req, res) =>{
     },
 
     retrieveOne: async (req, res) =>{
-        try{                        
+        try{      
             const findPatient = await ExpedientModel.findOne({ 
                 patient: req.body.patient
-            });
+            });            
             if(!findPatient) return res.status(400).send("Expedient does not exists")
             
             return res.status(200).send(findPatient);            
@@ -280,7 +283,6 @@ update: async (req, res) =>{
         }
     },
     
-
     delete: async (req, res) => {
         try{
             const { id } = req.params;

@@ -353,9 +353,7 @@ const ExpedientModel = new Schema({
             type: String,
             default: "N/A"
         }
-    }]
-
-        
+    }]        
 });
 
 const Expedient = mongoose.model("expedient", ExpedientModel);

@@ -42,7 +42,19 @@ module.exports = {
     retrieve: async (req, res) => {
       try{
         await HistoryModel.find()
-        .populate("patient")                    
+        .populate({
+          path: "patient",                    
+        })
+        .populate({
+          path: "treatments",
+          populate: { path: "treatment",
+          select: { treatmentName: 1}},                   
+        })
+        .populate({
+          path: "treatments",
+          populate: { path: "cosmetologist",
+          select: { name: 1, full_lastname: 1}}
+        })    
         .then((result) => {
             res.json({ success: true, result: result });
         })
@@ -58,9 +70,8 @@ module.exports = {
   retrieveOne: async (req, res) => {
     try {
       const history = await HistoryModel.findById({ _id: req.body._id })
-        .populate("patient")
-        .populate("treatment");
-  
+        .populate("patient")        
+        .populate("treatment")
       if (!history) {
         return res.json({ success: false, message: "Historia no encontrada" });
       }
