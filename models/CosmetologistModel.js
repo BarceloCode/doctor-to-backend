@@ -72,7 +72,6 @@ const CosmotologistSchema = new mongoose.Schema({
     start: {
       type: Date,
       required: true,
-      
     },
     end: {
       type: Date,
@@ -115,12 +114,31 @@ const CosmotologistSchema = new mongoose.Schema({
     ref: "BusinessUnit",
     required: true,
   },
+  availableSpaces: {
+    type: Number,
+    default: 0,
+  },
 });
 
-CosmotologistSchema.virtual('formatDate').get(function (){
+CosmotologistSchema.pre("save", function (next) {
+  const start = moment(this.worktime.start);
+  const end = moment(this.worktime.end);
 
-  const start = moment(this.worktime.start).tz(process.env.TZ).format(process.env.FORMAT_APOINTMENT);
-  const end = moment(this.worktime.end).tz(process.env.TZ).format(process.env.FORMAT_APOINTMENT);
+  // Calcular la diferencia en horas
+  const hoursDifference = end.diff(start, "hours");
+
+  // Redondear hacia abajo para obtener la cantidad de espacios
+  this.availableSpaces = Math.floor(hoursDifference);
+
+  next();
+});
+CosmotologistSchema.virtual("formatDate").get(function () {
+  const start = moment(this.worktime.start)
+    .tz(process.env.TZ)
+    .format(process.env.FORMAT_APOINTMENT);
+  const end = moment(this.worktime.end)
+    .tz(process.env.TZ)
+    .format(process.env.FORMAT_APOINTMENT);
   console.log(currentTime);
 
   return { start: start, end: end };

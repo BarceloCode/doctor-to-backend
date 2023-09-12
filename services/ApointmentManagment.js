@@ -77,7 +77,7 @@ async function findCosmetologistByTreatment(req) {
 async function getAvailableDates(req) {
   try {
     const { _id } = req.body;
-    const startDate = moment().startOf("day").toDate();
+    const startDate = moment().startOf("day").add(1, "days").toDate();
     const endDate = moment().add(30, "days").endOf("day").toDate();
 
     // Obtener la información del cosmetólogo, incluyendo sus días de trabajo
@@ -87,7 +87,7 @@ async function getAvailableDates(req) {
       throw new Error("Cosmetologist not found");
     }
 
-    const diasTrabajo = Object.keys(cosmetologist.workdays).filter(
+    const workdays = Object.keys(cosmetologist.workdays).filter(
       (day) => cosmetologist.workdays[day]
     );
 
@@ -95,7 +95,7 @@ async function getAvailableDates(req) {
     const fechasDisponibles = [];
     let currentDate = moment(startDate).startOf("day");
     while (currentDate.isSameOrBefore(endDate, "day")) {
-      if (diasTrabajo.includes(currentDate.format("dddd").toLowerCase())) {
+      if (workdays.includes(currentDate.format("dddd").toLowerCase())) {
         // Formatear la fecha en "DD-MM-YYYY"
         const fechaFormateada = currentDate.format("DD-MM-YYYY");
         fechasDisponibles.push(fechaFormateada);
