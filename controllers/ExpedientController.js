@@ -279,7 +279,7 @@ update: async (req, res) =>{
                 patient: req.body.patient
             }).populate({
                 path: "patient",
-                select: { _id: 0, name: 1, birthdate: 1}                
+                select: { _id: 0, name: 1, birthdate: 1, gender: 1}                
             })        
             if(!findPatient) return res.status(400).send("Expedient does not exists")            
             
