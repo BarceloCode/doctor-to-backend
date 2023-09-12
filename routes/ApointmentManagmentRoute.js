@@ -6,7 +6,7 @@ const { validate } = require("../middlewares/validations");
 
 
 
-app.get("/get", async (req, res) => {
+app.get("/get", validate(validations.ApointmentManagmentArray), async (req, res) => {
   controller.findCosmetologistByTreatment(req, res);
 });
 

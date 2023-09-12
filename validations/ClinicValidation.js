@@ -1,6 +1,7 @@
 const check = require("joi");
 
 exports.createClinic = check.object({
+  
   name: check.string().max(255).required(),
   description: check.string().max(255).required(),
   address: check.string().max(255).required(),

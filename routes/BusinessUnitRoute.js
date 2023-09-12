@@ -12,6 +12,14 @@ app.post(
   }
 );
 
+app.post(
+  "/add",
+  validate(validations.AddTreatmentAndClinic),
+  async (req, res) => {
+    controller.AddTreatmentAndClinic(req, res);
+  }
+);
+
 app.get("/getall",validate(validations.checkPage), async (req, res) => {
   controller.getAllBunit(req, res);
 });
@@ -23,6 +31,7 @@ app.put(
     controller.updateBunit(req, res);
   }
 );
+
 
 app.delete(
   "/delete",

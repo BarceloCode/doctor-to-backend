@@ -5,7 +5,7 @@ const ApointmentMgnmtService = require("../services/ApointmentManagment");
  async function findCosmetologistByTreatment(req, res) {
     try {
       const Apointment = await ApointmentMgnmtService.findCosmetologistByTreatment(req, res);
-      res.status(200).json(Apointment);
+      res.status(Apointment.status).json(Apointment);
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
