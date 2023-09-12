@@ -274,7 +274,8 @@ update: async (req, res) =>{
         try{      
             const findPatient = await ExpedientModel.findOne({ 
                 patient: req.body.patient
-            });            
+            }).
+            populate("patient");            
             if(!findPatient) return res.status(400).send("Expedient does not exists")
             
             return res.status(200).send(findPatient);            
