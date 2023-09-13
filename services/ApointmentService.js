@@ -5,8 +5,6 @@ const moment = require("moment-timezone");
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
-
-
 async function retrive(req) {
   try {
     const options = {
@@ -25,8 +23,14 @@ async function retrive(req) {
       },
       populate: {
         path: "cosmetologist",
-        select: { name: 1, full_lastname: 1, email: 1, phone: 1, location: 1 },
-        populate: { path: "location", select: { name: 1, address: 1 } },
+        select: {
+          name: 1,
+          full_lastname: 1,
+          email: 1,
+          phone: 1,
+          businessUnit: 1,
+        },
+        populate: { path: "businessUnit", select: { name: 1, address: 1 } },
       },
     };
     const Apointment = await CosmetologistApointmentSchema.paginate(
@@ -52,8 +56,9 @@ async function retrive(req) {
 }
 async function retriveOne(req) {
   try {
-    const Apointment = await CosmetologistApointmentSchema.findOne({
+    const Apointment = await CosmetologistApointmentSchema.findById({
       _id: req.body._id,
+      deleted: false,
     })
       .populate({
         path: "apointment",
@@ -65,24 +70,39 @@ async function retriveOne(req) {
       })
       .populate({
         path: "cosmetologist",
-        select: { name: 1, full_lastname: 1, email: 1, phone: 1, location: 1 },
-        populate: { path: "location", select: { name: 1, address: 1 } },
+        select: {
+          name: 1,
+          full_lastname: 1,
+          email: 1,
+          phone: 1,
+          businessUnit: 1,
+        },
+        populate: { path: "businessUnit", select: { name: 1, address: 1 } },
       });
 
-    if (!Apointment || Apointment.deleted || Apointment.length === 0) {
+    if (!Apointment) {
       return {
         message: "Apointment not found",
         error: true,
-        error: error.message,
+        status: 404,
+      };
+    }
+
+    if (Apointment.deleted) {
+      return {
+        message: "Apointment is deleted",
+        error: true,
+        status: 404,
       };
     }
     return {
       message: "Apointment found!",
       error: false,
       Apointment: Apointment,
+      status: 200,
     };
   } catch (error) {
-    return { message: error.message, error: "Apointment not found" };
+    return { message: error.message, error: "Apointment Error", status: 403 };
   }
 }
 

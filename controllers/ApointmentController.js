@@ -1,24 +1,22 @@
 const ApointmentService = require("../services/ApointmentService");
 
-
-
- async function getAllApointment(req, res) {
-    try {
-      const Apointment = await ApointmentService.retrive(req, res);
-      res.status(200).json(Apointment);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  }
-
- async function getOneByid(req, res){
+async function getAllApointment(req, res) {
   try {
-    const Apointment = await ApointmentService.retriveOne(req, res);
+    const Apointment = await ApointmentService.retrive(req, res);
     res.status(200).json(Apointment);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
- } 
+}
+
+async function getOneByid(req, res) {
+  try {
+    const Apointment = await ApointmentService.retriveOne(req, res);
+    res.status(Apointment.status).json(Apointment);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 
 async function createApointment(req, res) {
   try {
@@ -28,8 +26,6 @@ async function createApointment(req, res) {
     res.status(400).json({ message: error.message });
   }
 }
-
-
 
 async function updateApointment(req, res) {
   try {
@@ -56,7 +52,6 @@ async function undoDeleteApointment(req, res) {
     res.status(400).json({ message: error.message });
   }
 }
-
 
 module.exports = {
   createApointment,
