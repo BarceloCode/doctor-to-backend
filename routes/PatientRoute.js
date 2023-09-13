@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const PatientControl = require ("../controllers/PatientControl");
-const Patient = require('../models/PatientModel');
 
 
 

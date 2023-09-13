@@ -10,5 +10,9 @@ app.get("/get", validate(validations.ApointmentManagmentArray), async (req, res)
   controller.findCosmetologistByTreatment(req, res);
 });
 
+app.get("/avaible", async (req, res) => {
+  controller.getAvaibleApointmentDates(req, res);
+});
+
 
 module.exports = app;
