@@ -1,4 +1,4 @@
-const ApointmentMgnmtService = require("../services/ApointmentManagment");
+const ApointmentMgnmtService = require("../services/ApointmentManagmentService");
 
 async function findCosmetologistByTreatment(req, res) {
   try {
@@ -28,57 +28,19 @@ async function getAvailableSpaces(req, res) {
     res.status(400).json({ message: error.message });
   }
 }
-//  async function getOneByid(req, res){
-//   try {
-//     const Apointment = await ApointmentService.retriveOne(req, res);
-//     res.status(200).json(Apointment);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-//  }
 
-// async function createApointment(req, res) {
-//   try {
-//     const Apointment = await ApointmentService.create(req, res);
-//     res.status(201).json(Apointment);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// }
-
-// async function updateApointment(req, res) {
-//   try {
-//     const Apointment = await ApointmentService.update(req, res);
-//     res.status(200).json(Apointment);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// }
-
-// async function deleteApointment(req, res) {
-//   try {
-//     const Apointment = await ApointmentService.softDelete(req, res);
-//     res.status(200).json(Apointment);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// }
-// async function undoDeleteApointment(req, res) {
-//   try {
-//     const Apointment = await ApointmentService.UndosoftDelete(req, res);
-//     res.status(200).json(Apointment);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// }
+async function createApointment(req, res) {
+  try {
+    const createApointment = await ApointmentMgnmtService.createApointment(req);
+    res.status(createApointment.status).json(createApointment);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 
 module.exports = {
-  //   createApointment,
   findCosmetologistByTreatment,
   getAvaibleApointmentDates,
   getAvailableSpaces,
-  //   getOneByid,
-  //   updateApointment,
-  //   deleteApointment,
-  //   undoDeleteApointment,
+  createApointment,
 };

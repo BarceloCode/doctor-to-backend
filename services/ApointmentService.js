@@ -114,6 +114,8 @@ async function create(req) {
       cosmetologist: req.body.cosmetologist,
       patient: req.body.patient,
       treatment: req.body.treatment,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime
     });
     const CosmeApoint = HandleCosmetologistApointments(
       Apointment.cosmetologist,
@@ -211,7 +213,6 @@ async function HandleCosmetologistApointments(cosmetologist_id, apointment_id) {
       apointment: apointment_id,
     });
     if (CosmeApoint) {
-      console.log("HOLSA");
       return true;
     }
   } catch (error) {

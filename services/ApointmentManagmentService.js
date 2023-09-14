@@ -4,6 +4,7 @@ const SpaceAvailabilitySchema = require("../models/SpaceAvailabilityModel");
 const cosmetologistSchema = require("../models/CosmetologistModel");
 require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
+const SpaceAvailability = require("../models/SpaceAvailabilityModel");
 moment.tz.setDefault(process.env.TZ);
 
 async function findCosmetologistByTreatment(req) {
@@ -171,19 +172,23 @@ async function getAvailableSpaces(req) {
       const formattedAvailableSpaces = availableSpaces.map((block) => ({
         startTime: moment(block.startTime)
           .tz(process.env.TZ)
-          .format("DD-MM-YYYY HH:mm:ss A"),
+          .format("HH:mm:ss A"),
         endTime: moment(block.endTime)
           .tz(process.env.TZ)
-          .format("DD-MM-YYYY HH:mm:ss A"),
+          .format("HH:mm:ss A"),
         isAvailable: block.isAvailable,
-        _id: block._id,
+        blockId: block._id, // Agregamos el ID aquí
       }));
 
       return {
         message: "Date already exists, showing available spaces:",
         status: 200,
-        spaces: availableSpaces.length,
-        available: formattedAvailableSpaces,
+        total_spaces: availableSpaces.length,
+        available: {
+          date: req.body.date,
+          _id: existingAvailability._id,
+          spaces: formattedAvailableSpaces,
+        },
       };
     }
 
@@ -205,19 +210,20 @@ async function getAvailableSpaces(req) {
     const formattedAvailableSpaces = availableSpaces.map((block) => ({
       startTime: moment(block.startTime)
         .tz(process.env.TZ)
-        .format("DD-MM-YYYY HH:mm:ss A"),
+        .format("HH:mm:ss A"),
       endTime: moment(block.endTime)
         .tz(process.env.TZ)
-        .format("DD-MM-YYYY HH:mm:ss A"),
+        .format("HH:mm:ss A"),
       isAvailable: block.isAvailable,
-      _id: block._id,
+      blockId: block._id, // Agregamos el ID aquí
     }));
 
     return {
+      date: req.body.date,
       message: "Available spaces: ",
       status: 200,
-      spaces: availableSpaces.length,
-      availableSpaces: formattedAvailableSpaces,
+      total_spaces: availableSpaces.length,
+      availableSpaces: { _id: spaces._id, spaces: formattedAvailableSpaces },
     };
   } catch (error) {
     return { message: "Error", error: error.message, status: 403 };
@@ -226,11 +232,28 @@ async function getAvailableSpaces(req) {
 
 async function createApointment(req) {
   try {
-// SELECIONAR LA FECHA Y CAMBIAR A FALSE (MANDAR ID DE EL BLOQUE DE TIEMPO DE ESA FECHA)
+    const { _id, blockId } = req.body;
+    // SELECIONAR LA FECHA Y CAMBIAR A FALSE (MANDAR ID DE EL BLOQUE DE TIEMPO DE ESA FECHA)
+    const spaceAvailability = await SpaceAvailabilitySchema.findOne({
+      _id: _id,
+      blockedTimes: { $elemMatch: { _id: blockId } },
+    }).select({ _id: 1, blockedTimes: { $elemMatch: { _id: blockId } } });
 
-//LLAMAR A LA FUNCION CREATE APOITNMENT Y MANDAR HORA DE INCIO Y HORA DE FIN
+    const blockedTimes = spaceAvailability.blockedTimes;
+    console.log(blockedTimes);
+    if (spaceAvailability) {
+      blockedTimes[0].isAvailable = false;
+      spaceAvailability.save();
+      return {
+        message: "Space availability scheduled successfully,",
+        status: 200,
+      };
+    }
+    if (!spaceAvailability) {
+      return { message: "Space availability not found", status: 404 };
+    }
 
-
+    //LLAMAR A LA FUNCION CREATE APOITNMENT Y MANDAR HORA DE INCIO Y HORA DE FIN y DATE
   } catch (error) {
     return { message: "Error", error: error.message, status: 403 };
   }

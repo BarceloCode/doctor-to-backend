@@ -20,4 +20,8 @@ app.get("/avaible/spaces", async (req, res) => {
   controller.getAvailableSpaces(req, res);
 });
 
+app.post("/create", async (req, res) => {
+  controller.createApointment(req, res);
+});
+
 module.exports = app;
