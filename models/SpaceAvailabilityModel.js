@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const moment = require("moment");
+require("dotenv").config({ path: "../.env" });
 
 const SpaceAvailabilitySchema = new mongoose.Schema({
   cosmetologist: {
@@ -42,15 +43,16 @@ SpaceAvailabilitySchema.statics.calculateAndSaveAvailability = async function (
     let currentTime = moment(workStartTime).tz(process.env.TZ);
 
     while (currentTime.isBefore(workEndTime)) {
-      const blockStart = currentTime.tz(process.env.TZ).toDate();
+      const blockStart = moment(currentTime).toDate();
       currentTime.add(blockDuration, "minutes");
-      const blockEnd = currentTime.tz(process.env.TZ).toDate();
+      const blockEnd = moment(currentTime).toDate();
 
       timeBlocks.push({
         startTime: blockStart,
         endTime: blockEnd,
       });
     }
+
     const spaceAvailability = new this({
       cosmetologist: cosmetologistId,
       date: date,
@@ -64,6 +66,8 @@ SpaceAvailabilitySchema.statics.calculateAndSaveAvailability = async function (
     throw error;
   }
 };
+
+
 
 const SpaceAvailability = mongoose.model(
   "SpaceAvailability",

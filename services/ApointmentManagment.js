@@ -135,8 +135,18 @@ async function getAvailableSpaces(req) {
   try {
     const { cosmetologist, date } = req.body;
     const validDate = moment(date, "DD-MM-YYYY").toDate();
-    const workStartTime = new Date("2023-09-15T10:00:00"); // Hora de inicio del trabajo
-    const workEndTime = new Date("2023-09-15T22:00:00"); // Hora de fin del trabajo
+    const Cosmetologist = await cosmetologistSchema
+      .findById({
+        _id: cosmetologist,
+      })
+      .select({ worktime: 1, _id: 0 });
+    const { start, end } = Cosmetologist.worktime;
+
+    if (!Cosmetologist) {
+      return { message: "Cosmetologist not found", status: 404 };
+    }
+    const workStartTime = moment(start).tz(process.env.TZ);
+    const workEndTime = moment(end).tz(process.env.TZ);
 
     // Verificar si ya existe la disponibilidad para la fecha dada
     const existingAvailability = await SpaceAvailabilitySchema.findOne({
@@ -151,19 +161,32 @@ async function getAvailableSpaces(req) {
 
       if (availableSpaces.length === 0) {
         return {
-          message: "There are no spaces available for the given date. pls select another date",
+          message:
+            "There are no spaces available for the given date. Please select another date.",
           status: 200,
         };
       }
 
+      // Formatear las fechas en el time zone y formato especificado
+      const formattedAvailableSpaces = availableSpaces.map((block) => ({
+        startTime: moment(block.startTime)
+          .tz(process.env.TZ)
+          .format("DD-MM-YYYY HH:mm:ss A"),
+        endTime: moment(block.endTime)
+          .tz(process.env.TZ)
+          .format("DD-MM-YYYY HH:mm:ss A"),
+        isAvailable: block.isAvailable,
+        _id: block._id,
+      }));
+
       return {
         message: "Date already exists, showing available spaces:",
         status: 200,
-        available: availableSpaces,
+        spaces: availableSpaces.length,
+        available: formattedAvailableSpaces,
       };
     }
 
-    // Si la disponibilidad no existe, calcular y guardar
     const spaces = await SpaceAvailabilitySchema.calculateAndSaveAvailability(
       cosmetologist,
       validDate,
@@ -175,16 +198,39 @@ async function getAvailableSpaces(req) {
       return { message: "Spaces not found", status: 404 };
     }
 
-    // Mostrar solo los espacios disponibles
     const availableSpaces = spaces.blockedTimes.filter(
       (block) => block.isAvailable === true
     );
 
+    const formattedAvailableSpaces = availableSpaces.map((block) => ({
+      startTime: moment(block.startTime)
+        .tz(process.env.TZ)
+        .format("DD-MM-YYYY HH:mm:ss A"),
+      endTime: moment(block.endTime)
+        .tz(process.env.TZ)
+        .format("DD-MM-YYYY HH:mm:ss A"),
+      isAvailable: block.isAvailable,
+      _id: block._id,
+    }));
+
     return {
       message: "Available spaces: ",
       status: 200,
-      availableSpaces: availableSpaces,
+      spaces: availableSpaces.length,
+      availableSpaces: formattedAvailableSpaces,
     };
+  } catch (error) {
+    return { message: "Error", error: error.message, status: 403 };
+  }
+}
+
+async function createApointment(req) {
+  try {
+// SELECIONAR LA FECHA Y CAMBIAR A FALSE (MANDAR ID DE EL BLOQUE DE TIEMPO DE ESA FECHA)
+
+//LLAMAR A LA FUNCION CREATE APOITNMENT Y MANDAR HORA DE INCIO Y HORA DE FIN
+
+
   } catch (error) {
     return { message: "Error", error: error.message, status: 403 };
   }
@@ -194,4 +240,5 @@ module.exports = {
   findCosmetologistByTreatment,
   getAvailableDates,
   getAvailableSpaces,
+  createApointment,
 };
