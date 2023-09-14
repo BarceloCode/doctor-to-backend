@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
-const NotesModel = new Schema({
+const NotesModel = new mongoose.Schema({
     patient: {
         type: mongoose.Schema.Types.ObjectId, ref: 'patient', 
         required: true
@@ -11,9 +10,10 @@ const NotesModel = new Schema({
             type: String
         },
         date: {
-            type: Date.now()
+            type: String,            
         }
     }]
 })
 
-module.exports = mongoose.model('notes', NotesModel);
+const Notes = mongoose.model("notes", NotesModel);
+module.exports = Notes;

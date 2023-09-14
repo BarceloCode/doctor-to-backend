@@ -35,9 +35,9 @@ const MachineRoute = require("./routes/MachineRoute.js");
 const ApointmentRoute = require("./routes/ApointmentRoute.js");
 const ClinicRoute = require("./routes/ClinicRoute.js");
 const ApointmentManagment = require("./routes/ApointmentManagmentRoute");
+const NotesRoute = require("./routes/NotesRoute.js");
 
-
-
+app.use("/usc/notes", NotesRoute);
 app.use("/usc/products", ProductsRoute)
 app.use("/usc/services", TreatmentRoute);
 app.use("/usc/patient", PatientRoute);

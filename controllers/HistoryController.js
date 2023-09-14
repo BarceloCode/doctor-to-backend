@@ -8,9 +8,8 @@ module.exports = {
     create: async (req, res) => {
       try {
       const historyExist = await HistoryModel.findOne({ patient: req.body.patient});              
-        if(!historyExist){     
-          
-          const dataToSave = req.body;          
+        if(!historyExist){               
+            const dataToSave = req.body;          
             const history = new HistoryModel(dataToSave);               
                 await history
                 .save()
@@ -19,12 +18,12 @@ module.exports = {
                 })
                 .catch((err) => {
                     res.json({ success: false, result: err });
-                });              
+                })            
             }else{             
-                const treatmentExists = historyExist.treatment;                              
-                const { treatment } = req.body;                                 
+                const treatmentExists = historyExist.treatments;                              
+                const { treatments } = req.body;                                 
                 let updateHistory = await HistoryModel.findOneAndUpdate({patient: req.body.patient},{                          
-                  treatment: treatmentExists.concat(treatment)  
+                  treatments: treatmentExists.concat(treatments)  
                 })
                 return res.status(200).send(updateHistory);                      
             }   
