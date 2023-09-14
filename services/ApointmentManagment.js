@@ -1,6 +1,6 @@
 const apoitmentSch = require("../models/ApointmentModel");
 const businessUnitSchema = require("../models/BusinessUnitModel");
-const CosmetologistApointment = require("../models/CosmetologistApointments");
+const SpaceAvailabilitySchema = require("../models/SpaceAvailabilityModel");
 const cosmetologistSchema = require("../models/CosmetologistModel");
 require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
@@ -77,8 +77,8 @@ async function findCosmetologistByTreatment(req) {
 async function getAvailableDates(req) {
   try {
     const { _id } = req.body;
-    const startDate = moment().startOf("day").toDate();
-    const endDate = moment().add(30, "days").endOf("day").toDate();
+    const startDate = moment().startOf("day").add(1, "days").toDate();
+    const endDate = moment().add(req.body.days, "days").endOf("day").toDate();
 
     // Obtener la información del cosmetólogo, incluyendo sus días de trabajo
     const cosmetologist = await cosmetologistSchema.findById(_id);
@@ -87,7 +87,7 @@ async function getAvailableDates(req) {
       throw new Error("Cosmetologist not found");
     }
 
-    const diasTrabajo = Object.keys(cosmetologist.workdays).filter(
+    const workdays = Object.keys(cosmetologist.workdays).filter(
       (day) => cosmetologist.workdays[day]
     );
 
@@ -95,7 +95,7 @@ async function getAvailableDates(req) {
     const fechasDisponibles = [];
     let currentDate = moment(startDate).startOf("day");
     while (currentDate.isSameOrBefore(endDate, "day")) {
-      if (diasTrabajo.includes(currentDate.format("dddd").toLowerCase())) {
+      if (workdays.includes(currentDate.format("dddd").toLowerCase())) {
         // Formatear la fecha en "DD-MM-YYYY"
         const fechaFormateada = currentDate.format("DD-MM-YYYY");
         fechasDisponibles.push(fechaFormateada);
@@ -122,7 +122,7 @@ async function getAvailableDates(req) {
     });
 
     return {
-      message: "Apointments:",
+      message: "Available Dates in next " + req.body.days + " days:",
       Avaible: fechasDisponiblesFiltradas,
       status: 200,
     };
@@ -131,7 +131,114 @@ async function getAvailableDates(req) {
   }
 }
 
+async function getAvailableSpaces(req) {
+  try {
+    const { cosmetologist, date } = req.body;
+    const validDate = moment(date, "DD-MM-YYYY").toDate();
+    const Cosmetologist = await cosmetologistSchema
+      .findById({
+        _id: cosmetologist,
+      })
+      .select({ worktime: 1, _id: 0 });
+    const { start, end } = Cosmetologist.worktime;
+
+    if (!Cosmetologist) {
+      return { message: "Cosmetologist not found", status: 404 };
+    }
+    const workStartTime = moment(start).tz(process.env.TZ);
+    const workEndTime = moment(end).tz(process.env.TZ);
+
+    // Verificar si ya existe la disponibilidad para la fecha dada
+    const existingAvailability = await SpaceAvailabilitySchema.findOne({
+      date: validDate,
+    });
+
+    if (existingAvailability) {
+      // La disponibilidad ya existe, mostrar solo los espacios disponibles
+      const availableSpaces = existingAvailability.blockedTimes.filter(
+        (block) => block.isAvailable === true
+      );
+
+      if (availableSpaces.length === 0) {
+        return {
+          message:
+            "There are no spaces available for the given date. Please select another date.",
+          status: 200,
+        };
+      }
+
+      // Formatear las fechas en el time zone y formato especificado
+      const formattedAvailableSpaces = availableSpaces.map((block) => ({
+        startTime: moment(block.startTime)
+          .tz(process.env.TZ)
+          .format("DD-MM-YYYY HH:mm:ss A"),
+        endTime: moment(block.endTime)
+          .tz(process.env.TZ)
+          .format("DD-MM-YYYY HH:mm:ss A"),
+        isAvailable: block.isAvailable,
+        _id: block._id,
+      }));
+
+      return {
+        message: "Date already exists, showing available spaces:",
+        status: 200,
+        spaces: availableSpaces.length,
+        available: formattedAvailableSpaces,
+      };
+    }
+
+    const spaces = await SpaceAvailabilitySchema.calculateAndSaveAvailability(
+      cosmetologist,
+      validDate,
+      workStartTime,
+      workEndTime
+    );
+
+    if (!spaces) {
+      return { message: "Spaces not found", status: 404 };
+    }
+
+    const availableSpaces = spaces.blockedTimes.filter(
+      (block) => block.isAvailable === true
+    );
+
+    const formattedAvailableSpaces = availableSpaces.map((block) => ({
+      startTime: moment(block.startTime)
+        .tz(process.env.TZ)
+        .format("DD-MM-YYYY HH:mm:ss A"),
+      endTime: moment(block.endTime)
+        .tz(process.env.TZ)
+        .format("DD-MM-YYYY HH:mm:ss A"),
+      isAvailable: block.isAvailable,
+      _id: block._id,
+    }));
+
+    return {
+      message: "Available spaces: ",
+      status: 200,
+      spaces: availableSpaces.length,
+      availableSpaces: formattedAvailableSpaces,
+    };
+  } catch (error) {
+    return { message: "Error", error: error.message, status: 403 };
+  }
+}
+
+async function createApointment(req) {
+  try {
+// SELECIONAR LA FECHA Y CAMBIAR A FALSE (MANDAR ID DE EL BLOQUE DE TIEMPO DE ESA FECHA)
+
+//LLAMAR A LA FUNCION CREATE APOITNMENT Y MANDAR HORA DE INCIO Y HORA DE FIN
+
+
+  } catch (error) {
+    return { message: "Error", error: error.message, status: 403 };
+  }
+}
+
 module.exports = {
   findCosmetologistByTreatment,
   getAvailableDates,
+  getAvailableSpaces,
+  createApointment,
 };

@@ -16,6 +16,14 @@ const ApointmentSchema = new Schema(
       type: String,
       required: true,
     },
+    startTime:{
+      type: String,
+      required: true,
+    },
+    endTime:{
+      type: String,
+      required: true,
+    },
     status: {
       confirmationPending: {
         type: Boolean,
@@ -70,9 +78,6 @@ const ApointmentSchema = new Schema(
       ref: "treatment",
     },
   },
-  {
-    strictPopulate: false,
-  }
 );
 
 ApointmentSchema.plugin(mongoosePaginate);

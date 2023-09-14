@@ -120,15 +120,14 @@ async function retrive(req) {
         path: "businessUnit",
         populate: {
           path: "clinic",
-          populate:{
-            path:"consultingRoom",
-          }
+          populate: {
+            path: "consultingRoom",
+          },
         },
         populate: {
-          path:"treatment"
-        }
+          path: "treatment",
+        },
       },
-
     };
     const user = await CosmotologistSch.paginate({}, options);
     if (!user || user.deleted) {
@@ -188,6 +187,14 @@ async function updateWorktimeAndDays(req) {
     if (!finduser || finduser.deleted) {
       return { message: "User not found", error: true };
     }
+    const start = moment(req.body.start);
+    const end = moment(req.body.end);
+
+    // Calcular la diferencia en horas
+    const hoursDifference = end.diff(start, "hours");
+
+    // Redondear hacia abajo para obtener la cantidad de espacios
+    const availableSpaces = Math.floor(hoursDifference);
     const update = {
       $set: {
         worktime: {
@@ -203,6 +210,7 @@ async function updateWorktimeAndDays(req) {
           saturday: data.saturday,
           sunday: data.sunday,
         },
+        availableSpaces: availableSpaces,
       },
     };
     const result = await CosmotologistSch.updateOne(finduser, update);

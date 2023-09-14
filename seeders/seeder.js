@@ -11,6 +11,8 @@ const cosmetologistUser = require("../models/CosmetologistModel");
 const clinicSch = require("../models/ClinicModel");
 const businessUnitSchema = require("../models/BusinessUnitModel");
 const cosmetologistApointmentSch = require("../models/CosmetologistApointments");
+const SpaceAvailabilitySchema = require("../models/SpaceAvailabilityModel");
+
 
 const db = require("../db");
 const bcrypt = require("bcrypt");
@@ -296,7 +298,7 @@ const expedient = [
 const apointment = [
   {
     _id: "64f7aa9a71b725ba01ed51ed",
-    date: "2023-09-15T10:00:00Z",
+    date: "2023-09-11T10:00:00Z",
     description: "Consulta para revisión de tratamiento de acné.",
     status: {
       confirmationPending: true,
@@ -342,40 +344,40 @@ const cosmetologistApointment = [
 
 const seedDatabase = async () => {
   try {
-    // Elimina todos los documentos existentes en la colección de usuarios
-    // await cosmetologistUser.collection.drop();
-    // await businessUnitSchema.collection().drop();
-    // await businessUnitSchema.collection.drop();
-    await historySch.collection.drop();
-    await patientSch.collection.drop();
-    await expedientSch.collection.drop();
-    await apoitmentSch.collection.drop();
-    await businessUnitSchema.collection.drop();
-    await treatmentSch.collection.drop();
-    await productSch.collection.drop();
-    await machineSch.collection.drop();
-    await consultingRoomSch.collection.drop();
-    await clinicSch.collection.drop();
-    await cosmetologistUser.collection.drop();
-    await cosmetologistApointmentSch.collection.drop();
+    // Elimina todos los documentos existentes en las colecciones
+    await historySch.deleteMany({});
+    await patientSch.deleteMany({});
+    await expedientSch.deleteMany({});
+    await apoitmentSch.deleteMany({});
+    await businessUnitSchema.deleteMany({});
+    await treatmentSch.deleteMany({});
+    await productSch.deleteMany({});
+    await machineSch.deleteMany({});
+    await consultingRoomSch.deleteMany({});
+    await clinicSch.deleteMany({});
+    await cosmetologistUser.deleteMany({});
+    await cosmetologistApointmentSch.deleteMany({});
+    await SpaceAvailabilitySchema.collection.drop();
 
-    //Inserta los datos a la base de datos
-    await historySch.insertMany(history);
-    await patientSch.insertMany(patient);
-    await expedientSch.insertMany(expedient);
-    await apoitmentSch.insertMany(apointment);
-    await businessUnitSchema.insertMany(businessunit);
-    await treatmentSch.insertMany(treatment);
-    await productSch.insertMany(product);
-    await machineSch.insertMany(machine);
-    await consultingRoomSch.insertMany(consultingRoom);
-    await clinicSch.insertMany(clinic);
-    await cosmetologistUser.insertMany(cosmetologist);
-    await cosmetologistApointmentSch.insertMany(cosmetologistApointment);
+    // Inserta los datos a la base de datos utilizando save
+    await historySch.create(history);
+    await patientSch.create(patient);
+    await expedientSch.create(expedient);
+    await apoitmentSch.create(apointment);
+    await businessUnitSchema.create(businessunit);
+    await treatmentSch.create(treatment);
+    await productSch.create(product);
+    await machineSch.create(machine);
+    await consultingRoomSch.create(consultingRoom);
+    await clinicSch.create(clinic);
+    await cosmetologistUser.create(cosmetologist);
+    await cosmetologistApointmentSch.create(cosmetologistApointment);
+
     console.log("Datos de muestra insertados correctamente.");
   } catch (error) {
     console.error("Error al insertar datos de muestra:", error);
   } finally {
+    console.log("Closed connection");
     mongoose.connection.close();
   }
 };

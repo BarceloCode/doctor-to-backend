@@ -19,6 +19,15 @@ async function getAvaibleApointmentDates(req, res) {
     res.status(400).json({ message: error.message });
   }
 }
+
+async function getAvailableSpaces(req, res) {
+  try {
+    const available = await ApointmentMgnmtService.getAvailableSpaces(req);
+    res.status(available.status).json(available);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 //  async function getOneByid(req, res){
 //   try {
 //     const Apointment = await ApointmentService.retriveOne(req, res);
@@ -67,6 +76,7 @@ module.exports = {
   //   createApointment,
   findCosmetologistByTreatment,
   getAvaibleApointmentDates,
+  getAvailableSpaces,
   //   getOneByid,
   //   updateApointment,
   //   deleteApointment,
