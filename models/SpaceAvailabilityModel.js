@@ -10,6 +10,7 @@ const SpaceAvailabilitySchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
+    unique: true,
   },
   blockedTimes: [
     {
@@ -21,9 +22,48 @@ const SpaceAvailabilitySchema = new mongoose.Schema({
         type: Date,
         required: true,
       },
+      isAvailable: {
+        type: Boolean,
+        default: true,
+      },
     },
   ],
 });
+
+SpaceAvailabilitySchema.statics.calculateAndSaveAvailability = async function (
+  cosmetologistId,
+  date,
+  workStartTime,
+  workEndTime
+) {
+  try {
+    const blockDuration = 60;
+    const timeBlocks = [];
+    let currentTime = moment(workStartTime).tz(process.env.TZ);
+
+    while (currentTime.isBefore(workEndTime)) {
+      const blockStart = currentTime.tz(process.env.TZ).toDate();
+      currentTime.add(blockDuration, "minutes");
+      const blockEnd = currentTime.tz(process.env.TZ).toDate();
+
+      timeBlocks.push({
+        startTime: blockStart,
+        endTime: blockEnd,
+      });
+    }
+    const spaceAvailability = new this({
+      cosmetologist: cosmetologistId,
+      date: date,
+      blockedTimes: timeBlocks,
+    });
+
+    await spaceAvailability.save();
+
+    return spaceAvailability;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const SpaceAvailability = mongoose.model(
   "SpaceAvailability",

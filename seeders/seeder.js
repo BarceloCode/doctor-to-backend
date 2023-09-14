@@ -11,6 +11,8 @@ const cosmetologistUser = require("../models/CosmetologistModel");
 const clinicSch = require("../models/ClinicModel");
 const businessUnitSchema = require("../models/BusinessUnitModel");
 const cosmetologistApointmentSch = require("../models/CosmetologistApointments");
+const SpaceAvailabilitySchema = require("../models/SpaceAvailabilityModel");
+
 
 const db = require("../db");
 const bcrypt = require("bcrypt");
@@ -355,6 +357,7 @@ const seedDatabase = async () => {
     await clinicSch.deleteMany({});
     await cosmetologistUser.deleteMany({});
     await cosmetologistApointmentSch.deleteMany({});
+    await SpaceAvailabilitySchema.collection.drop();
 
     // Inserta los datos a la base de datos utilizando save
     await historySch.create(history);
@@ -374,6 +377,7 @@ const seedDatabase = async () => {
   } catch (error) {
     console.error("Error al insertar datos de muestra:", error);
   } finally {
+    console.log("Closed connection");
     mongoose.connection.close();
   }
 };

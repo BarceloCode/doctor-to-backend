@@ -1,6 +1,6 @@
 const apoitmentSch = require("../models/ApointmentModel");
 const businessUnitSchema = require("../models/BusinessUnitModel");
-const CosmetologistApointment = require("../models/CosmetologistApointments");
+const SpaceAvailabilitySchema = require("../models/SpaceAvailabilityModel");
 const cosmetologistSchema = require("../models/CosmetologistModel");
 require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
@@ -78,7 +78,7 @@ async function getAvailableDates(req) {
   try {
     const { _id } = req.body;
     const startDate = moment().startOf("day").add(1, "days").toDate();
-    const endDate = moment().add(30, "days").endOf("day").toDate();
+    const endDate = moment().add(req.body.days, "days").endOf("day").toDate();
 
     // Obtener la información del cosmetólogo, incluyendo sus días de trabajo
     const cosmetologist = await cosmetologistSchema.findById(_id);
@@ -122,7 +122,7 @@ async function getAvailableDates(req) {
     });
 
     return {
-      message: "Apointments:",
+      message: "Available Dates in next " + req.body.days + " days:",
       Avaible: fechasDisponiblesFiltradas,
       status: 200,
     };
@@ -131,7 +131,67 @@ async function getAvailableDates(req) {
   }
 }
 
+async function getAvailableSpaces(req) {
+  try {
+    const { cosmetologist, date } = req.body;
+    const validDate = moment(date, "DD-MM-YYYY").toDate();
+    const workStartTime = new Date("2023-09-15T10:00:00"); // Hora de inicio del trabajo
+    const workEndTime = new Date("2023-09-15T22:00:00"); // Hora de fin del trabajo
+
+    // Verificar si ya existe la disponibilidad para la fecha dada
+    const existingAvailability = await SpaceAvailabilitySchema.findOne({
+      date: validDate,
+    });
+
+    if (existingAvailability) {
+      // La disponibilidad ya existe, mostrar solo los espacios disponibles
+      const availableSpaces = existingAvailability.blockedTimes.filter(
+        (block) => block.isAvailable === true
+      );
+
+      if (availableSpaces.length === 0) {
+        return {
+          message: "There are no spaces available for the given date. pls select another date",
+          status: 200,
+        };
+      }
+
+      return {
+        message: "Date already exists, showing available spaces:",
+        status: 200,
+        available: availableSpaces,
+      };
+    }
+
+    // Si la disponibilidad no existe, calcular y guardar
+    const spaces = await SpaceAvailabilitySchema.calculateAndSaveAvailability(
+      cosmetologist,
+      validDate,
+      workStartTime,
+      workEndTime
+    );
+
+    if (!spaces) {
+      return { message: "Spaces not found", status: 404 };
+    }
+
+    // Mostrar solo los espacios disponibles
+    const availableSpaces = spaces.blockedTimes.filter(
+      (block) => block.isAvailable === true
+    );
+
+    return {
+      message: "Available spaces: ",
+      status: 200,
+      availableSpaces: availableSpaces,
+    };
+  } catch (error) {
+    return { message: "Error", error: error.message, status: 403 };
+  }
+}
+
 module.exports = {
   findCosmetologistByTreatment,
   getAvailableDates,
+  getAvailableSpaces,
 };
