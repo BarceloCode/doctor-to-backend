@@ -5,6 +5,7 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 Object.keys(mongoose.models).forEach(modelName => {
   console.log(`Modelo registrado: ${modelName}`);
 });
+
 const CosmetologistApointmenSchema = new Schema({
 
     cosmetologist: {
