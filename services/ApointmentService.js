@@ -123,7 +123,7 @@ async function create(req) {
     );
 
     if (Apointment && CosmeApoint) {
-      return { message: "Apointment Created succesfully", error: false };
+      return CosmeApoint;
     }
   } catch (error) {
     return {
@@ -213,7 +213,7 @@ async function HandleCosmetologistApointments(cosmetologist_id, apointment_id) {
       apointment: apointment_id,
     });
     if (CosmeApoint) {
-      return true;
+      return CosmeApoint;
     }
   } catch (error) {
     return { message: error.message, error: true };

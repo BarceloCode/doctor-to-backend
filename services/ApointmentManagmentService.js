@@ -2,9 +2,9 @@ const apoitmentSch = require("../models/ApointmentModel");
 const businessUnitSchema = require("../models/BusinessUnitModel");
 const SpaceAvailabilitySchema = require("../models/SpaceAvailabilityModel");
 const cosmetologistSchema = require("../models/CosmetologistModel");
+const ApointmentService = require("./ApointmentService");
 require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
-const SpaceAvailability = require("../models/SpaceAvailabilityModel");
 moment.tz.setDefault(process.env.TZ);
 
 async function findCosmetologistByTreatment(req) {
@@ -232,28 +232,48 @@ async function getAvailableSpaces(req) {
 
 async function createApointment(req) {
   try {
-    const { _id, blockId } = req.body;
+    const { space_id, blockId } = req.body;
     // SELECIONAR LA FECHA Y CAMBIAR A FALSE (MANDAR ID DE EL BLOQUE DE TIEMPO DE ESA FECHA)
     const spaceAvailability = await SpaceAvailabilitySchema.findOne({
-      _id: _id,
+      _id: space_id,
       blockedTimes: { $elemMatch: { _id: blockId } },
     }).select({ _id: 1, blockedTimes: { $elemMatch: { _id: blockId } } });
+    
+    if (!spaceAvailability) {
+      return { message: "Space availability not found", status: 404 };
+    }
 
     const blockedTimes = spaceAvailability.blockedTimes;
     console.log(blockedTimes);
     if (spaceAvailability) {
       blockedTimes[0].isAvailable = false;
       spaceAvailability.save();
-      return {
-        message: "Space availability scheduled successfully,",
-        status: 200,
-      };
-    }
-    if (!spaceAvailability) {
-      return { message: "Space availability not found", status: 404 };
-    }
-
+      
     //LLAMAR A LA FUNCION CREATE APOITNMENT Y MANDAR HORA DE INCIO Y HORA DE FIN y DATE
+    const reqData = {
+      body:{
+        date: moment(req.body.date, "DD-MM-YYYY").toDate(),
+        description: req.body.description,
+        cosmetologist: req.body.cosmetologist,
+        patient: req.body.patient,
+        treatment: req.body.treatment,
+        startTime: blockedTimes[0].startTime,
+        endTime: blockedTimes[0].endTime  
+      }
+    }
+    const createApointment = await ApointmentService.create(reqData);
+
+   if(createApointment){
+    return {
+      message: "Apointment scheduled successfully,",
+      status: 200,
+      apointment: createApointment
+    };
+   }
+    }
+   
+
+
   } catch (error) {
     return { message: "Error", error: error.message, status: 403 };
   }
