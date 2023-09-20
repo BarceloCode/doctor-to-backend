@@ -5,6 +5,7 @@ const cosmetologistSchema = require("../models/CosmetologistModel");
 const ApointmentService = require("./ApointmentService");
 require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
+const { default: mongoose } = require("mongoose");
 moment.tz.setDefault(process.env.TZ);
 
 async function findCosmetologistByTreatment(req) {
@@ -136,6 +137,12 @@ async function getAvailableSpaces(req) {
   try {
     const { cosmetologist, date } = req.body;
     const validDate = moment(date, "DD-MM-YYYY").toDate();
+    if (moment(validDate).isBefore()) {
+      return {
+        message: "Date has passed please choose another date",
+        status: 400,
+      };
+    }
     const Cosmetologist = await cosmetologistSchema
       .findById({
         _id: cosmetologist,
@@ -173,9 +180,7 @@ async function getAvailableSpaces(req) {
         startTime: moment(block.startTime)
           .tz(process.env.TZ)
           .format("HH:mm:ss A"),
-        endTime: moment(block.endTime)
-          .tz(process.env.TZ)
-          .format("HH:mm:ss A"),
+        endTime: moment(block.endTime).tz(process.env.TZ).format("HH:mm:ss A"),
         isAvailable: block.isAvailable,
         blockId: block._id, // Agregamos el ID aquí
       }));
@@ -211,9 +216,7 @@ async function getAvailableSpaces(req) {
       startTime: moment(block.startTime)
         .tz(process.env.TZ)
         .format("HH:mm:ss A"),
-      endTime: moment(block.endTime)
-        .tz(process.env.TZ)
-        .format("HH:mm:ss A"),
+      endTime: moment(block.endTime).tz(process.env.TZ).format("HH:mm:ss A"),
       isAvailable: block.isAvailable,
       blockId: block._id, // Agregamos el ID aquí
     }));
@@ -232,48 +235,80 @@ async function getAvailableSpaces(req) {
 
 async function createApointment(req) {
   try {
-    const { space_id, blockId } = req.body;
-    // SELECIONAR LA FECHA Y CAMBIAR A FALSE (MANDAR ID DE EL BLOQUE DE TIEMPO DE ESA FECHA)
+    const {
+      space_id,
+      blockId,
+      date,
+      description,
+      cosmetologist,
+      patient,
+      treatment,
+    } = req.body;
+
+    // Convierte las cadenas space_id y blockId en objetos ObjectId
+    const spaceIdObject = mongoose.Types.ObjectId(space_id);
+    const blockIdObject = mongoose.Types.ObjectId(blockId);
+    const formattedDate = moment(date, "DD-MM-YYYY").toDate();
+
+    // Busca la disponibilidad del espacio y bloque específico
     const spaceAvailability = await SpaceAvailabilitySchema.findOne({
-      _id: space_id,
-      blockedTimes: { $elemMatch: { _id: blockId } },
-    }).select({ _id: 1, blockedTimes: { $elemMatch: { _id: blockId } } });
-    
+      _id: spaceIdObject,
+      "blockedTimes._id": blockIdObject,
+    }).select({ _id: 1, blockedTimes: { $elemMatch: { _id: blockIdObject } } });
+
     if (!spaceAvailability) {
       return { message: "Space availability not found", status: 404 };
     }
 
-    const blockedTimes = spaceAvailability.blockedTimes;
-    console.log(blockedTimes);
-    if (spaceAvailability) {
-      blockedTimes[0].isAvailable = false;
-      spaceAvailability.save();
-      
-    //LLAMAR A LA FUNCION CREATE APOITNMENT Y MANDAR HORA DE INCIO Y HORA DE FIN y DATE
-    const reqData = {
-      body:{
-        date: moment(req.body.date, "DD-MM-YYYY").toDate(),
-        description: req.body.description,
-        cosmetologist: req.body.cosmetologist,
-        patient: req.body.patient,
-        treatment: req.body.treatment,
-        startTime: blockedTimes[0].startTime,
-        endTime: blockedTimes[0].endTime  
+    // Valida si la fecha y bloque ya están ocupados
+    const CheckAvailability = await SpaceAvailabilitySchema.findOne({
+      _id: spaceIdObject,
+      date: formattedDate,
+      "blockedTimes._id": blockIdObject,
+    });
+
+    const filterByBlockId = CheckAvailability.blockedTimes.filter(
+      (data) =>
+        data._id == blockIdObject.toString() && data.isAvailable === false
+    );
+
+    if (filterByBlockId.length === 0) {
+      // Actualiza el estado del bloque
+      spaceAvailability.blockedTimes[0].isAvailable = false;
+      await spaceAvailability.save();
+
+      // Llama a la función para crear la cita
+      const reqData = {
+        body: {
+          date: formattedDate,
+          description,
+          cosmetologist,
+          patient,
+          treatment,
+          startTime: spaceAvailability.blockedTimes[0].startTime,
+          endTime: spaceAvailability.blockedTimes[0].endTime,
+        },
+      };
+
+      const createApointment = await ApointmentService.create(reqData);
+
+      if (createApointment) {
+        return {
+          message: "Appointment scheduled successfully",
+          status: 200,
+          appointment: createApointment,
+        };
       }
     }
-    const createApointment = await ApointmentService.create(reqData);
 
-   if(createApointment){
-    return {
-      message: "Apointment scheduled successfully,",
-      status: 200,
-      apointment: createApointment
-    };
-   }
+    if (CheckAvailability) {
+      return {
+        message: "This space has already been taken",
+        status: 400,
+        blockId: CheckAvailability.blockedTimes[0]._id,
+        isAvailable: CheckAvailability.blockedTimes[0].isAvailable,
+      };
     }
-   
-
-
   } catch (error) {
     return { message: "Error", error: error.message, status: 403 };
   }

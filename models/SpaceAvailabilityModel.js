@@ -11,7 +11,6 @@ const SpaceAvailabilitySchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
-    unique: true,
   },
   blockedTimes: [
     {
@@ -66,8 +65,6 @@ SpaceAvailabilitySchema.statics.calculateAndSaveAvailability = async function (
     throw error;
   }
 };
-
-
 
 const SpaceAvailability = mongoose.model(
   "SpaceAvailability",

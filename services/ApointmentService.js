@@ -64,6 +64,13 @@ async function retriveOne(req) {
         path: "apointment",
         select: { cosmetologist: 0 },
         populate: {
+          path: "patient",
+        },
+      })
+      .populate({
+        path: "apointment",
+        select: { cosmetologist: 0 },
+        populate: {
           path: "treatment",
           populate: { path: "product" },
         },
@@ -98,7 +105,7 @@ async function retriveOne(req) {
     return {
       message: "Apointment found!",
       error: false,
-      Apointment: Apointment,
+      data: Apointment,
       status: 200,
     };
   } catch (error) {
@@ -115,7 +122,7 @@ async function create(req) {
       patient: req.body.patient,
       treatment: req.body.treatment,
       startTime: req.body.startTime,
-      endTime: req.body.endTime
+      endTime: req.body.endTime,
     });
     const CosmeApoint = HandleCosmetologistApointments(
       Apointment.cosmetologist,
