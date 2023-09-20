@@ -31,8 +31,7 @@ async function create (req, res){
             })
             return {
                 message: "Note added",
-                success: true,
-                result: updateNotes,                
+                success: true,                               
             }                   
         }                  
     }catch(error){
@@ -90,21 +89,24 @@ async function getuserNotes(req, res){
 }
 
 async function deleteuserNotes (req, res) {
-    try{
-        const id  = req.params.id;
-        const objetctoDelete = req.body.objetctoDelete;
+    try{        
+        const id = req.params.id; 
+        const objectToDelete = req.body.objectToDelete;
 
-        const notes = await NotesSchema.findOneAndUpdate(
+        const result = await NotesSchema.findByIdAndUpdate(
             id,
-            { $pull: { notes: objetctoDelete } },
-            { new: true }
+            { $pull: { "notes": { "_id": objectToDelete } } },
+            { multi:true }
         );
-        if(!notes) res.json({ message: "Can't found note"});
-
-        res.json({
-            message: "Note deleted!",
-            success: true
-        })
+        if(!result){
+            return {
+                message: "Can't delete object!",
+                error: result                
+            }
+        }
+        return {
+            message: "Deleted Successfully!",            
+        }    
     }catch (error){
         return {
             message: "Internal server error!: " + error
@@ -112,7 +114,34 @@ async function deleteuserNotes (req, res) {
     }
 }
 
+async function updateNotes (req, res){
+    try{
+        const id = req.params.id;
+        const objectToEdit = req.body.objectToEdit;
+
+        const result = await NotesSchema.findOneAndUpdate(
+            {_id: id, "notes._id": objectToEdit },
+            { $set: {
+                "notes.$.description": req.body.description,
+                "notes.$.date": req.body.date
+            }
+          },
+          {new: true}
+        );
+        if(!result) return { message: "Can't find the document" };
+
+        return {
+            message: "Object updated successfully!"
+        }
+    }catch(error){
+        return {
+            message: "Internal server error!",
+            error: error
+        }
+    }
+}
 
 
 
-module.exports = { create, getAll, getuserNotes, deleteuserNotes }
+
+module.exports = { create, getAll, getuserNotes, deleteuserNotes, updateNotes }

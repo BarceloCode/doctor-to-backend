@@ -19,10 +19,16 @@ router.post("/usernotes",
     }
 )
 
-router.put("/deletenotes", 
+router.delete("/deletenotes/:id", 
     async(req, res) =>{
         controller.deleteNotes(req, res)
     }
 );
+
+router.put("/update/:id",
+    async(req, res) =>{
+        controller.updateNotes(req, res)
+    }
+)
 
 module.exports = router;

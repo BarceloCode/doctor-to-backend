@@ -6,7 +6,9 @@ async function createNote (req, res) {
         const Notes = await NotesService.create(req, res);
         res.status(200).json(Notes);
     }catch(error ){
-        res.status(400).json({ message: error.message })
+        return {
+            message: "Internal sever error: " + error
+        }
     }
 }
 
@@ -43,4 +45,15 @@ async function deleteNotes (req, res) {
     }
 }
 
-module.exports = { createNote, retrieveAll, retrieveUsernotes, deleteNotes };
+async function updateNotes (req, res){
+    try{
+        const Notes = await NotesService.updateNotes(req, res);
+        res.status(200).json(Notes)
+    }catch(error){
+        return {
+            message: "Internal server error! " + error
+        }
+    }
+}
+
+module.exports = { createNote, retrieveAll, retrieveUsernotes, deleteNotes, updateNotes };
