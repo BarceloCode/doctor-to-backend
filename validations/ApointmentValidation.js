@@ -1,13 +1,22 @@
 const check = require("joi");
 
 exports.createApointment = check.object({
-  date: check.date().required(),
+  space_id: check.string().min(20).max(100).required(),
+  blockId: check.string().min(20).max(100).required(),
+  date: check
+    .string()
+    .max(10)
+    .pattern(/^\d{2}-\d{2}-\d{4}$/)
+    .required()
+    .messages({
+      "string.pattern.base": 'La fecha debe estar en el formato "DD-MM-YYYY"',
+      "any.required": "El campo de fecha es obligatorio",
+      "string.max": "La fecha no debe tener más de {#limit} caracteres",
+    }),
   description: check.string().max(255).required(),
   cosmetologist: check.string().min(20).max(100).required(),
   patient: check.string().min(20).max(100).required(),
   treatment: check.array().min(1).max(10).required(),
-  startTime: check.string().max(255).required(),
-  endTime: check.string().max(255).required(),
 });
 
 exports.checkforUpte = check.object({

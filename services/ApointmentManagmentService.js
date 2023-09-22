@@ -7,8 +7,9 @@ require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
 const { default: mongoose } = require("mongoose");
 moment.tz.setDefault(process.env.TZ);
+const response = require("../helpers/responses");
 
-async function findCosmetologistByTreatment(req) {
+async function findCosmetologistByTreatment(req, res) {
   try {
     //pasarle el array de los tratamientos.
     const BusinessUnit = await businessUnitSchema
@@ -19,13 +20,7 @@ async function findCosmetologistByTreatment(req) {
 
     let lenght = BusinessUnit.length;
     if (lenght === 0) {
-      return {
-        message:
-          "Cant find BusinessUnit that can do this treatment with IDs: '" +
-          req.body.treatment +
-          "'",
-        status: 400,
-      };
+      return response.sendNotFound(res, null);
     }
     if (BusinessUnit) {
       const ids = [];
@@ -55,20 +50,16 @@ async function findCosmetologistByTreatment(req) {
         });
       lenght = Cosmetologist.length;
       if (lenght === 0) {
-        return {
-          message:
-            "Error cant find Cosmetologist with BusinesUnit with IDs: '" +
-            ids +
-            "'",
-          status: 400,
-        };
+        return response.sendNotFound(res, null);
       }
       if (Cosmetologist) {
-        return {
-          message: "Cosmetologists that can do this treatment(s):" + ids.length,
-          Cosmetologist: Cosmetologist,
-          status: 200,
-        };
+        return response.sendCoustom(
+          res,
+          Cosmetologist,
+          true,
+          "Cosmetologists that can do this treatment(s):" + ids.length,
+          200
+        );
       }
     }
   } catch (error) {
@@ -76,7 +67,7 @@ async function findCosmetologistByTreatment(req) {
   }
 }
 
-async function getAvailableDates(req) {
+async function getAvailableDates(req, res) {
   try {
     const { _id } = req.body;
     const startDate = moment().startOf("day").add(1, "days").toDate();
@@ -123,36 +114,29 @@ async function getAvailableDates(req) {
       return !citasAgendadasFormateadas.includes(fecha);
     });
 
-    return {
-      message: "Available Dates in next 6 Months",
-      Avaible: fechasDisponiblesFiltradas,
-      status: 200,
-    };
+    return response.sendSuccess(res, fechasDisponiblesFiltradas);
   } catch (error) {
-    return { message: "Error", error: error.message, status: 400 };
+    return response.sendError(res, "Error: " + error);
   }
 }
 
-async function getAvailableSpaces(req) {
+async function getAvailableSpaces(req, res) {
   try {
     const { cosmetologist, date } = req.body;
     const validDate = moment(date, "DD-MM-YYYY").toDate();
     if (moment(validDate).isBefore()) {
-      return {
-        message: "Date has passed please choose another date",
-        status: 400,
-      };
+      return response.sendCoustom(res, null, false, "Date is before", 400);
     }
     const Cosmetologist = await cosmetologistSchema
       .findById({
         _id: cosmetologist,
       })
       .select({ worktime: 1, _id: 0 });
-    const { start, end } = Cosmetologist.worktime;
 
     if (!Cosmetologist) {
-      return { message: "Cosmetologist not found", status: 404 };
+      return response.sendNotFound(res);
     }
+    const { start, end } = Cosmetologist.worktime;
     const workStartTime = moment(start).tz(process.env.TZ);
     const workEndTime = moment(end).tz(process.env.TZ);
 
@@ -168,11 +152,10 @@ async function getAvailableSpaces(req) {
       );
 
       if (availableSpaces.length === 0) {
-        return {
-          message:
-            "There are no spaces available for the given date. Please select another date.",
-          status: 200,
-        };
+        return response.sendError(
+          res,
+          "There are no spaces available for the given date. Please select another date."
+        );
       }
 
       // Formatear las fechas en el time zone y formato especificado
@@ -185,16 +168,17 @@ async function getAvailableSpaces(req) {
         blockId: block._id,
       }));
 
-      return {
-        message: "Date already exists, showing available spaces:",
-        status: 200,
-        total_spaces: availableSpaces.length,
-        available: {
-          date: req.body.date,
-          _id: existingAvailability._id,
+      return response.sendCoustom(
+        res,
+        {
+          space_id: existingAvailability._id,
+          total_spaces: availableSpaces.length,
           spaces: formattedAvailableSpaces,
         },
-      };
+        true,
+        "Avaible spaces",
+        200
+      );
     }
 
     const spaces = await SpaceAvailabilitySchema.calculateAndSaveAvailability(
@@ -205,7 +189,7 @@ async function getAvailableSpaces(req) {
     );
 
     if (!spaces) {
-      return { message: "Spaces not found", status: 404 };
+      return response.sendNotFound(res);
     }
 
     const availableSpaces = spaces.blockedTimes.filter(
@@ -221,19 +205,23 @@ async function getAvailableSpaces(req) {
       blockId: block._id, // Agregamos el ID aquí
     }));
 
-    return {
-      date: req.body.date,
-      message: "Available spaces: ",
-      status: 200,
-      total_spaces: availableSpaces.length,
-      availableSpaces: { _id: spaces._id, spaces: formattedAvailableSpaces },
-    };
+    return response.sendCoustom(
+      res,
+      {
+        space_id: spaces._id,
+        total_spaces: availableSpaces.length,
+        spacese: formattedAvailableSpaces,
+      },
+      true,
+      "Avaible spaces",
+      200
+    );
   } catch (error) {
-    return { message: "Error", error: error.message, status: 403 };
+    return response.sendError(res, error.message);
   }
 }
 
-async function createApointment(req) {
+async function createApointment(req, res) {
   try {
     const {
       space_id,
@@ -250,23 +238,30 @@ async function createApointment(req) {
     const blockIdObject = mongoose.Types.ObjectId(blockId);
     const formattedDate = moment(date, "DD-MM-YYYY").toDate();
 
-    // Busca la disponibilidad del espacio y bloque específico
-    const spaceAvailability = await SpaceAvailabilitySchema.findOne({
-      _id: spaceIdObject,
-      "blockedTimes._id": blockIdObject,
-    }).select({ _id: 1, blockedTimes: { $elemMatch: { _id: blockIdObject } } });
-
-    if (!spaceAvailability) {
-      return { message: "Space availability not found", status: 404 };
-    }
-
     // Valida si la fecha y bloque ya están ocupados
     const CheckAvailability = await SpaceAvailabilitySchema.findOne({
       _id: spaceIdObject,
       date: formattedDate,
       "blockedTimes._id": blockIdObject,
     });
+    
+    if (CheckAvailability) {
+      return response.sendError(res, "This space has alredy been taken");
+    }
+    if (!CheckAvailability) {
+      return response.sendError(res, "Space not found");
+    }
 
+    // Busca la disponibilidad del espacio y bloque específico
+    const spaceAvailability = await SpaceAvailabilitySchema.findOne({
+      _id: spaceIdObject,
+      "blockedTimes._id": blockIdObject,
+    }).select({ _id: 1, blockedTimes: { $elemMatch: { _id: blockIdObject } } });
+    
+
+    if (!spaceAvailability) {
+      return response.sendNotFound(res);
+    }
     const filterByBlockId = CheckAvailability.blockedTimes.filter(
       (data) =>
         data._id == blockIdObject.toString() && data.isAvailable === false
@@ -293,24 +288,24 @@ async function createApointment(req) {
       const createApointment = await ApointmentService.create(reqData);
 
       if (createApointment) {
-        return {
-          message: "Appointment scheduled successfully",
-          status: 200,
-          appointment: createApointment,
-        };
+        return response.sendSuccess(res, createApointment);
       }
     }
+  } catch (error) {
+    return response.sendError(res, error.message);
+  }
+}
 
-    if (CheckAvailability) {
-      return {
-        message: "This space has already been taken",
-        status: 400,
-        blockId: CheckAvailability.blockedTimes[0]._id,
-        isAvailable: CheckAvailability.blockedTimes[0].isAvailable,
-      };
+async function updateStatus(req) {
+  try {
+    const apointment = await apoitmentSch
+      .findById(req.body.id)
+      .select({ status: 1 });
+    if (apointment) {
+      return;
     }
   } catch (error) {
-    return { message: "Error", error: error.message, status: 403 };
+    return { message: "Error", error: error.message, status: 400 };
   }
 }
 
@@ -319,4 +314,5 @@ module.exports = {
   getAvailableDates,
   getAvailableSpaces,
   createApointment,
+  updateStatus,
 };
