@@ -80,7 +80,7 @@ async function getAvailableDates(req) {
   try {
     const { _id } = req.body;
     const startDate = moment().startOf("day").add(1, "days").toDate();
-    const endDate = moment().add(req.body.days, "days").endOf("day").toDate();
+    const endDate = moment().add(182, "days").endOf("day").toDate();
 
     // Obtener la información del cosmetólogo, incluyendo sus días de trabajo
     const cosmetologist = await cosmetologistSchema.findById(_id);
@@ -124,7 +124,7 @@ async function getAvailableDates(req) {
     });
 
     return {
-      message: "Available Dates in next " + req.body.days + " days:",
+      message: "Available Dates in next 6 Months",
       Avaible: fechasDisponiblesFiltradas,
       status: 200,
     };
@@ -182,7 +182,7 @@ async function getAvailableSpaces(req) {
           .format("HH:mm:ss A"),
         endTime: moment(block.endTime).tz(process.env.TZ).format("HH:mm:ss A"),
         isAvailable: block.isAvailable,
-        blockId: block._id, // Agregamos el ID aquí
+        blockId: block._id,
       }));
 
       return {

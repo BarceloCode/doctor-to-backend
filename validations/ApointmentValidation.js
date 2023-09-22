@@ -17,6 +17,20 @@ exports.checkforUpte = check.object({
   treatment: check.array().max(20).required(),
 });
 
+exports.checkFieldsAvaibleSpaces = check.object({
+  cosmetologist: check.string().min(20).max(100).required(),
+  date: check
+    .string()
+    .max(10)
+    .pattern(/^\d{2}-\d{2}-\d{4}$/)
+    .required()
+    .messages({
+      "string.pattern.base": 'La fecha debe estar en el formato "DD-MM-YYYY"',
+      "any.required": "El campo de fecha es obligatorio",
+      "string.max": "La fecha no debe tener más de {#limit} caracteres",
+    }),
+});
+
 exports.checkID = check.object({
   _id: check.string().min(20).max(100).required(),
 });
@@ -26,5 +40,9 @@ exports.currentPage = check.object({
 });
 
 exports.ApointmentManagmentArray = check.object({
-  treatment: check.array().items(check.string().min(20).max(100)).unique().required(),
+  treatment: check
+    .array()
+    .items(check.string().min(20).max(100))
+    .unique()
+    .required(),
 });
