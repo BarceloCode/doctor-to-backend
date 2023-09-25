@@ -12,15 +12,15 @@ app.get(
   }
 );
 
-app.get("/avaible", async (req, res) => {
+app.get("/avaible", validate(validations.checkID), async (req, res) => {
   controller.getAvaibleApointmentDates(req, res);
 });
 
-app.get("/avaible/spaces", async (req, res) => {
+app.get("/avaible/spaces", validate(validations.checkFieldsAvaibleSpaces), async (req, res) => {
   controller.getAvailableSpaces(req, res);
 });
 
-app.post("/create", async (req, res) => {
+app.post("/create", validate(validations.createApointment), async (req, res) => {
   controller.createApointment(req, res);
 });
 
