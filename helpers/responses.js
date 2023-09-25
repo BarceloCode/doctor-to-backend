@@ -2,7 +2,7 @@ exports.sendSuccess = (res, data) => {
   res.status(200).json({
     success: true,
     data: data,
-    message: "processed Succesfully!",
+    message: "Task completed succesfully!",
     statusCode: 200,
   });
 };
