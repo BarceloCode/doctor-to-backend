@@ -30,17 +30,17 @@ app.put(
 
 app.delete(
   "/delete",
-  validate(validations.deleteCosmologist),
+  validate(validations.checkID),
   async (req, res) => {
-    controller.deleteCosmo(req, res);
+    controller.deleteApointment(req, res);
   }
 );
 
-app.delete(
+app.post(
   "/restore",
-  validate(validations.deleteCosmologist),
+  validate(validations.checkID),
   async (req, res) => {
-    controller.undoDeleteCosmo(req, res);
+    controller.undoDeleteApointment(req, res);
   }
 );
 

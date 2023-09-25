@@ -3,6 +3,7 @@ const businessUnitSchema = require("../models/BusinessUnitModel");
 const SpaceAvailabilitySchema = require("../models/SpaceAvailabilityModel");
 const cosmetologistSchema = require("../models/CosmetologistModel");
 const ApointmentService = require("./ApointmentService");
+const response = require("../helpers/responses");
 require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
 const { default: mongoose } = require("mongoose");
@@ -233,7 +234,7 @@ async function getAvailableSpaces(req) {
   }
 }
 
-async function createApointment(req) {
+async function createApointment(req, res) {
   try {
     const {
       space_id,
@@ -257,7 +258,7 @@ async function createApointment(req) {
     }).select({ _id: 1, blockedTimes: { $elemMatch: { _id: blockIdObject } } });
 
     if (!spaceAvailability) {
-      return { message: "Space availability not found", status: 404 };
+      return response.sendNotFound(res);
     }
 
     // Valida si la fecha y bloque ya están ocupados
@@ -293,11 +294,7 @@ async function createApointment(req) {
       const createApointment = await ApointmentService.create(reqData);
 
       if (createApointment) {
-        return {
-          message: "Appointment scheduled successfully",
-          status: 200,
-          appointment: createApointment,
-        };
+        return response.sendSuccess(res, createApointment);
       }
     }
 

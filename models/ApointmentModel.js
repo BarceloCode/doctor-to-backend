@@ -5,81 +5,80 @@ require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
-const ApointmentSchema = new Schema(
-  {
-    date: {
-      type: Date,
-      default: currentTime,
-      required: true,
+const baseSchema = require("../models/baseSchema");
+const ApointmentSchema = new Schema({
+  date: {
+    type: Date,
+    default: currentTime,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  startTime: {
+    type: String,
+    required: true,
+  },
+  endTime: {
+    type: String,
+    required: true,
+  },
+  status: {
+    confirmationPending: {
+      type: Boolean,
+      default: true,
     },
-    description: {
-      type: String,
-      required: true,
+    confirmedbyuser: {
+      type: Boolean,
+      default: false,
     },
-    startTime:{
-      type: String,
-      required: true,
+    cancelledByUser: {
+      type: Boolean,
+      default: false,
     },
-    endTime:{
-      type: String,
-      required: true,
+    cancelledbydoctor: {
+      type: Boolean,
+      default: false,
     },
-    status: {
-      confirmationPending: {
-        type: Boolean,
-        default: true,
-      },
-      confirmedbyuser: {
-        type: Boolean,
-        default: false,
-      },
-      cancelledByUser: {
-        type: Boolean,
-        default: false,
-      },
-      cancelledbydoctor: {
-        type: Boolean,
-        default: false,
-      },
-      rescheduled: {
-        type: Boolean,
-        default: false,
-      },
-      notassisted: {
-        type: Boolean,
-        default: false,
-      },
-      approved: {
-        type: Boolean,
-        default: false,
-      },
-      inprogress: {
-        type: Boolean,
-        default: false,
-      },
-      finished: {
-        type: Boolean,
-        default: false,
-      },
+    rescheduled: {
+      type: Boolean,
+      default: false,
     },
-    cosmetologist: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "cosmetologist",
-      required: true,
+    notassisted: {
+      type: Boolean,
+      default: false,
     },
-    patient: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "patient",
-      required: true,
+    approved: {
+      type: Boolean,
+      default: false,
     },
-    treatment: {
-      type: Array,
-      required: true,
-      ref: "treatment",
+    inprogress: {
+      type: Boolean,
+      default: false,
+    },
+    finished: {
+      type: Boolean,
+      default: false,
     },
   },
-);
-
+  cosmetologist: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "cosmetologist",
+    required: true,
+  },
+  patient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "patient",
+    required: true,
+  },
+  treatment: {
+    type: Array,
+    required: true,
+    ref: "treatment",
+  },
+});
+ApointmentSchema.add(baseSchema);
 ApointmentSchema.plugin(mongoosePaginate);
 const Apointment = mongoose.model("apointment", ApointmentSchema);
 Apointment.paginate().then({});

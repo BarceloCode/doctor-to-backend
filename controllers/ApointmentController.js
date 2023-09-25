@@ -11,8 +11,8 @@ async function getAllApointment(req, res) {
 
 async function getOneByid(req, res) {
   try {
-    const Apointment = await ApointmentService.retriveOne(req, res);
-    res.status(Apointment.status).json(Apointment);
+    const result = await ApointmentService.retriveOne(req, res);
+    return result;
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -20,8 +20,8 @@ async function getOneByid(req, res) {
 
 async function createApointment(req, res) {
   try {
-    const Apointment = await ApointmentService.create(req, res);
-    res.status(201).json(Apointment);
+    const result = await ApointmentService.create(req, res);
+    return result;
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -29,8 +29,8 @@ async function createApointment(req, res) {
 
 async function updateApointment(req, res) {
   try {
-    const Apointment = await ApointmentService.update(req, res);
-    res.status(200).json(Apointment);
+    const result = await ApointmentService.update(req, res);
+    return result;
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -38,16 +38,16 @@ async function updateApointment(req, res) {
 
 async function deleteApointment(req, res) {
   try {
-    const Apointment = await ApointmentService.softDelete(req, res);
-    res.status(200).json(Apointment);
+    const result = await ApointmentService.softDelete(req, res);
+    return result;
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 }
 async function undoDeleteApointment(req, res) {
   try {
-    const Apointment = await ApointmentService.UndosoftDelete(req, res);
-    res.status(200).json(Apointment);
+    const result = await ApointmentService.UndosoftDelete(req, res);
+    return result;
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

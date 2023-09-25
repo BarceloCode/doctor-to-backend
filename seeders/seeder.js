@@ -311,6 +311,8 @@ const apointment = [
       inprogress: false,
       finished: false,
     },
+    startTime:"9:00 AM",
+    endTime:"10:00 AM",
     cosmetologist: "64f7aa9a71b725ba01ed51ea",
     patient: "64f7aa9a71b725ba01ed51eb",
     treatment: ["64f7aa9a71b725ba01ed51e7", "64f7aa9a71b725ba01ed51e8"],

@@ -14,28 +14,31 @@ async function retrive(req, res) {
       collation: {
         locale: "en",
       },
-      populate: {
-        path: "apointment",
-        select: { cosmetologist: 0 },
-        populate: {
-          path: "treatment",
-          populate: { path: "product" },
+      populate: [
+        {
+          path: "apointment",
+          select: { cosmetologist: 0 },
+          populate: {
+            path: "treatment",
+            populate: { path: "product" },
+          },
         },
-      },
-      populate: {
-        path: "cosmetologist",
-        select: {
-          name: 1,
-          full_lastname: 1,
-          email: 1,
-          phone: 1,
-          businessUnit: 1,
+        {
+          path: "cosmetologist",
+          select: {
+            name: 1,
+            full_lastname: 1,
+            email: 1,
+            phone: 1,
+            businessUnit: 1,
+          },
+          populate: { path: "businessUnit", select: { name: 1, address: 1 } },
         },
-        populate: { path: "businessUnit", select: { name: 1, address: 1 } },
-      },
+      ],
     };
+
     const Apointment = await CosmetologistApointmentSchema.paginate(
-      {},
+      { deleted: false },
       options
     );
 
@@ -47,9 +50,9 @@ async function retrive(req, res) {
     return response.sendError(res, error.message);
   }
 }
-async function retriveOne(req) {
+async function retriveOne(req, res) {
   try {
-    const Apointment = await CosmetologistApointmentSchema.findById({
+    const Apointment = await CosmetologistApointmentSchema.findOne({
       _id: req.body._id,
       deleted: false,
     })
@@ -81,32 +84,16 @@ async function retriveOne(req) {
       });
 
     if (!Apointment) {
-      return {
-        message: "Apointment not found",
-        error: true,
-        status: 404,
-      };
+      return response.sendNotFound(res);
     }
 
-    if (Apointment.deleted) {
-      return {
-        message: "Apointment is deleted",
-        error: true,
-        status: 404,
-      };
-    }
-    return {
-      message: "Apointment found!",
-      error: false,
-      data: Apointment,
-      status: 200,
-    };
+    return response.sendSuccess(res, Apointment);
   } catch (error) {
-    return { message: error.message, error: "Apointment Error", status: 403 };
+    return response.sendError(res, error.message);
   }
 }
 
-async function create(req) {
+async function create(req, res) {
   try {
     const Apointment = await ApointmentSchema.create({
       date: req.body.date,
@@ -123,86 +110,117 @@ async function create(req) {
     );
 
     if (Apointment && CosmeApoint) {
-      return CosmeApoint;
+      return response.sendCreated(res, CosmeApoint);
     }
   } catch (error) {
-    return {
-      message: "Can't create",
-      error: true,
-      error: error.message,
-    };
+    return response.sendError(res, error.message);
   }
 }
 
-async function update(req) {
+async function update(req, res) {
   try {
-    const findApointment = await ApointmentSchema.findById({
+    const findAp = await CosmetologistApointmentSchema.findOne({
       _id: req.body._id,
-    }).select("_id deleted");
+      deleted: false,
+    }).select({ apointment: 1, _id: 0 });
+
+    if (!findAp) {
+      return response.sendNotFound(res);
+    }
+    const findApointment = await ApointmentSchema.findOne({
+      _id: findAp.apointment,
+      deleted: false,
+    }).select({ _id: 1 });
     const { description, cosmetologist, treatment } = req.body;
-    if (!findApointment || findApointment.deleted) {
-      return { message: "Apointment not found", error: true };
+
+    if (!findApointment) {
+      return response.sendNotFound(res);
     }
     const update = {
-      set: {
-        description: description,
-        cosmetologist: cosmetologist,
-        treatment: treatment,
-      },
+      description: description,
+      cosmetologist: cosmetologist,
+      treatment: treatment,
     };
     const result = await ApointmentSchema.updateOne(findApointment, update);
-    if (result) {
-      return { message: "Updated succesfully", error: false };
+    const resultB = await CosmetologistApointmentSchema.updateOne(
+      findAp,
+      update
+    );
+    if (result && resultB) {
+      return response.sendSuccess(res);
     }
   } catch (error) {
-    return { message: "Error", error: error.message };
+    return response.sendError(res, error.message);
   }
 }
 
-async function softDelete(req) {
+async function softDelete(req, res) {
   try {
-    const finduser = await ApointmentSchema.findOne({
-      email: req.body.email,
-    }).select("email deleted");
+    const findAp = await CosmetologistApointmentSchema.findOne({
+      _id: req.body._id,
+      deleted: false,
+    }).select({ apointment: 1, _id: 0 });
 
-    if (!finduser || finduser.deleted || req.body.email == finduser.email) {
-      return { message: "User not found", error: true };
+    if (!findAp) {
+      return response.sendNotFound(res);
+    }
+    const findApointment = await ApointmentSchema.findOne({
+      _id: findAp.apointment,
+      deleted: false,
+    }).select({ _id: 1 });
+
+    if (!findApointment) {
+      return response.sendNotFound(res);
     }
     const update = {
-      set: {
-        deleted: true,
-        deletedAt: currentTime,
-      },
+      deleted: true,
+      deletedAt: currentTime,
     };
-    const result = await ApointmentSchema.updateOne(finduser, update);
-    if (result) {
-      return { message: "Deleted succesfully", error: false };
+    const result = await ApointmentSchema.updateOne(findApointment, update);
+    const resultB = await CosmetologistApointmentSchema.updateOne(
+      findAp,
+      update
+    );
+    if (result && resultB) {
+      return response.sendUpdated(res);
     }
   } catch (error) {
-    return { message: "Error", error: error.message };
+    return response.sendError(res, error.message);
   }
 }
-async function UndosoftDelete(req) {
-  try {
-    const finduser = await ApointmentSchema.findOne({
-      email: req.body.email,
-    }).select("email deleted");
 
-    if (!finduser) {
-      return { message: "User not found", error: true };
+async function UndosoftDelete(req, res) {
+  try {
+    const findAp = await CosmetologistApointmentSchema.findOne({
+      _id: req.body._id,
+      deleted: true,
+    }).select({ apointment: 1, _id: 0 });
+
+    if (!findAp) {
+      return response.sendNotFound(res);
+    }
+    const findApointment = await ApointmentSchema.findOne({
+      _id: findAp.apointment,
+      deleted: true,
+    }).select({ _id: 1 });
+
+    if (!findApointment) {
+      return response.sendNotFound(res);
     }
     const update = {
-      set: {
-        deleted: false,
-        deletedAt: null,
-      },
+      deleted: false,
+      deletedAt: null,
     };
-    const result = await ApointmentSchema.updateOne(finduser, update);
-    if (result) {
-      return { message: "Restored succesfully", error: false };
+    const result = await ApointmentSchema.updateOne(findApointment, update);
+    const resultB = await CosmetologistApointmentSchema.updateOne(
+      findAp,
+      update
+    );
+    if (result && resultB) {
+      return response.sendUpdated(res);
     }
   } catch (error) {
-    return { message: "Error", error: error.message };
+    return response.sendError(res, error.message);
   }
 }
 
@@ -213,10 +231,10 @@ async function HandleCosmetologistApointments(cosmetologist_id, apointment_id) {
       apointment: apointment_id,
     });
     if (CosmeApoint) {
-      return CosmeApoint;
+      return response.sendCreated(res, CosmeApoint);
     }
   } catch (error) {
-    return { message: error.message, error: true };
+    return response.sendError(res, error.message);
   }
 }
 
