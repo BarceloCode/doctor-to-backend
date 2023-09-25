@@ -35,7 +35,6 @@ exports.sendBadrequest = (res) => {
 exports.sendNotFound = (res, data) => {
   res.status(404).json({
     success: false,
-    data: data,
     message: "Data not found",
     statusCode: 404,
   });
