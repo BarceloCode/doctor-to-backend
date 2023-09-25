@@ -32,7 +32,7 @@ exports.sendBadrequest = (res) => {
   });
 };
 
-exports.sendNotFound = (res, data) => {
+exports.sendNotFound = (res) => {
   res.status(404).json({
     success: false,
     message: "Data not found",

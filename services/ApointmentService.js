@@ -4,8 +4,9 @@ require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
 moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
+const response = require("../helpers/responses");
 
-async function retrive(req) {
+async function retrive(req, res) {
   try {
     const options = {
       page: req.body.page,
@@ -39,19 +40,11 @@ async function retrive(req) {
     );
 
     if (!Apointment || Apointment.deleted || Apointment.length === 0) {
-      return {
-        message: "Apointment not found",
-        error: true,
-        error: error.message,
-      };
+      return response.sendNotFound(res);
     }
-    return {
-      message: "Apointment found!",
-      error: false,
-      Apointments: Apointment,
-    };
+    return response.sendSuccess(res, Apointment);
   } catch (error) {
-    return { message: error.message, error: "Apointment not found" };
+    return response.sendError(res, error.message);
   }
 }
 async function retriveOne(req) {

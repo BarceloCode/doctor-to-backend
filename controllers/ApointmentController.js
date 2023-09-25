@@ -2,8 +2,8 @@ const ApointmentService = require("../services/ApointmentService");
 
 async function getAllApointment(req, res) {
   try {
-    const Apointment = await ApointmentService.retrive(req, res);
-    res.status(200).json(Apointment);
+    const result = await ApointmentService.retrive(req, res);
+    return result;
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
