@@ -20,7 +20,7 @@ app.get("/avaible/spaces", validate(validations.checkFieldsAvaibleSpaces), async
   controller.getAvailableSpaces(req, res);
 });
 
-app.post("/create", validate(validations.createApointment), async (req, res) => {
+app.post("/create", async (req, res) => {
   controller.createApointment(req, res);
 });
 
