@@ -7,6 +7,14 @@ exports.sendSuccess = (res, data) => {
   });
 };
 
+exports.sendUpdated = (res) => {
+  res.status(204).json({
+    success: true,
+    message: "Updated Succesfully!",
+    statusCode: 204,
+  });
+};
+
 exports.sendError = (res, message) => {
   res.status(422).json({
     success: false,
