@@ -22,5 +22,4 @@ const HistoryModel = new Schema({
     }],
 })
 
-const History = mongoose.model('history', HistoryModel);
-module.exports = History;
+module.exports = mongoose.model('history', HistoryModel);
