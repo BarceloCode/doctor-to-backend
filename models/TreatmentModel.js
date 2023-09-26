@@ -17,9 +17,7 @@ const TreatmentModel = new Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId, ref: 'products',
         required: true
-    },
-    quantity: Number
+    }
 });
 
-const Treatment = mongoose.model('treatment', TreatmentModel);
-module.exports = Treatment;
+module.exports = mongoose.model('treatments', TreatmentModel);

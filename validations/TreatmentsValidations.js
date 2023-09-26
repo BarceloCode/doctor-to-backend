@@ -6,8 +6,7 @@ module.exports = {
             treatmentName: Joi.string().required(),
             description: Joi.string().required(),
             price: Joi.number().required(),
-            product: Joi.string().required(),
-            quantity: Joi.number().required()
+            product: Joi.string().required()            
         })
         return schema.validate(data);
     }
