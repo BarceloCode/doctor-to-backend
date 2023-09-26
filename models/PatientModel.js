@@ -77,8 +77,10 @@ const PatientSchema = new Schema({
     deleted: {
         type: Boolean,
         default: false
-    }
-    
+    },
+    files: [{
+        type: String        
+    }]
 })
 const Patient = mongoose.model('patient', PatientSchema);
 module.exports = Patient;
