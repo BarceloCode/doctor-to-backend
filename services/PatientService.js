@@ -1,16 +1,17 @@
-const Patient = require("../models/PatientModel");
 const PatientModel = require("../models/PatientModel");
 const Validate = require("../validations/PatienValidation")
+const response = require("../helpers/responses");
 
-async function createUser (req){
+async function createPatient (req, res){
     try {
         const { error } = Validate.patient(req.body);
         if (error) return res.json({ success: false, result: error.details[0].message});
 
         const curpExists = await PatientModel.findOne({ curp : req.body.curp });
-        if (curpExists) return { success: false, result: "Patient already exists"};
+        if (curpExists) return { message: "Patient already exists"};
+        console.log(curpExists);
 
-        const Patient = await PatientModel.create({
+        const Patient = new PatientModel({
             name: req.body.name,
             surname: req.body.surname,
             gender: req.body.gender,
@@ -29,79 +30,51 @@ async function createUser (req){
             phone: req.body.phone,
             emergencyContact: req.body.emergencyContact,
             bloodType: req.body.bloodType         
+        })        
+        await Patient.save()
+        .then((result) => {
+            response.sendSuccess(res, result)
+        })      
+    } catch (error) {
+        return response.sendError(res, error.message);
+    }
+}
+
+async function getPatients (req, res){
+    try {
+        await PatientModel.find({})
+        .then((result) => {
+            response.sendSuccess(res, result)
         })
-        if(!Patient) return {
-            message: "Can't create"
-        }
-
-        return {
-            message: "Created successfully!",
-            result: Patient
-        }
-
     } catch (error) {
-        return {
-            message: "Error: " + error
-        }
+        return response.sendError(res, error.message);
     }
 }
 
-async function getPatients (req){
+async function detailPatient (req, res){
     try {
-        const Patient = await PatientModel.find({});
-    if(!Patient) return {
-        message: "Can't find patient"
-    }
-    
-    return {
-        message: "Patient List",
-        result: Patient
-    }
+        const { id } = req.body;
+        console.log(id);
+        await PatientModel.findOne({ _id: id })
+        .then((result) => {
+            response.sendSuccess(res, result)
+        })   
     } catch (error) {
-        return {
-            message: "Error: " + error
-        }
+        return response.sendError(res, error.message);
     }
 }
 
-async function detailPatient (){
-    try {
-        const findPatient = await PatientModel.findOne({
-            patient: req.body.patient
-        });
-    
-        if(!findPatient) return {
-            message: "Patient not found"
-        }
-    
-        return {
-            message: "Found!",
-            result: findPatient
-        }     
-    } catch (error) {
-        return {
-            message: "Error" + error
-        }
-    }
-}
-
-async function deletePatient (req){
+async function deletePatient (req, res){
     try {
         const { id } = req.params;
         const Patient = await PatientModel.deleteMany({_id: id})
-        if(!Patient) return { message: "Can't delete patient"}
-
-        return {
-            message: "Delete successfully!"
-        }
+        if(Patient) response.sendSuccess(res);
     } catch (error) {
-        return {
-            message: "Error: " + error
-        }
+        return response.sendError(res, error.message);
     }
 }
 
-async function updatePatient (req){
+async function updatePatient (req, res){
     try {
         const { id } = req.params;
         const Patient = await PatientModel.findOneAndUpdate({ _id: id},{
@@ -125,19 +98,13 @@ async function updatePatient (req){
             bloodType: req.body.bloodType
         },
         { new: true});
-        if(!Patient) return { message: "Can't update patient" }
-        
-        return {
-            message: "Updated successfully!"
-        }
+        if(Patient) response.sendSuccess(res, Patient)
     } catch (error) {
-        return {
-            message: "Error: " + error
-        }
+        return response.sendError(res, error.message)
     }
 }
 
-async function addFiles (req) {
+async function addFiles (req, res) {
     try {
         const { id } = req.params;
         const Patient = await PatientModel.findOneAndUpdate({_id: id},{
@@ -153,4 +120,4 @@ async function addFiles (req) {
     }
 }
 
-module.exports = { createUser, getPatients, detailPatient, updatePatient, deletePatient, addFiles }
+module.exports = { createPatient, getPatients, detailPatient, updatePatient, deletePatient, addFiles }

@@ -82,5 +82,5 @@ const PatientSchema = new Schema({
         type: String        
     }]
 })
-const Patient = mongoose.model('patient', PatientSchema);
-module.exports = Patient;
+
+module.exports = mongoose.model('patient', PatientSchema);

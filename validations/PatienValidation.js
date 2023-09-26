@@ -22,7 +22,8 @@ module.exports = {
                 .email(),
             phone: Joi.string(),
             emergencyContact: Joi.string(),
-            bloodType: Joi.string().required()
+            bloodType: Joi.string().required(),
+            file: Joi.string()
         });
         return schema.validate(data);
     }
