@@ -1,7 +1,7 @@
 exports.sendSuccess = (res, data) => {
   res.status(200).json({
     success: true,
-    data: data,
+    result: data,
     message: "Task completed succesfully!",
     statusCode: 200,
   });
@@ -26,7 +26,7 @@ exports.sendError = (res, message) => {
 exports.sendCreated = (res, data) => {
   res.status(201).json({
     success: true,
-    data: data,
+    result: data,
     message: "Created successfully!",
     statusCode: 201,
   });
