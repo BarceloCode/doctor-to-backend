@@ -17,10 +17,25 @@ async function retrive(req, res) {
       populate: [
         {
           path: "apointment",
-          select: { cosmetologist: 0 },
+          select: {
+            cosmetologist: 0,
+            deleted: 0,
+            deletedAt: 0,
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0,
+          },
           populate: {
             path: "treatment",
+            select: { __v: 0 },
             populate: { path: "product" },
+            select: {
+              deleted: 0,
+              deletedAt: 0,
+              createdAt: 0,
+              updatedAt: 0,
+              __v: 0,
+            },
           },
         },
         {
@@ -45,11 +60,42 @@ async function retrive(req, res) {
     if (!Apointment || Apointment.length === 0) {
       return response.sendNotFound(res);
     }
-    return response.sendSuccess(res, Apointment);
+    console.log(Apointment);
+    const filteredApointments = Apointment.docs.map((apointment) => {
+      const { deleted, deletedAt, createdAt, updatedAt, __v, ...filteredData } =
+        apointment.toObject();
+      return filteredData;
+    });
+    const {
+      page,
+      totalDocs,
+      limit,
+      totalPages,
+      paginingCounter,
+      prevPage,
+      nextPage,
+    } = Apointment;
+    return response.sendCoustom(
+      res,
+      {
+        data: filteredApointments[0],
+        page: page,
+        totalDocs: totalDocs,
+        limit: limit,
+        totalPages: totalPages,
+        paginingCounter: paginingCounter,
+        prevPage: prevPage,
+        nextPage: nextPage,
+      },
+      true,
+      "Success",
+      200
+    );
   } catch (error) {
     return response.sendError(res, error.message);
   }
 }
+
 async function retriveOne(req, res) {
   try {
     const Apointment = await CosmetologistApointmentSchema.findOne({

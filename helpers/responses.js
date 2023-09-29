@@ -59,8 +59,8 @@ exports.sendServerError = (res) => {
 exports.sendCoustom = (res, data, success, message, statusCode) => {
   res.status(statusCode).json({
     success: success,
-    data: data,
     message: message,
     statusCode: statusCode,
+    result: data,
   });
 };
