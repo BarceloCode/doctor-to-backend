@@ -1,10 +1,10 @@
 const ApointmentSchema = require("../models/ApointmentModel");
 const CosmetologistApointmentSchema = require("../models/CosmetologistApointments");
-require("dotenv").config({ path: "../.env" });
 const moment = require("moment-timezone");
-moment.tz.setDefault(process.env.TZ);
 const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
 const response = require("../helpers/responses");
+moment.tz.setDefault(process.env.TZ);
+require("dotenv").config({ path: "../.env" });
 
 async function retrive(req, res) {
   try {
@@ -42,7 +42,7 @@ async function retrive(req, res) {
       options
     );
 
-    if (!Apointment || Apointment.deleted || Apointment.length === 0) {
+    if (!Apointment || Apointment.length === 0) {
       return response.sendNotFound(res);
     }
     return response.sendSuccess(res, Apointment);
@@ -89,31 +89,24 @@ async function retriveOne(req, res) {
 
     return response.sendSuccess(res, Apointment);
   } catch (error) {
-    return response.sendError(res, error.message);
+    return response.sendError(res, error);
   }
 }
 
 async function create(req, res) {
   try {
-    const Apointment = await ApointmentSchema.create({
-      date: req.body.date,
-      description: req.body.description,
-      cosmetologist: req.body.cosmetologist,
-      patient: req.body.patient,
-      treatment: req.body.treatment,
-      startTime: req.body.startTime,
-      endTime: req.body.endTime,
-    });
-    const CosmeApoint = HandleCosmetologistApointments(
+    const Apointment = await ApointmentSchema.create(req.body);
+    const CosmeApoint = await HandleCosmetologistApointments(
       Apointment.cosmetologist,
-      Apointment._id
+      Apointment._id,
+      res
     );
 
     if (Apointment && CosmeApoint) {
       return response.sendCreated(res, CosmeApoint);
     }
   } catch (error) {
-    return response.sendError(res, error.message);
+    throw new Error("Error, please check your request");
   }
 }
 
@@ -224,14 +217,23 @@ async function UndosoftDelete(req, res) {
   }
 }
 
-async function HandleCosmetologistApointments(cosmetologist_id, apointment_id) {
+async function HandleCosmetologistApointments(
+  cosmetologist_id,
+  apointment_id,
+  res
+) {
   try {
     const CosmeApoint = await CosmetologistApointmentSchema.create({
       cosmetologist: cosmetologist_id,
       apointment: apointment_id,
     });
+    const { cosmetologist, _id, apointment } = CosmeApoint;
     if (CosmeApoint) {
-      return response.sendCreated(res, CosmeApoint);
+      return response.sendCreated(res, {
+        id: _id,
+        cosmetologist: cosmetologist,
+        apointment: apointment,
+      });
     }
   } catch (error) {
     return response.sendError(res, error.message);

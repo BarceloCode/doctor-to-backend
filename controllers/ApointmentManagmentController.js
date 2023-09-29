@@ -2,9 +2,8 @@ const ApointmentMgnmtService = require("../services/ApointmentManagmentService")
 
 async function findCosmetologistByTreatment(req, res) {
   try {
-    const Apointment =
-      await ApointmentMgnmtService.findCosmetologistByTreatment(req, res);
-    res.status(Apointment.status).json(Apointment);
+    const result = await ApointmentMgnmtService.findCosmetologistByTreatment(req,res);
+    return result;
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -12,9 +11,8 @@ async function findCosmetologistByTreatment(req, res) {
 
 async function getAvaibleApointmentDates(req, res) {
   try {
-    const AvaibleApointmentDates =
-      await ApointmentMgnmtService.getAvailableDates(req);
-    res.status(AvaibleApointmentDates.status).json(AvaibleApointmentDates);
+    const result = await ApointmentMgnmtService.getAvailableDates(req, res);
+    return result;
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -22,8 +20,8 @@ async function getAvaibleApointmentDates(req, res) {
 
 async function getAvailableSpaces(req, res) {
   try {
-    const available = await ApointmentMgnmtService.getAvailableSpaces(req);
-    res.status(available.status).json(available);
+    const result = await ApointmentMgnmtService.getAvailableSpaces(req, res);
+    return result;
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -31,8 +29,8 @@ async function getAvailableSpaces(req, res) {
 
 async function createApointment(req, res) {
   try {
-    const createApointment = await ApointmentMgnmtService.createApointment(req);
-    res.status(createApointment.status).json(createApointment);
+    const result = await ApointmentMgnmtService.createApointment(req, res);
+    return result;
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

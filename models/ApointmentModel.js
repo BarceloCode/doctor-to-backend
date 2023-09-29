@@ -78,6 +78,7 @@ const ApointmentSchema = new Schema({
     ref: "treatment",
   },
 });
+ApointmentSchema.index({ date: 1, startTime: 1, endTime: 1 }, { unique: true });
 ApointmentSchema.add(baseSchema);
 ApointmentSchema.plugin(mongoosePaginate);
 const Apointment = mongoose.model("apointment", ApointmentSchema);
