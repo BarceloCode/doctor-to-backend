@@ -13,10 +13,10 @@ async function createHsitory (req, res){
                     response.sendCreated(res, result)
                 })            
             }else{             
-                const treatmentExists = historyExist.treatments;                              
-                const { treatments } = req.body;                                 
+                const treatmentExists = historyExist.treatment;                              
+                const { treatment } = req.body;                                 
                 let updateHistory = await HistoryModel.findOneAndUpdate({patient: req.body.patient},{                          
-                  treatments: treatmentExists.concat(treatments)  
+                  treatment: treatmentExists.concat(treatment)  
                 })                
                 return response.sendSuccess(res, updateHistory)                      
             }   
@@ -33,12 +33,12 @@ async function getHistory (req, res) {
             path: "patient",                    
           })
           .populate({
-            path: "treatments",
+            path: "treatment",
             populate: { path: "treatment",
             select: { treatmentName: 1}},                   
           })
           .populate({
-            path: "treatments",
+            path: "treatment",
             populate: { path: "cosmetologist",
             select: { name: 1, full_lastname: 1}}
           });

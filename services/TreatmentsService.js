@@ -5,7 +5,7 @@ const response = require("../helpers/responses");
 async function createTreatment(req, res){
     try {
 
-        const { error } = Validate.treatments(req.body);
+        const { error } = Validate.treatment(req.body);
         if (error) return res.json({ success: false, result: error.details[0].message});
         
         const Treatment = new TreatmentModel({

@@ -12,7 +12,7 @@ moment.tz.setDefault(process.env.TZ);
 
 async function findCosmetologistByTreatment(req, res) {
   try {
-    //pass array of treatments
+    //pass array of treatment
     const { treatment } = req.body;
     const BusinessUnit = await businessUnitSchema
       .find({

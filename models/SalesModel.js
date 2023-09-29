@@ -10,7 +10,7 @@ const SalesModel = new Schema({
         type: Date,
         default: Date.now
     },
-    treatments:[{
+    treatment:[{
         name: {
             type: String,
             requires: true

@@ -6,7 +6,7 @@ const HistoryModel = new Schema({
         type: Schema.Types.ObjectId, ref: 'patient',
         required: true
     },
-    treatments: [{
+    treatment: [{
         treatment: {
             type: Schema.Types.ObjectId, ref: 'treatment',
             required: true,

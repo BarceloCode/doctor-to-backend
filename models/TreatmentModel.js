@@ -20,4 +20,4 @@ const TreatmentModel = new Schema({
     }
 });
 
-module.exports = mongoose.model('treatments', TreatmentModel);
+module.exports = mongoose.model('treatment', TreatmentModel);

@@ -6,7 +6,7 @@ const CashModel = new Schema({
         type: mongoose.Schema.Types.ObjectId, ref: 'cosmetologist',
         required: true
     },
-    treatments: [{
+    treatment: [{
         name: {
             type: String, 
             required: true

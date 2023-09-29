@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi');
 
 module.exports = {
-    treatments: data =>{
+    treatment: data =>{
         let schema = Joi.object({
             treatmentName: Joi.string().required(),
             description: Joi.string().required(),

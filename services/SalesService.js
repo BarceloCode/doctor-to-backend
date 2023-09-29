@@ -6,10 +6,10 @@ const mongoose = require("mongoose");
 
 async function create(req, res){
     try{
-        const treatments = req.body.treatments;
+        const treatment = req.body.treatment;
         const products = req.body.products;
 
-        const totalTratamientos = treatments.reduce(( total, treatment ) => total + treatment.price, 0);
+        const totalTratamientos = treatment.reduce(( total, treatment ) => total + treatment.price, 0);
         const totalProductos = products.reduce((total, product ) => total + product.cost, 0);
         const total = totalTratamientos + totalProductos;
         const iva = total * 0.16;
@@ -17,7 +17,7 @@ async function create(req, res){
 
         const Sales = await SalesModel.create({
             cosmetologist: req.body.cosmetologist,
-            treatments: treatments,
+            treatment: treatment,
             products: products,
             total: total,
             totaliva: totalIva
